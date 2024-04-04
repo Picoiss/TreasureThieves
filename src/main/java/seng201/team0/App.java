@@ -1,5 +1,6 @@
 package seng201.team0;
 
+
 import seng201.team0.gui.MainWindow;
 
 /**
@@ -7,7 +8,7 @@ import seng201.team0.gui.MainWindow;
  * @author seng201 teaching team
  */
 public class App {
-
+    private int hello;
     /**
      * Entry point which runs the javaFX application
      * Due to how JavaFX works we must call MainWindow.launchWrapper() from here,

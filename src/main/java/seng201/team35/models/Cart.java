@@ -10,6 +10,7 @@ public class Cart {
     private final String recourseType;
     private int speed;
     private int fillAmount;
+    private int position;
 
     /**
      * Default Cart Constructor.
@@ -21,7 +22,8 @@ public class Cart {
         this.recourseType = recourseType;
         this.speed = speed;
         this.size = size;
-        fillAmount = size;
+        this.position = position;
+        fillAmount = 0;
     }
 
     /**
@@ -67,4 +69,20 @@ public class Cart {
         speed += increment;
     }
 
+    public void increasePosition() {
+        position += speed;
+    }
+
+    public void fill(int amount) {
+        fillAmount += amount;
+    }
+
+    public boolean isFill() {
+        if (fillAmount >= size) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

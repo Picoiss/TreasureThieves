@@ -1,7 +1,8 @@
 package seng201.team35.models;
 
 /**
- * Tower class to
+ * Tower class to create unique towers to add to the player's inventory
+ * Upgrades can change a Tower's parameters
  * @author nsr36
  */
 public class Tower {

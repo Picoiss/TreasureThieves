@@ -1,14 +1,13 @@
 package seng201.team35;
 
 
-import seng201.team35.gui.MainWindow;
+import seng201.team35.gui.SetupScreenWindow;
 
 /**
  * Default entry point class
  * @author seng201 teaching team
  */
 public class App {
-    private int hello;
     /**
      * Entry point which runs the javaFX application
      * Due to how JavaFX works we must call MainWindow.launchWrapper() from here,
@@ -16,6 +15,6 @@ public class App {
      * @param args program arguments from command line
      */
     public static void main(String[] args) {
-        MainWindow.launchWrapper(args);
+        SetupScreenWindow.launchWrapper(args);
     }
 }

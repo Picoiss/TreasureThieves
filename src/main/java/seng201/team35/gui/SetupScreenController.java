@@ -33,11 +33,7 @@ public class SetupScreenController {
     /**
      * Initialize the window
      */
-    public void initialize() {
-        continueButton.setOnAction(event -> {
-            gameSetupComplete();
-        });
-    }
+
     @FXML
     public void getName() {
         playerName = playerNameTextField.getText();
@@ -54,6 +50,9 @@ public class SetupScreenController {
         getName();
         getRounds();
         getDifficulty();
+        System.out.println(playerName);
+        System.out.println(numRounds);
+        System.out.println(gameDifficulty);
         //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
         gameManager.setPlayerName(playerName);
         gameManager.setNumOfRounds(numRounds);

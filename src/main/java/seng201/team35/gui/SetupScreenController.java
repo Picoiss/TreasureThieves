@@ -33,7 +33,9 @@ public class SetupScreenController {
     /**
      * Initialize the window
      */
-
+    public void initialize() {
+        difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
+    }
     @FXML
     public void getName() {
         playerName = playerNameTextField.getText();

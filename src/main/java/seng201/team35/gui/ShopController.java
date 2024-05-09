@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import seng201.team35.GameManager;
 
 public class ShopController {
     @FXML
@@ -40,4 +41,14 @@ public class ShopController {
     private Button buyButton;
     @FXML
     private Button sellButton;
+    @FXML
+    private Button returnToMainMenuButton;
+    private GameManager gameManager;
+    public ShopController(GameManager x) { gameManager = x; }
+    @FXML
+    public void sell() {}
+    @FXML
+    public void buy() {}
+    @FXML
+    public void goToMainMenu() {}
 }

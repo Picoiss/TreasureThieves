@@ -45,12 +45,12 @@
             <Insets left="16.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="buyButton" mnemonicParsing="false" onAction="#buy" prefHeight="25.0" prefWidth="143.0" text="Buy" GridPane.rowIndex="5">
+      <Button fx:id="buyButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="143.0" text="Buy" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="16.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="sellButton" mnemonicParsing="false" onAction="#sell" prefHeight="25.0" prefWidth="143.0" text="Sell" GridPane.columnIndex="4" GridPane.rowIndex="5">
+      <Button fx:id="sellButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="143.0" text="Sell" GridPane.columnIndex="4" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets right="16.0" />
          </GridPane.margin>
@@ -98,7 +98,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="returnToMainMenuButton" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="25.0" prefWidth="157.0" text="Return to Main Menu" />
+            <Button fx:id="returnToMainMenuButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="157.0" text="Return to Main Menu" />
             <Label text="Lives:" GridPane.columnIndex="1">
                <padding>
                   <Insets left="8.0" />

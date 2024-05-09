@@ -25,7 +25,6 @@ public class SetupScreenWindow extends Application {
 
         SetupScreenController baseController = baseLoader.getController();
         baseController.init(primaryStage);
-
         primaryStage.setTitle("Game Setup");
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setScene(scene);

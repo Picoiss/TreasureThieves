@@ -2,11 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team35.gui.InventoryController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -68,6 +69,31 @@
             <Label text="Resource Amount" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Level" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Cost" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextArea fx:id="towespeed1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextArea fx:id="towername1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" />
+            <TextArea fx:id="towerrecourseamount1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextArea fx:id="towerlevel1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextArea fx:id="towercost1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextArea fx:id="towername2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" />
+            <TextArea fx:id="towespeed2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextArea fx:id="towerrecourseamount2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextArea fx:id="towerlevel2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextArea fx:id="towercost2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <TextArea fx:id="towername3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" />
+            <TextArea fx:id="towespeed3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <TextArea fx:id="towerrecourseamount3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <TextArea fx:id="towerlevel3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <TextArea fx:id="towercost3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <TextArea fx:id="towername4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" />
+            <TextArea fx:id="towespeed4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <TextArea fx:id="towerrecourseamount4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <TextArea fx:id="towerlevel4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <TextArea fx:id="towercost4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <TextArea fx:id="towername5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" />
+            <TextArea fx:id="towespeed5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <TextArea fx:id="towerrecourseamount5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <TextArea fx:id="towerlevel5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <TextArea fx:id="towercost5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <GridPane gridLinesVisible="true" GridPane.columnSpan="3" GridPane.rowIndex="2">
@@ -94,6 +120,31 @@
             <Label text="Resource Amount" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Level" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Cost" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextArea fx:id="reservename1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" />
+            <TextArea fx:id="reservespeed1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextArea fx:id="resevereresourceamount1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextArea fx:id="reservelevel1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextArea fx:id="reservename2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" />
+            <TextArea fx:id="reservespeed2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextArea fx:id="resevereresourceamount2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextArea fx:id="reservelevel2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <TextArea fx:id="reservename3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" />
+            <TextArea fx:id="reservespeed3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <TextArea fx:id="resevereresourceamount3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <TextArea fx:id="reservelevel3" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <TextArea fx:id="reservename4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" />
+            <TextArea fx:id="reservespeed4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <TextArea fx:id="resevereresourceamount4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <TextArea fx:id="reservelevel4" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <TextArea fx:id="reservename5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" />
+            <TextArea fx:id="reservespeed5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <TextArea fx:id="resevereresourceamount5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <TextArea fx:id="reservelevel5" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <GridPane gridLinesVisible="true" GridPane.columnSpan="3" GridPane.rowIndex="3">
@@ -115,6 +166,31 @@
          </rowConstraints>
          <children>
             <Label text="Upgraders" GridPane.rowIndex="2" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="79.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </children>

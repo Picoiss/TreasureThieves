@@ -51,5 +51,5 @@ public class GameManager {
         // launchMainMenuScreen();
     }
 
-    public void close
+    public void close(){}
 }

@@ -99,7 +99,7 @@ public class FXWrapper {
             mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
             Parent setupParent  = mainScreenLoader.load();
             pane.getChildren().add(setupParent);
-            stage.setTitle("Game Inventory");
+            stage.setTitle("You Lost!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,7 +111,7 @@ public class FXWrapper {
             mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
             Parent setupParent  = mainScreenLoader.load();
             pane.getChildren().add(setupParent);
-            stage.setTitle("Game Inventory");
+            stage.setTitle("You Won!");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -32,7 +32,7 @@
             <Insets left="80.0" />
          </padding>
       </Label>
-      <TextField fx:id="playerNameTextField" onKeyTyped="#nameChanged" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <TextField fx:id="playerNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="16.0" right="80.0" />
          </GridPane.margin>

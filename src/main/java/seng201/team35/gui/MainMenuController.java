@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
+import seng201.team35.GameManager;
 import seng201.team35.services.CounterService;
 
 import java.awt.*;
@@ -19,5 +20,7 @@ public class MainMenuController {
     private Button modifier1button;
     @FXML
     private Button modifier2button;
+    private GameManager gameManager;
+    public MainMenuController(GameManager x) { gameManager = x; }
 
 }

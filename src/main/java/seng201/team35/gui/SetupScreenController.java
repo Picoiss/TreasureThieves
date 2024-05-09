@@ -3,9 +3,11 @@ package seng201.team35.gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
+import seng201.team35.GameManager;
 import seng201.team35.services.CounterService;
 
 import java.awt.*;
@@ -26,9 +28,16 @@ public class SetupScreenController {
     private String playerName;
     private int numRounds;
     private String gameDifficulty;
+    private GameManager gameManager;
+    public SetupScreenController(GameManager x) { gameManager = x; }
     /**
      * Initialize the window
      */
+    public void initialize() {
+        continueButton.setOnAction(event -> {
+            gameSetupComplete();
+        });
+    }
     @FXML
     public void getName() {
         playerName = playerNameTextField.getText();
@@ -46,5 +55,11 @@ public class SetupScreenController {
         getRounds();
         getDifficulty();
         //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
+        gameManager.setPlayerName(playerName);
+        gameManager.setNumOfRounds(numRounds);
+        gameManager.setGameDifficulty(gameDifficulty);
+        //Need to be able to select towers in setup
+        //gameManager.setTowerList();
+        gameManager.closeSetupScreen();
     }
 }

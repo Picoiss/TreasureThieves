@@ -1,7 +1,6 @@
 package seng201.team35;
 
-
-import seng201.team35.gui.SetupScreenWindow;
+import seng201.team35.gui.FXWindow;
 
 /**
  * Default entry point class
@@ -15,6 +14,6 @@ public class App {
      * @param args program arguments from command line
      */
     public static void main(String[] args) {
-        SetupScreenWindow.launchWrapper(args);
+        FXWindow.launchWrapper(args);
     }
 }

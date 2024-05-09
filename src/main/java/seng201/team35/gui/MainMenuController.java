@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
+import seng201.team35.GameManager;
 import seng201.team35.services.CounterService;
 
 import java.awt.*;
@@ -22,6 +23,8 @@ public class MainMenuController {
     @FXML
     private Button modifier3button;
     private Boolean hasmodifierbeenselected = false;
+    private GameManager gameManager;
+    public MainMenuController (GameManager x) { gameManager = x; }
     @FXML
     public void shopclicked() {
         // transiiton to shop screen
@@ -42,5 +45,16 @@ public class MainMenuController {
     @FXML
     public void modifier1clicked() {
         hasmodifierbeenselected = true;
+        // could be useful to have a function which lights up the modifier.
+    }
+    @FXML
+    public void modifier2clicked() {
+        hasmodifierbeenselected = true;
+        // could be useful to have a function which lights up the modifier.
+    }
+    @FXML
+    public void modifier3clicked() {
+        hasmodifierbeenselected = true;
+        // could be useful to have a function which lights up the modifier.
     }
 }

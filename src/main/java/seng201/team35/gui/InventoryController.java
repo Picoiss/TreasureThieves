@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
 import seng201.team35.GameManager;
+import seng201.team35.models.Tower;
+import seng201.team35.models.Upgrade;
 import seng201.team35.services.CounterService;
 import javafx.scene.control.TextArea;
 
@@ -15,55 +17,146 @@ import javafx.scene.control.TextArea;
  */
 public class InventoryController {
     @FXML
-    private TextArea towername1;
+    private Label moneyLabel;
     @FXML
-    private TextArea towername2;
+    private Label towerName;
     @FXML
-    private TextArea towername3;
+    private Label speed;
     @FXML
-    private TextArea towername4;
+    private Label level;
     @FXML
-    private TextArea towername5;
+    private Label cost;
     @FXML
-    private TextArea towespeed1;
+    private Label resourceAmount;
     @FXML
-    private TextArea towespeed2;
+    private Label towerNamelabel;
     @FXML
-    private TextArea towespeed3;
+    private Label speedLabel;
     @FXML
-    private TextArea towespeed4;
+    private Label levelLabel;
     @FXML
-    private TextArea towespeed5;
+    private Label costLabel;
     @FXML
-    private TextArea towerrecourseamount1;
+    private Label resourceAmountLabel;
     @FXML
-    private TextArea towerrecourseamount2;
+    private Label resourceType;
     @FXML
-    private TextArea towerrecourseamount3;
+    private ComboBox mainTowersComboBox;
     @FXML
-    private TextArea towerrecourseamount4;
+    private ComboBox reserveTowersComboBox;
     @FXML
-    private TextArea towerrecourseamount5;
+    private ComboBox upgradesComboBox;
     @FXML
-    private TextArea towerlevel1;
+    private Button returnToMainMenuButton;
     @FXML
-    private TextArea towerlevel2;
+    private Label resourceTypeLabel;
     @FXML
-    private TextArea towerlevel3;
+    private Button swapReserveButton;
     @FXML
-    private TextArea towerlevel4;
+    private Button swapMainButton;
     @FXML
-    private TextArea towerlevel5;
-    @FXML
-    private TextArea towercost1;
-    @FXML
-    private TextArea towercost2;
-    @FXML
-    private TextArea towercost3;
-    @FXML
-    private TextArea towercost4;
-    @FXML
-    private TextArea towercost5;
+    private Button toggleUpgradeButton;
     private GameManager gameManager;
-    public InventoryController(GameManager x) { gameManager = x; }
+
+    public InventoryController(GameManager x) {
+        gameManager = x;
+    }
+
+    private Tower currentTower;
+    private Upgrade currentUpgrade;
+    private Boolean isMainTower;
+    private Boolean isUpgrade;
+
+    public void initialize() {
+        moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
+        updateComboBox();
+    }
+    @FXML
+    private void goToMainMenu() {
+        gameManager.closeInventoryScreen();
+    }
+    public void updateComboBox() {
+        mainTowersComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getMainTowerList()));
+        reserveTowersComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getReserveTowerList()));
+        upgradesComboBox.getItems().setAll(Upgrade.getUpgradeNames(gameManager.getUpgradesList()));}
+    @FXML
+    private void selectedMainTower() {
+        isUpgrade = false;
+        isMainTower = true;
+        towerName.setText("Tower name");
+        speed.setText("Speed");
+        level.setText("Level");
+        resourceAmount.setText("Resource Amount");
+        resourceType.setText("Resource Type");
+        currentTower = gameManager.getTowerClass(mainTowersComboBox.getValue().toString());
+        towerNamelabel.setText(currentTower.getName());
+        speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
+        levelLabel.setText(String.valueOf(currentTower.getLevel()));
+        costLabel.setText(String.valueOf(currentTower.getCost()));
+        resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
+        resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+    }
+    @FXML
+    private void selectedReserveTower() {
+        isUpgrade = false;
+        isMainTower = false;
+        towerName.setText("Tower name");
+        speed.setText("Speed");
+        level.setText("Level");
+        resourceAmount.setText("Resource Amount");
+        resourceType.setText("Resource Type");
+        currentTower = gameManager.getTowerClass(reserveTowersComboBox.getValue().toString());
+        towerNamelabel.setText(currentTower.getName());
+        speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
+        levelLabel.setText(String.valueOf(currentTower.getLevel()));
+        costLabel.setText(String.valueOf(currentTower.getCost()));
+        resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
+        resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+    }
+    @FXML
+    private void selectedMyUpgrade() {
+        isUpgrade = true;
+        isMainTower = false;
+        towerName.setText("Upgrade type");
+        speed.setText("Resource Boost");
+        level.setText("Reload Speed Boost");
+        resourceAmount.setText("Status");
+        resourceAmountLabel.setText("");
+        resourceTypeLabel.setText("");
+        resourceType.setText("");
+        currentUpgrade = gameManager.getUpgradeClass(upgradesComboBox.getValue().toString());
+        towerNamelabel.setText(currentUpgrade.getResourceType());
+        speedLabel.setText(String.valueOf(currentUpgrade.getBoostResourceAmount()));
+        levelLabel.setText(String.valueOf(currentUpgrade.getReduceReloadSpeed()));
+        resourceAmountLabel.setText(currentUpgrade.getStatus());
+        costLabel.setText(String.valueOf(currentUpgrade.getCost()));}
+    @FXML
+    private void swapReserve() {
+        if (isUpgrade == false) {
+            if (isMainTower == true) {
+                gameManager.removeMainTower(currentTower);
+                gameManager.addReserveTower(currentTower);
+                updateComboBox();
+            }
+        }
+    }
+    @FXML
+    private void swapMain() {
+        if (isUpgrade == false) {
+            if (isMainTower == false) {
+                gameManager.removeReserveTower(currentTower);
+                gameManager.addMainTower(currentTower);
+                updateComboBox();
+            }
+        }
+    }
+    @FXML
+    private void toggleUpgrade() {
+        if (isUpgrade == true) {
+            currentUpgrade.toggleStatus();
+            updateComboBox();
+            currentUpgrade = gameManager.getUpgradeClass(upgradesComboBox.getValue().toString());
+        }
+    }
 }
+

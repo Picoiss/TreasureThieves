@@ -21,9 +21,10 @@ public class Tower {
     /**
      * Tower Constructor
      */
-    public Tower(String towerName, int towerCapacity, String towerType, int towerCost) {
+    public Tower(String towerName, int towerSpeed, int resourceAmount, String towerType, int towerCost) {
         name = towerName;
-        maxAmount = towerCapacity;
+        reloadSpeed = towerSpeed;
+        maxAmount = resourceAmount;
         resourceType = towerType;
         cost = towerCost;
         level = 1;
@@ -39,6 +40,7 @@ public class Tower {
      * Get current tower resource amount
      * @return Current resource amount
      */
+    public int getMaxAmount() {return maxAmount;}
     public int getResourceAmount() { return resourceAmount; }
 
     /**
@@ -123,4 +125,5 @@ public class Tower {
     public static List<String> getTowerNames(Collection<Tower> towers) {
         return towers.stream().map(Tower::getName).collect(Collectors.toList());
     }
+
 }

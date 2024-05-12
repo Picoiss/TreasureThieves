@@ -31,6 +31,7 @@ public class SetupScreenController {
     /**
      * Initialize the window
      */
+
     public void initialize() {
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
     }
@@ -42,23 +43,40 @@ public class SetupScreenController {
         numRounds = (int) numRoundsSlider.getValue();
 
     }
+    @FXML
     public void getDifficulty() {
         gameDifficulty = (String) difficultyComboBox.getValue();
     }
     @FXML
     public void gameSetupComplete() {
-        getName();
-        getRounds();
-        getDifficulty();
-        System.out.println(playerName);
-        System.out.println(numRounds);
-        System.out.println(gameDifficulty);
-        //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
-        gameManager.setPlayerName(playerName);
-        gameManager.setNumOfRounds(numRounds);
-        gameManager.setGameDifficulty(gameDifficulty);
-        //Need to be able to select towers in setup
-        //gameManager.setTowerList();
-        gameManager.closeSetupScreen();
+        if (gameDifficulty == null) {
+            difficultyComboBox.setPromptText("Please Select a Difficulty");
+        }
+        if (gameDifficulty != null) {
+            getName();
+            getRounds();
+            System.out.println(playerName);
+            System.out.println(numRounds);
+            System.out.println(gameDifficulty);
+            //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
+            gameManager.setPlayerName(playerName);
+            gameManager.setNumOfRounds(numRounds);
+            gameManager.setGameDifficulty(gameDifficulty);
+            //Need to be able to select towers in setup
+            //gameManager.setTowerList();
+            if (gameDifficulty == "Easy") {
+                gameManager.changeMoneyAmount(200000);
+                System.out.println("Money set to easy");
+            }
+            if (gameDifficulty == "Medium") {
+                gameManager.changeMoneyAmount(150000);
+                System.out.println("Money set to medium");
+            }
+            if (gameDifficulty == "Hard") {
+                gameManager.changeMoneyAmount(100000);
+                System.out.println("Money set to hard");
+            }
+            gameManager.closeSetupScreen();
+        }
     }
 }

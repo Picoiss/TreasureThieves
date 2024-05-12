@@ -9,11 +9,12 @@ import java.util.function.Consumer;
 
 public class GameManager {
     private String playerName;
+    private int moneyAmount = 0;
     private int numOfRounds;
     private String gameDifficulty;
-    private List<Tower> mainTowerList;
-    private List<Tower> reserveTowerList;
-    private List<Upgrade> upgradesList;
+    private List<Tower> mainTowerList = new ArrayList<>();
+    private List<Tower> reserveTowerList= new ArrayList<>();
+    private List<Upgrade> upgradesList= new ArrayList<>();
     private final List<Tower> defaultTowers = new ArrayList<>();
     private final List<Upgrade> defaultUpgrades = new ArrayList<>();
     private final Consumer<GameManager> setupScreenLauncher;
@@ -41,17 +42,17 @@ public class GameManager {
         this.failMenuLauncher = failMenuLauncher;
         this.winMenuLauncher = winMenuLauncher;
         this.clearScreen = clearScreen;
-        defaultTowers.addAll(List.of(new Tower("Cobbler", 100, "Cobblestone", 100),
-                new Tower("Granny", 100, "Granite", 350),
-                new Tower("Mark", 150, "Marble", 500),
-                new Tower("Silvia", 50, "Silver", 1000),
-                new Tower("Sylvester", 120, "Silver", 2000),
-                new Tower("Goldberg", 80, "Gold", 3000)));
-        defaultUpgrades.addAll(List.of(new Upgrade(10, 10, "Cobblestone", 100),
-                new Upgrade(10, 10, "Granite", 150),
-                new Upgrade(10, 10, "Marble", 200),
-                new Upgrade(10, 10, "Silver", 350),
-                new Upgrade(10, 10, "Gold", 500)));
+        defaultTowers.addAll(List.of(new Tower("Bronze Archer", 100,100, "Bronze", 100),
+                new Tower("Silver Knight",100,100, "Silver", 350),
+                new Tower("Gold Giant", 100,150, "Gold", 500),
+                new Tower("Diamond Mage",20, 50, "Diamond", 1000),
+                new Tower("Emerald Elf", 120,120, "Emerald", 2000),
+                new Tower("Ruby Dragon",50, 250, "Ruby", 3000)));
+        defaultUpgrades.addAll(List.of(new Upgrade(10, 10, "Bronze", 100, "Active"),
+                new Upgrade(10, 10, "Silver", 150, "Active"),
+                new Upgrade(10, 10, "Gold", 200, "Active"),
+                new Upgrade(10, 10, "Diamond", 350, "Active"),
+                new Upgrade(10, 10, "Emerald", 500, "Active")));
         launchSetupScreen();
     }
 
@@ -76,11 +77,29 @@ public class GameManager {
     public List<Tower> getMainTowerList() {
         return mainTowerList;
     }
+    public void addMainTower(Tower tower) {
+        mainTowerList.add(tower);
+    }
+    public void removeMainTower(Tower tower) {
+        mainTowerList.remove(tower);
+    }
     public void setReserveTowerList(List<Tower> towerList) { this.reserveTowerList = towerList; }
     public List<Tower> getReserveTowerList() { return reserveTowerList; }
+    public void addReserveTower(Tower tower) {
+        reserveTowerList.add(tower);
+    }
+    public void removeReserveTower(Tower tower) {
+        reserveTowerList.remove(tower);
+    }
 
     public void setUpgradesList(List<Upgrade> upgradeList) { this.upgradesList = upgradeList; }
     public List<Upgrade> getUpgradesList() { return upgradesList; }
+    public void addUpgrade(Upgrade upgrade) {
+        upgradesList.add(upgrade);
+    }
+    public void removeUpgrade(Upgrade upgrade) {
+        upgradesList.remove(upgrade);
+    }
 
     public List<Tower> getDefaultTowers() { return defaultTowers; }
 
@@ -152,5 +171,31 @@ public class GameManager {
     }
     public void closeWinMenuScreen() {
         System.exit(0);
+    }
+    public int getMoneyAmount() { return moneyAmount;}
+    public void changeMoneyAmount(int changeAmount) {
+        moneyAmount += changeAmount;
+    }
+
+
+
+
+    public Tower getTowerClass(String towerName) {
+        for (Tower tower : defaultTowers) {
+            if (towerName == tower.getName()) {
+                return tower;
+            }
+        }
+        System.out.println("error in getting tower class from name");
+        return null;
+    }
+    public Upgrade getUpgradeClass(String upgradeName) {
+        for (Upgrade upgrade : defaultUpgrades) {
+            if (upgradeName == upgrade.getResourceType()) {
+                return upgrade;
+            }
+        }
+        System.out.println("error in getting upgrade class from type");
+        return null;
     }
 }

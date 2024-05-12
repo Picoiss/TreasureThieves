@@ -71,7 +71,7 @@ public class FXWrapper {
 
     public void launchInventoryScreen(GameManager gameManager) {
         try {
-            FXMLLoader inventoryScreenLoader = new FXMLLoader(getClass().getResource("/fxml/Inventory.fxml"));
+            FXMLLoader inventoryScreenLoader = new FXMLLoader(getClass().getResource("/fxml/gameInventory.fxml"));
             inventoryScreenLoader.setControllerFactory(param -> new InventoryController(gameManager));
             Parent setupParent  = inventoryScreenLoader.load();
             pane.getChildren().add(setupParent);

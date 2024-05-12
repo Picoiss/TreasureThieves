@@ -13,11 +13,12 @@ public class Upgrade {
     private String resourceType;
     private int boostResourceAmount;
     private int reduceReloadSpeed;
+    private String status = "Active";
 
     /**
      * Upgrade Constructor
      */
-    public Upgrade(int amountBoost, int speedReduce, String upgradeType, int upgradeCost) {
+    public Upgrade(int amountBoost, int speedReduce, String upgradeType, int upgradeCost, String status) {
         boostResourceAmount = amountBoost;
         reduceReloadSpeed = speedReduce;
         resourceType = upgradeType;
@@ -46,6 +47,18 @@ public class Upgrade {
      * Return the names of an upgrade collection as a string list
      * @param upgrades stream using a map function converted to a list
      */
+    public int getCost() { return cost;}
+    public String getStatus() {
+        return status;
+    }
+    public void toggleStatus() {
+        if (status == "Active") {
+            status = "Inactive";
+        }
+        if (status == "Inactive") {
+            status = "Active";
+        }
+    }
     public static List<String> getUpgradeNames(Collection<Upgrade> upgrades) {
         return upgrades.stream().map(Upgrade::getResourceType).collect(Collectors.toList());
     }

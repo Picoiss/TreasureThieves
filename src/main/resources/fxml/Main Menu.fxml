@@ -42,10 +42,32 @@
             <Insets left="-240.0" right="-240.0" />
          </GridPane.margin>
          <children>
-            <Label text="Lives : 0" GridPane.halignment="CENTER" />
-            <Label text="Money : 0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <Label text="Round : 0" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-            <Label text="Rounds Remaining : 0" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Label text="Lives:" GridPane.halignment="LEFT">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+            <Label text="Money:" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+            <Label text="Round:" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+            <Label text="Rounds Left:" GridPane.columnIndex="3" GridPane.halignment="LEFT">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+            <Label fx:id="livesAmount" text="0" GridPane.halignment="RIGHT">
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </Label>
+            <Label fx:id="moneyAmount" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </Label>
          </children>
       </GridPane>
       <GridPane gridLinesVisible="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">

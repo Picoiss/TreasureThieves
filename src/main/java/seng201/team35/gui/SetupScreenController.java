@@ -6,9 +6,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.stage.Stage;
 import seng201.team35.GameManager;
-import seng201.team35.services.CounterService;
 
 import java.awt.*;
 

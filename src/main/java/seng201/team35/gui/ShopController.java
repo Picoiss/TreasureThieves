@@ -6,6 +6,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import seng201.team35.GameManager;
 
+/**
+ * Controller for the gameShop.fxml window
+ * @author nsr36, msh254
+ */
+
 public class ShopController {
     @FXML
     private Label towerName;
@@ -50,5 +55,7 @@ public class ShopController {
     @FXML
     public void buy() {}
     @FXML
-    public void goToMainMenu() {}
+    public void goToMainMenu() {
+        gameManager.closeShopScreen();
+    }
 }

@@ -4,14 +4,15 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import seng201.team35.GameManager;
 import seng201.team35.models.Tower;
-import seng201.team35.services.CounterService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
-import java.util.function.Consumer;
 
-
+/**
+ * Controller for the Main Menu.fxml window
+ * @author nsr36, msh254
+ */
 public class MainMenuController {
     @FXML
     private Button shopbuttonmainmenu;

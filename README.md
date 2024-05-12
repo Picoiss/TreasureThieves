@@ -12,6 +12,8 @@ This can be done by renaming any instance of `team35` with `team<x>` (where x is
 IntelliJ can help with this using `ctrl+shift+f` to find all instances of a string, and `ctrl+shift+r` to replace them, though make sure to change the package names as well.
 
 ## Authors
+- msh254
+- nsr36
 - SENG201 Teaching team
 
 ## Prerequisites

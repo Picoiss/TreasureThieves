@@ -5,8 +5,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
+import seng201.team35.GameManager;
 import seng201.team35.services.CounterService;
 import javafx.scene.control.TextArea;
+
+/**
+ * Controller for the Inventory.fxml window
+ * @author nsr36, msh254
+ */
 public class InventoryController {
     @FXML
     private TextArea towername1;
@@ -58,4 +64,6 @@ public class InventoryController {
     private TextArea towercost4;
     @FXML
     private TextArea towercost5;
+    private GameManager gameManager;
+    public InventoryController(GameManager x) { gameManager = x; }
 }

@@ -47,9 +47,9 @@ public class FXWrapper {
 
     public void launchMainMenuScreen(GameManager gameManager) {
         try {
-            FXMLLoader mainScreenLoader = new FXMLLoader(getClass().getResource("/fxml/Main Menu.fxml"));
-            mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
-            Parent setupParent  = mainScreenLoader.load();
+            FXMLLoader mainMenuScreenLoader = new FXMLLoader(getClass().getResource("/fxml/Main Menu.fxml"));
+            mainMenuScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
+            Parent setupParent  = mainMenuScreenLoader.load();
             pane.getChildren().add(setupParent);
             stage.setTitle("Game Main Menu");
         } catch (IOException e) {
@@ -59,9 +59,9 @@ public class FXWrapper {
 
     public void launchShopScreen(GameManager gameManager) {
         try {
-            FXMLLoader mainScreenLoader = new FXMLLoader(getClass().getResource("/fxml/gameShop.fxml"));
-            mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
-            Parent setupParent  = mainScreenLoader.load();
+            FXMLLoader shopScreenLoader = new FXMLLoader(getClass().getResource("/fxml/gameShop.fxml"));
+            shopScreenLoader.setControllerFactory(param -> new ShopController(gameManager));
+            Parent setupParent  = shopScreenLoader.load();
             pane.getChildren().add(setupParent);
             stage.setTitle("Game Shop");
         } catch (IOException e) {
@@ -71,9 +71,9 @@ public class FXWrapper {
 
     public void launchInventoryScreen(GameManager gameManager) {
         try {
-            FXMLLoader mainScreenLoader = new FXMLLoader(getClass().getResource("/fxml/Inventory.fxml"));
-            mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
-            Parent setupParent  = mainScreenLoader.load();
+            FXMLLoader inventoryScreenLoader = new FXMLLoader(getClass().getResource("/fxml/Inventory.fxml"));
+            inventoryScreenLoader.setControllerFactory(param -> new InventoryController(gameManager));
+            Parent setupParent  = inventoryScreenLoader.load();
             pane.getChildren().add(setupParent);
             stage.setTitle("Game Inventory");
         } catch (IOException e) {
@@ -83,9 +83,9 @@ public class FXWrapper {
 
     public void launchGameScreen(GameManager gameManager) {
         try {
-            FXMLLoader mainScreenLoader = new FXMLLoader(getClass().getResource("/fxml/________.fxml"));
-            mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
-            Parent setupParent  = mainScreenLoader.load();
+            FXMLLoader gameScreenLoader = new FXMLLoader(getClass().getResource("/fxml/________.fxml"));
+            gameScreenLoader.setControllerFactory(param -> new GameController(gameManager));
+            Parent setupParent  = gameScreenLoader.load();
             pane.getChildren().add(setupParent);
             stage.setTitle("Gameplay");
         } catch (IOException e) {
@@ -95,9 +95,9 @@ public class FXWrapper {
 
     public void launchFailMenuScreen(GameManager gameManager) {
         try {
-            FXMLLoader mainScreenLoader = new FXMLLoader(getClass().getResource("/fxml/failMenu.fxml"));
-            mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
-            Parent setupParent  = mainScreenLoader.load();
+            FXMLLoader failScreenLoader = new FXMLLoader(getClass().getResource("/fxml/failMenu.fxml"));
+            failScreenLoader.setControllerFactory(param -> new FailMenuController(gameManager));
+            Parent setupParent  = failScreenLoader.load();
             pane.getChildren().add(setupParent);
             stage.setTitle("You Lost!");
         } catch (IOException e) {
@@ -107,9 +107,9 @@ public class FXWrapper {
 
     public void launchWinMenuScreen(GameManager gameManager) {
         try {
-            FXMLLoader mainScreenLoader = new FXMLLoader(getClass().getResource("/fxml/winMenu.fxml"));
-            mainScreenLoader.setControllerFactory(param -> new MainMenuController(gameManager));
-            Parent setupParent  = mainScreenLoader.load();
+            FXMLLoader winScreenLoader = new FXMLLoader(getClass().getResource("/fxml/winMenu.fxml"));
+            winScreenLoader.setControllerFactory(param -> new WinMenuController(gameManager));
+            Parent setupParent  = winScreenLoader.load();
             pane.getChildren().add(setupParent);
             stage.setTitle("You Won!");
         } catch (IOException e) {

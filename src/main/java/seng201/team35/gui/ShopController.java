@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import seng201.team35.GameManager;
+import seng201.team35.models.Tower;
+import seng201.team35.models.Upgrade;
 
 /**
  * Controller for the gameShop.fxml window
@@ -50,6 +52,16 @@ public class ShopController {
     private Button returnToMainMenuButton;
     private GameManager gameManager;
     public ShopController(GameManager x) { gameManager = x; }
+    /**
+     * Initialize the window
+     */
+    public void initialize() {
+        shopTowersComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getDefaultTowers()));
+        shopUpgradesComboBox.getItems().addAll(Upgrade.getUpgradeNames(gameManager.getDefaultUpgrades()));
+        //mainTowersComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
+        //reserveTowersComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getReserveTowerList()));
+        //upgradesComboBox.getItems().addAll(Upgrade.getUpgradeNames(gameManager.getUpgradesList()));
+    }
     @FXML
     public void sell() {}
     @FXML

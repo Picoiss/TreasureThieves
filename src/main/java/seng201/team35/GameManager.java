@@ -1,6 +1,7 @@
 package seng201.team35;
 
 import seng201.team35.models.Tower;
+import seng201.team35.models.Upgrade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,11 @@ public class GameManager {
     private String playerName;
     private int numOfRounds;
     private String gameDifficulty;
-    private List<Tower> towerList;
+    private List<Tower> mainTowerList;
+    private List<Tower> reserveTowerList;
+    private List<Upgrade> upgradesList;
     private final List<Tower> defaultTowers = new ArrayList<>();
+    private final List<Upgrade> defaultUpgrades = new ArrayList<>();
     private final Consumer<GameManager> setupScreenLauncher;
     private final Consumer<GameManager> mainMenuLauncher;
     private final Consumer<GameManager> shopLauncher;
@@ -37,12 +41,17 @@ public class GameManager {
         this.failMenuLauncher = failMenuLauncher;
         this.winMenuLauncher = winMenuLauncher;
         this.clearScreen = clearScreen;
-        defaultTowers.addAll(List.of(new Tower(100, "Cobblestone", 100),
-                new Tower(100,"Granite", 350),
-                new Tower(150, "Marble", 500),
-                new Tower(50, "Silver", 1000),
-                new Tower(120, "Silver", 2000),
-                new Tower(80, "Gold", 3000)));
+        defaultTowers.addAll(List.of(new Tower("Cobbler", 100, "Cobblestone", 100),
+                new Tower("Granny", 100, "Granite", 350),
+                new Tower("Mark", 150, "Marble", 500),
+                new Tower("Silvia", 50, "Silver", 1000),
+                new Tower("Sylvester", 120, "Silver", 2000),
+                new Tower("Goldberg", 80, "Gold", 3000)));
+        defaultUpgrades.addAll(List.of(new Upgrade(10, 10, "Cobblestone", 100),
+                new Upgrade(10, 10, "Granite", 150),
+                new Upgrade(10, 10, "Marble", 200),
+                new Upgrade(10, 10, "Silver", 350),
+                new Upgrade(10, 10, "Gold", 500)));
         launchSetupScreen();
     }
 
@@ -63,10 +72,18 @@ public class GameManager {
         return gameDifficulty;
     }
 
-    public void setTowerList(List<Tower> towerList) { this.towerList = towerList; }
-    public List<Tower> getTowerList() { return towerList; }
+    public void setMainTowerList(List<Tower> towerList) { this.mainTowerList = towerList; }
+    public List<Tower> getMainTowerList() { return mainTowerList; }
+
+    public void setReserveTowerList(List<Tower> towerList) { this.reserveTowerList = towerList; }
+    public List<Tower> getReserveTowerList() { return reserveTowerList; }
+
+    public void setUpgradesList(List<Upgrade> upgradeList) { this.upgradesList = upgradeList; }
+    public List<Upgrade> getUpgradesList() { return upgradesList; }
 
     public List<Tower> getDefaultTowers() { return defaultTowers; }
+
+    public List<Upgrade> getDefaultUpgrades() { return defaultUpgrades; }
 
     public void launchSetupScreen() { setupScreenLauncher.accept(this); }
     public void closeSetupScreen() {

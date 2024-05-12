@@ -1,5 +1,9 @@
 package seng201.team35.models;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Upgrade class to improve the parameters of a Tower object
  * @author nsr36
@@ -37,4 +41,12 @@ public class Upgrade {
      * @return reduceReloadSpeed
      */
     public int getReduceReloadSpeed() { return reduceReloadSpeed; }
+
+    /**
+     * Return the names of an upgrade collection as a string list
+     * @param upgrades stream using a map function converted to a list
+     */
+    public static List<String> getUpgradeNames(Collection<Upgrade> upgrades) {
+        return upgrades.stream().map(Upgrade::getResourceType).collect(Collectors.toList());
+    }
 }

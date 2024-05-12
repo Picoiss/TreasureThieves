@@ -43,17 +43,14 @@ public class MainMenuController {
     private GameManager gameManager;
     public MainMenuController(GameManager x) { gameManager = x; }
     public void initialize() {
-        if (modifiertext1 != null) {
-            Random rng = new Random();
-            int randomModifier1 = rng.nextInt(0,4);
-            int randomModifier2 = rng.nextInt(4,8);
-            int randomModifier3 = rng.nextInt(8,12);
-            modifiertext1.setText(modifiers.get(randomModifier1));
-            modifiertext2.setText(modifiers.get(randomModifier2));
-            modifiertext3.setText(modifiers.get(randomModifier3));}
-        else {
-            System.out.println("unsure why this happens. if errors persis, this may be the cause.");}
-        }
+        Random rng = new Random();
+        int randomModifier1 = rng.nextInt(0,4);
+        int randomModifier2 = rng.nextInt(4,8);
+        int randomModifier3 = rng.nextInt(8,12);
+        modifiertext1.setText(modifiers.get(randomModifier1));
+        modifiertext2.setText(modifiers.get(randomModifier2));
+        modifiertext3.setText(modifiers.get(randomModifier3));
+    }
     @FXML
     public void shopclicked() {
         gameManager.mainMenuToShopScreen();

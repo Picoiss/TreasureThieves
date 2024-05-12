@@ -1,11 +1,16 @@
 package seng201.team35.models;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Tower class to create unique towers to add to the player's inventory
  * Upgrades can change a Tower's parameters
  * @author nsr36
  */
 public class Tower {
+    private final String name;
     private final String resourceType;
     private final int cost;
     private int maxAmount;
@@ -16,12 +21,19 @@ public class Tower {
     /**
      * Tower Constructor
      */
-    public Tower(int towerCapacity, String towerType, int towerCost) {
+    public Tower(String towerName, int towerCapacity, String towerType, int towerCost) {
+        name = towerName;
         maxAmount = towerCapacity;
         resourceType = towerType;
         cost = towerCost;
         level = 1;
     }
+
+    /**
+     * Get the tower's name
+     * @return name
+     */
+    public String getName() { return name; }
 
     /**
      * Get current tower resource amount
@@ -36,8 +48,8 @@ public class Tower {
     public int getReloadSpeed() { return reloadSpeed; }
 
     /**
-     * Get current tower resource type
-     * @return Current resource type
+     * Get tower resource type
+     * @return resource type
      */
     public String getResourceType() { return resourceType; }
 
@@ -102,5 +114,13 @@ public class Tower {
             //throw exception
         }
         else { reloadSpeed -= decrement; }
+    }
+
+    /**
+     * Return the names of a tower collection as a string list
+     * @param towers stream using a map function converted to a list
+     */
+    public static List<String> getTowerNames(Collection<Tower> towers) {
+        return towers.stream().map(Tower::getName).collect(Collectors.toList());
     }
 }

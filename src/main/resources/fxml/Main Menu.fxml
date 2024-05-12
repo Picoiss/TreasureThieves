@@ -135,9 +135,9 @@
             <Button fx:id="modifier1button" mnemonicParsing="false" onAction="#modifier1clicked" prefHeight="25.0" prefWidth="141.0" text="Modifier 1" />
             <Button fx:id="modifier2button" mnemonicParsing="false" onAction="#modifier2clicked" prefHeight="25.0" prefWidth="141.0" text="Modifier 2" GridPane.columnIndex="1" />
             <Button fx:id="modifier3button" mnemonicParsing="false" onAction="#modifier3clicked" prefHeight="25.0" prefWidth="141.0" text="Modifier 3" GridPane.columnIndex="2" />
-            <TextArea fx:id="modifiertext1" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.rowIndex="1" />
-            <TextArea fx:id="modifiertext2" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextArea fx:id="modifiertext3" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextArea fx:id="modifiertext1" prefHeight="200.0" prefWidth="200.0" text="1 " wrapText="true" GridPane.rowIndex="1" />
+            <TextArea fx:id="modifiertext2" prefHeight="200.0" prefWidth="200.0" text="2 " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextArea fx:id="modifiertext3" prefHeight="200.0" prefWidth="200.0" text="3 " wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <Label fx:id="noModifierWarning" prefHeight="26.0" prefWidth="303.0" textFill="RED" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5">

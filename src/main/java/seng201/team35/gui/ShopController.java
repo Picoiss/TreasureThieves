@@ -58,7 +58,7 @@ public class ShopController {
     public void initialize() {
         shopTowersComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getDefaultTowers()));
         shopUpgradesComboBox.getItems().addAll(Upgrade.getUpgradeNames(gameManager.getDefaultUpgrades()));
-        //mainTowersComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
+        mainTowersComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
         //reserveTowersComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getReserveTowerList()));
         //upgradesComboBox.getItems().addAll(Upgrade.getUpgradeNames(gameManager.getUpgradesList()));
     }

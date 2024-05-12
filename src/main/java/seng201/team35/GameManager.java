@@ -73,8 +73,9 @@ public class GameManager {
     }
 
     public void setMainTowerList(List<Tower> towerList) { this.mainTowerList = towerList; }
-    public List<Tower> getMainTowerList() { return mainTowerList; }
-
+    public List<Tower> getMainTowerList() {
+        return mainTowerList;
+    }
     public void setReserveTowerList(List<Tower> towerList) { this.reserveTowerList = towerList; }
     public List<Tower> getReserveTowerList() { return reserveTowerList; }
 

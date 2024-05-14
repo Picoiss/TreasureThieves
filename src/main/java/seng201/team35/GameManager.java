@@ -25,7 +25,24 @@ public class GameManager {
     private final Consumer<GameManager> failMenuLauncher;
     private final Consumer<GameManager> winMenuLauncher;
     private final Runnable clearScreen;
-
+    private Tower BronzeArcher = new Tower("Bronze Archer", 100,75, "Bronze", 100);
+    private Tower BronzeDwarf = new Tower("Bronze Dwarf", 75,100, "Bronze", 100);
+    private Tower BronzeVillager = new Tower("Bronze Villager", 120,100, "Bronze", 100);
+    private Tower SilverKnight = new Tower("Silver Knight",80,50, "Silver", 350);
+    private Tower SilverPriest = new Tower("Silver Priest",100,120, "Silver", 350);
+    private Tower SilverAlchemist = new Tower("Silver Alchemist",150,130, "Silver", 350);
+    private Tower GoldGiant = new Tower("Gold Giant", 70,80, "Gold", 500);
+    private Tower GoldGoblin = new Tower("Gold Goblin", 100,50, "Gold", 500);
+    private Tower GoldWolf = new Tower("Gold Wolf", 40,70, "Gold", 500);
+    private Tower DiamondMage = new Tower("Diamond Mage",20, 50, "Diamond", 1000);
+    private Tower DiamondNecromancer = new Tower("Diamond Necromancer",80, 70, "Diamond", 1000);
+    private Tower DiamondMinotaur = new Tower("Diamond Minotaur",100, 50, "Diamond", 1000);
+    private Tower EmeraldElf = new Tower("Emerald Elf", 100,80, "Emerald", 2000);
+    private Tower EmeraldPheonix = new Tower("Emerald Pheonix", 120,60, "Emerald", 2000);
+    private Tower EmeraldPegasus = new Tower("Emerald Pegasus", 100,120, "Emerald", 2000);
+    private Tower RubyDragon = new Tower("Ruby Dragon",150, 50, "Ruby", 3000);
+    private Tower RubyWyvern = new Tower("Ruby Wyvern",90, 200, "Ruby", 3000);
+    private Tower RubyGolem = new Tower("Ruby Golem",100, 250, "Ruby", 3000);
 
     public GameManager(Consumer<GameManager> setupScreenLauncher,
                        Consumer<GameManager> mainMenuLauncher,
@@ -43,17 +60,16 @@ public class GameManager {
         this.failMenuLauncher = failMenuLauncher;
         this.winMenuLauncher = winMenuLauncher;
         this.clearScreen = clearScreen;
-        defaultTowers.addAll(List.of(new Tower("Bronze Archer", 100,100, "Bronze", 100),
-                new Tower("Silver Knight",100,100, "Silver", 350),
-                new Tower("Gold Giant", 100,150, "Gold", 500),
-                new Tower("Diamond Mage",20, 50, "Diamond", 1000),
-                new Tower("Emerald Elf", 120,120, "Emerald", 2000),
-                new Tower("Ruby Dragon",50, 250, "Ruby", 3000)));
+        defaultTowers.addAll(List.of(BronzeArcher, BronzeDwarf, BronzeVillager,
+                SilverKnight, SilverPriest, SilverAlchemist, GoldGiant, GoldGoblin,
+                GoldWolf, DiamondMage, DiamondNecromancer, DiamondMinotaur, EmeraldElf,
+                EmeraldPheonix, EmeraldPegasus, RubyDragon, RubyWyvern, RubyGolem));
         defaultUpgrades.addAll(List.of(new Upgrade(10, 10, "Bronze", 100, "Active"),
                 new Upgrade(10, 10, "Silver", 150, "Active"),
                 new Upgrade(10, 10, "Gold", 200, "Active"),
                 new Upgrade(10, 10, "Diamond", 350, "Active"),
-                new Upgrade(10, 10, "Emerald", 500, "Active")));
+                new Upgrade(10, 10, "Emerald", 500, "Active"),
+                new Upgrade(10, 10, "Ruby", 700, "Active")));
         launchSetupScreen();
     }
 

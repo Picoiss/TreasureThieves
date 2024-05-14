@@ -8,6 +8,8 @@ import seng201.team35.GameManager;
 import seng201.team35.models.Tower;
 import seng201.team35.models.Upgrade;
 
+import java.util.List;
+
 /**
  * Controller for the gameShop.fxml window
  * @author nsr36, msh254
@@ -58,10 +60,15 @@ public class ShopController {
     private Label resourceTypeLabel;
     private Upgrade currentUpgrade;
     private GameManager gameManager;
-    public ShopController(GameManager x) { gameManager = x; }
+
+    public ShopController(GameManager x) {
+        gameManager = x;
+    }
+
     private Tower currentTower;
     private Boolean isOwnTower;
     private Boolean isUpgrade;
+
     /**
      * Initialize the window
      */
@@ -70,50 +77,85 @@ public class ShopController {
         shopUpgradesComboBox.getItems().setAll(Upgrade.getUpgradeNames(gameManager.getDefaultUpgrades()));
         updateComboBox();
     }
+
     private void updateComboBox() {
         moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
+        mainTowersComboBox.setValue("");
+        reserveTowersComboBox.setValue("");
+        upgradesComboBox.setValue("");
+        shopTowersComboBox.setValue("");
+        shopUpgradesComboBox.setValue("");
         mainTowersComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getMainTowerList()));
         reserveTowersComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getReserveTowerList()));
         upgradesComboBox.getItems().setAll(Upgrade.getUpgradeNames(gameManager.getUpgradesList()));
+        towerNamelabel.setText("");
+        speedLabel.setText("");
+        levelLabel.setText("");
+        costLabel.setText("");
+        resourceAmountLabel.setText("");
+        resourceTypeLabel.setText("");
     }
+
     @FXML
     private void sell() {
         if (isOwnTower == true) {
-            if(isUpgrade == false) {
-                System.out.println("currentTower has been Sold");
-                gameManager.removeMainTower(currentTower);
-                gameManager.changeMoneyAmount(currentTower.getCost());
-                updateComboBox();
+            if (isUpgrade == false) {
+                if (mainTowersComboBox.getValue() != "") {
+                    if (reserveTowersComboBox.getValue() == "") {
+                        System.out.println("currentTower has been Sold");
+                        gameManager.removeMainTower(currentTower);
+                        gameManager.changeMoneyAmount(currentTower.getCost());
+                        updateComboBox();
+                    }
+                }
+                if (reserveTowersComboBox.getValue() == "") {
+                    if (mainTowersComboBox.getValue() != "") {
+                        System.out.println("currentTower has been Sold");
+                        gameManager.removeMainTower(currentTower);
+                        gameManager.changeMoneyAmount(currentTower.getCost());
+                        updateComboBox();
+                    }
+                }
+
             }
-            if(isUpgrade == true) {
-                System.out.println("currentUpgrade has been Sold");
-                gameManager.removeUpgrade(currentUpgrade);
-                gameManager.changeMoneyAmount(currentUpgrade.getCost());
-                updateComboBox();
+            if (isUpgrade == true) {
+                if (upgradesComboBox.getValue() != "") {
+                    System.out.println("currentUpgrade has been Sold");
+                    gameManager.removeUpgrade(currentUpgrade);
+                    gameManager.changeMoneyAmount(currentUpgrade.getCost());
+                    updateComboBox();
+                }
             }
         }
     }
+
     @FXML
     private void buy() {
         if (isOwnTower == false) {
-            if(isUpgrade == false) {
-                System.out.println("currentTower has been Bought");
-                gameManager.addMainTower(currentTower);
-                gameManager.changeMoneyAmount(-1*currentTower.getCost());
-                updateComboBox();
+            if (isUpgrade == false) {
+                if (shopTowersComboBox.getValue() != "") {
+                    System.out.println("currentTower has been Bought");
+                    gameManager.addMainTower(currentTower);
+                    gameManager.changeMoneyAmount(-1 * currentTower.getCost());
+                    updateComboBox();
+                }
             }
-            if(isUpgrade == true) {
-                System.out.println("currentUpgrade has been Bought");
-                gameManager.addUpgrade(currentUpgrade);
-                gameManager.changeMoneyAmount(-1*currentUpgrade.getCost());
-                updateComboBox();
+            if (isUpgrade == true) {
+                if (shopUpgradesComboBox.getValue() != "") {
+                    System.out.println("currentUpgrade has been Bought");
+                    gameManager.addUpgrade(currentUpgrade);
+                    gameManager.changeMoneyAmount(-1 * currentUpgrade.getCost());
+                    updateComboBox();
+                }
             }
         }
     }
+
     @FXML
     private void goToMainMenu() {
         gameManager.closeShopScreen();
     }
+
     @FXML
     private void selectedShopTower() {
         isUpgrade = false;
@@ -131,6 +173,7 @@ public class ShopController {
         resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
         resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
     }
+
     @FXML
     private void selectedShopUpgrade() {
         isUpgrade = true;
@@ -148,6 +191,7 @@ public class ShopController {
         levelLabel.setText(String.valueOf(currentUpgrade.getReduceReloadSpeed()));
         costLabel.setText(String.valueOf(currentUpgrade.getCost()));
     }
+
     @FXML
     private void selectedMainTower() {
         isUpgrade = false;
@@ -165,6 +209,7 @@ public class ShopController {
         resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
         resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
     }
+
     @FXML
     private void selectedReserveTower() {
         isUpgrade = false;
@@ -182,6 +227,7 @@ public class ShopController {
         resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
         resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
     }
+
     @FXML
     private void selectedMyUpgrade() {
         isUpgrade = true;
@@ -200,3 +246,15 @@ public class ShopController {
         costLabel.setText(String.valueOf(currentUpgrade.getCost()));
     }
 }
+    /**
+    private List<Tower> getShopTowerList(int roundNumber) {
+        List<Tower> shopTowerList;
+        if (roundNumber == 0) {
+            //shopTowerList.add(bronzeArcher, bronzeDwarf, silverKnight, silverPriest, GoldGiant)
+        }
+        if (roundNumber == 1) {
+            //shopTowerList.add(bronzeDward, bronzeVillager)
+        }
+    }
+}
+*/

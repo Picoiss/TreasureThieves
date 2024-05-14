@@ -26,6 +26,7 @@ public class GameManager {
     private final Consumer<GameManager> winMenuLauncher;
     private final Runnable clearScreen;
 
+
     public GameManager(Consumer<GameManager> setupScreenLauncher,
                        Consumer<GameManager> mainMenuLauncher,
                        Consumer<GameManager> shopLauncher,

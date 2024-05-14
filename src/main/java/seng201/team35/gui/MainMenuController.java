@@ -1,6 +1,7 @@
 package seng201.team35.gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.Glow;
 import javafx.stage.Stage;
 import seng201.team35.GameManager;
 import seng201.team35.models.Tower;
@@ -66,8 +67,13 @@ public class MainMenuController {
     public void nextroundclicked() {
         System.out.println("NextRoundClicked");
         if (hasmodifierbeenselected == true) {
-            System.out.println("ModifierBeenSelected");
-            gameManager.mainMenuToGameScreen();
+            if (gameManager.getMainTowerList().size() < 5) {
+                noModifierWarning.setText("Please have at least 5 main towers");
+            }
+            else {
+                System.out.println("ModifierBeenSelected");
+                gameManager.mainMenuToGameScreen();
+            }
         }
         else {
             System.out.println("ModifierNotSelected");

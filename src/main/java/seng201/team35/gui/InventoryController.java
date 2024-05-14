@@ -76,26 +76,37 @@ public class InventoryController {
         gameManager.closeInventoryScreen();
     }
     public void updateComboBox() {
+        mainTowersComboBox.setValue("");
+        reserveTowersComboBox.setValue("");
+        upgradesComboBox.setValue("");
         mainTowersComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getMainTowerList()));
         reserveTowersComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getReserveTowerList()));
-        upgradesComboBox.getItems().setAll(Upgrade.getUpgradeNames(gameManager.getUpgradesList()));}
+        upgradesComboBox.getItems().setAll(Upgrade.getUpgradeNames(gameManager.getUpgradesList()));
+        towerNamelabel.setText("");
+        speedLabel.setText("");
+        levelLabel.setText("");
+        costLabel.setText("");
+        resourceAmountLabel.setText("");
+        resourceTypeLabel.setText("");}
+    public void updateComboBoxUpgrade() {}
     @FXML
     private void selectedMainTower() {
-        isUpgrade = false;
-        isMainTower = true;
-        towerName.setText("Tower name");
-        speed.setText("Speed");
-        level.setText("Level");
-        resourceAmount.setText("Resource Amount");
-        resourceType.setText("Resource Type");
-        currentTower = gameManager.getTowerClass(mainTowersComboBox.getValue().toString());
-        towerNamelabel.setText(currentTower.getName());
-        speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
-        levelLabel.setText(String.valueOf(currentTower.getLevel()));
-        costLabel.setText(String.valueOf(currentTower.getCost()));
-        resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
-        resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
-    }
+            isUpgrade = false;
+            isMainTower = true;
+            towerName.setText("Tower name");
+            speed.setText("Speed");
+            level.setText("Level");
+            resourceAmount.setText("Resource Amount");
+            resourceType.setText("Resource Type");
+            currentTower = gameManager.getTowerClass(mainTowersComboBox.getValue().toString());
+            towerNamelabel.setText(currentTower.getName());
+            speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
+            levelLabel.setText(String.valueOf(currentTower.getLevel()));
+            costLabel.setText(String.valueOf(currentTower.getCost()));
+            resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
+            resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+        }
+
     @FXML
     private void selectedReserveTower() {
         isUpgrade = false;
@@ -134,9 +145,11 @@ public class InventoryController {
     private void swapReserve() {
         if (isUpgrade == false) {
             if (isMainTower == true) {
-                gameManager.removeMainTower(currentTower);
-                gameManager.addReserveTower(currentTower);
-                updateComboBox();
+                if (mainTowersComboBox.getValue() != "") {
+                    gameManager.removeMainTower(currentTower);
+                    gameManager.addReserveTower(currentTower);
+                    updateComboBox();
+                }
             }
         }
     }
@@ -144,18 +157,21 @@ public class InventoryController {
     private void swapMain() {
         if (isUpgrade == false) {
             if (isMainTower == false) {
-                gameManager.removeReserveTower(currentTower);
-                gameManager.addMainTower(currentTower);
-                updateComboBox();
+                if (reserveTowersComboBox.getValue() != "") {
+                    gameManager.removeReserveTower(currentTower);
+                    gameManager.addMainTower(currentTower);
+                    updateComboBox();
+                }
             }
         }
     }
     @FXML
     private void toggleUpgrade() {
         if (isUpgrade == true) {
-            currentUpgrade.toggleStatus();
-            updateComboBox();
-            currentUpgrade = gameManager.getUpgradeClass(upgradesComboBox.getValue().toString());
+            if (upgradesComboBox.getValue() != "") {
+                currentUpgrade.toggleStatus();
+                updateComboBox();
+            }
         }
     }
 }

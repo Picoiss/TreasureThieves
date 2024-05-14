@@ -23,10 +23,13 @@ public class SetupScreenController {
     private Slider numRoundsSlider;
     @FXML
     private ComboBox difficultyComboBox;
+    @FXML
+    private Label warningLabel;
     private String playerName;
     private int numRounds;
     private String gameDifficulty;
     private GameManager gameManager;
+
     public SetupScreenController(GameManager x) { gameManager = x; }
     /**
      * Initialize the window
@@ -50,33 +53,38 @@ public class SetupScreenController {
     @FXML
     public void gameSetupComplete() {
         if (gameDifficulty == null) {
-            difficultyComboBox.setPromptText("Please Select a Difficulty");
+            warningLabel.setText("Please Select a Difficulty");
         }
         if (gameDifficulty != null) {
             getName();
-            getRounds();
-            System.out.println(playerName);
-            System.out.println(numRounds);
-            System.out.println(gameDifficulty);
-            //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
-            gameManager.setPlayerName(playerName);
-            gameManager.setNumOfRounds(numRounds);
-            gameManager.setGameDifficulty(gameDifficulty);
-            //Need to be able to select towers in setup
-            //gameManager.setTowerList();
-            if (gameDifficulty == "Easy") {
-                gameManager.changeMoneyAmount(200000);
-                System.out.println("Money set to easy");
+            if (playerName.isBlank() == true) {
+                warningLabel.setText("Please Enter a Name");
+                }
+            if (playerName.isBlank() != true) {
+                getRounds();
+                System.out.println(playerName);
+                System.out.println(numRounds);
+                System.out.println(gameDifficulty);
+                //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
+                gameManager.setPlayerName(playerName);
+                gameManager.setNumOfRounds(numRounds);
+                gameManager.setGameDifficulty(gameDifficulty);
+                //Need to be able to select towers in setup
+                //gameManager.setTowerList();
+                if (gameDifficulty == "Easy") {
+                    gameManager.changeMoneyAmount(200000);
+                    System.out.println("Money set to easy");
+                }
+                if (gameDifficulty == "Medium") {
+                    gameManager.changeMoneyAmount(150000);
+                    System.out.println("Money set to medium");
+                }
+                if (gameDifficulty == "Hard") {
+                    gameManager.changeMoneyAmount(100000);
+                    System.out.println("Money set to hard");
+                }
+                gameManager.closeSetupScreen();
             }
-            if (gameDifficulty == "Medium") {
-                gameManager.changeMoneyAmount(150000);
-                System.out.println("Money set to medium");
-            }
-            if (gameDifficulty == "Hard") {
-                gameManager.changeMoneyAmount(100000);
-                System.out.println("Money set to hard");
-            }
-            gameManager.closeSetupScreen();
         }
     }
 }

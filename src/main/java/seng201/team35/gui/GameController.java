@@ -29,8 +29,8 @@ public class GameController {
     private GameManager gameManager;
     private Circle gameToken;
 
-    public GameController(GameManager gameManager) {
-        this.gameManager = gameManager;
+    public GameController(GameManager x) {
+        gameManager = x;
     }
 
     @FXML

@@ -65,6 +65,7 @@ public class MainMenuController {
     }
     @FXML
     public void nextroundclicked() {
+        gameManager.mainMenuToGameScreen();
         System.out.println("NextRoundClicked");
         if (hasmodifierbeenselected == true) {
             if (gameManager.getMainTowerList().size() < 5) {

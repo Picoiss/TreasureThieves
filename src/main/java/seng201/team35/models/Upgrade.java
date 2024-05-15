@@ -52,10 +52,9 @@ public class Upgrade {
         return status;
     }
     public void toggleStatus() {
-        if (status == "Active") {
+        if ("Active".equals(status)) {
             status = "Inactive";
-        }
-        if (status == "Inactive") {
+        } else if ("Inactive".equals(status)) {
             status = "Active";
         }
     }

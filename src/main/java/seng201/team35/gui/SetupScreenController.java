@@ -28,7 +28,7 @@ public class SetupScreenController {
     @FXML
     private Label warningLabel;
     private String playerName;
-    private int numRounds;
+    private int numRounds; // maxrounds
     private String gameDifficulty;
     private GameManager gameManager;
 

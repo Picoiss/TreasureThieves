@@ -58,6 +58,12 @@ public class InventoryController {
     private Button toggleUpgradeButton;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Label livesLabel;
+    @FXML
+    private Label roundsLabel;
+    @FXML
+    private Label roundsLeftLabel;
     private GameManager gameManager;
 
     public InventoryController(GameManager x) {
@@ -71,6 +77,10 @@ public class InventoryController {
 
     public void initialize() {
         moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
+        livesLabel.setText(String.valueOf(gameManager.getLives()));
+        moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
+        roundsLabel.setText(String.valueOf(gameManager.getCurrentRound()));
+        roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
         updateComboBox();
     }
     @FXML

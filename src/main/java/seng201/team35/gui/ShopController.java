@@ -61,6 +61,12 @@ public class ShopController {
     private Label resourceTypeLabel;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Label livesLabel;
+    @FXML
+    private Label roundsLabel;
+    @FXML
+    private Label roundsLeftLabel;
     private Upgrade currentUpgrade;
     private GameManager gameManager;
     private List<Tower> shopTowerList = new ArrayList<>();
@@ -77,9 +83,13 @@ public class ShopController {
      * Initialize the window
      */
     public void initialize() {
-        shopTowerList = getShopTowerList(gameManager.getNumOfRounds());
+        shopTowerList = getShopTowerList(gameManager.getCurrentRound());
         shopTowersComboBox.getItems().setAll(Tower.getTowerNames(shopTowerList));
         shopUpgradesComboBox.getItems().setAll(Upgrade.getUpgradeNames(gameManager.getDefaultUpgrades()));
+        livesLabel.setText(String.valueOf(gameManager.getLives()));
+        moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
+        roundsLabel.setText(String.valueOf(gameManager.getCurrentRound()));
+        roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
         updateComboBox();
     }
 
@@ -242,9 +252,9 @@ public class ShopController {
         displaySelectedUpgrade();
     }
 
-    private List<Tower> getShopTowerList(int roundNumber) {
+    private List<Tower> getShopTowerList(int currentRound) {
         List<Tower> shopTowerList = new ArrayList<>();
-        switch (roundNumber) {
+        switch (currentRound) {
             case 1:
                 shopTowerList.add(gameManager.getTowerClass("Bronze Archer"));
                 shopTowerList.add(gameManager.getTowerClass("Bronze Dwarf"));

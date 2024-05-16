@@ -8,6 +8,7 @@ import seng201.team35.GameManager;
 import seng201.team35.models.Tower;
 import seng201.team35.models.Upgrade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +61,7 @@ public class ShopController {
     private Label resourceTypeLabel;
     private Upgrade currentUpgrade;
     private GameManager gameManager;
+    private List<Tower> shopTowerList = new ArrayList<>();
 
     public ShopController(GameManager x) {
         gameManager = x;
@@ -73,7 +75,8 @@ public class ShopController {
      * Initialize the window
      */
     public void initialize() {
-        shopTowersComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getDefaultTowers()));
+        shopTowerList = getShopTowerList(gameManager.getNumOfRounds());
+        shopTowersComboBox.getItems().setAll(Tower.getTowerNames(shopTowerList));
         shopUpgradesComboBox.getItems().setAll(Upgrade.getUpgradeNames(gameManager.getDefaultUpgrades()));
         updateComboBox();
     }
@@ -245,16 +248,68 @@ public class ShopController {
         levelLabel.setText(String.valueOf(currentUpgrade.getReduceReloadSpeed()));
         costLabel.setText(String.valueOf(currentUpgrade.getCost()));
     }
-}
-    /**
+
     private List<Tower> getShopTowerList(int roundNumber) {
-        List<Tower> shopTowerList;
-        if (roundNumber == 0) {
-            //shopTowerList.add(bronzeArcher, bronzeDwarf, silverKnight, silverPriest, GoldGiant)
+        List<Tower> shopTowerList = new ArrayList<>();
+        switch (roundNumber) {
+            case 1:
+                shopTowerList.add(gameManager.getTowerClass("Bronze Archer"));
+                shopTowerList.add(gameManager.getTowerClass("Bronze Dwarf"));
+                shopTowerList.add(gameManager.getTowerClass("Silver Knight"));
+                shopTowerList.add(gameManager.getTowerClass("Silver Priest"));
+                break;
+            case 2:
+                shopTowerList.add(gameManager.getTowerClass("Bronze Villager"));
+                shopTowerList.add(gameManager.getTowerClass("Silver Knight"));
+                shopTowerList.add(gameManager.getTowerClass("Silver Alchemist"));
+                shopTowerList.add(gameManager.getTowerClass("Gold Giant"));
+                break;
+            case 3:
+                shopTowerList.add(gameManager.getTowerClass("Silver Alchemist"));
+                shopTowerList.add(gameManager.getTowerClass("Gold Giant"));
+                shopTowerList.add(gameManager.getTowerClass("Gold Goblin"));
+                break;
+            case 4:
+                shopTowerList.add(gameManager.getTowerClass("Gold Wolf"));
+                shopTowerList.add(gameManager.getTowerClass("Silver Priest"));
+                shopTowerList.add(gameManager.getTowerClass("Bronze Villager"));
+                break;
+            case 5:
+                shopTowerList.add(gameManager.getTowerClass("Diamond Mage"));
+                shopTowerList.add(gameManager.getTowerClass("Silver Priest"));
+                shopTowerList.add(gameManager.getTowerClass("Bronze Villager"));
+                shopTowerList.add(gameManager.getTowerClass("Gold Wolf"));
+                break;
+            case 6:
+                shopTowerList.add(gameManager.getTowerClass("Diamond Necromancer"));
+                shopTowerList.add(gameManager.getTowerClass("Diamond Minotaur"));
+                shopTowerList.add(gameManager.getTowerClass("Gold Goblin"));
+                break;
+            case 7:
+                shopTowerList.addAll(getShopTowerList(1)); // this may need to be altered in the future as there will be duplicates in the shop i believe...
+                shopTowerList.addAll(getShopTowerList(2));
+                shopTowerList.addAll(getShopTowerList(3));
+                shopTowerList.addAll(getShopTowerList(4));
+                shopTowerList.addAll(getShopTowerList(5));
+                shopTowerList.addAll(getShopTowerList(6));
+                break;
+            case 8:
+                shopTowerList.add(gameManager.getTowerClass("Emerald Elf"));
+                shopTowerList.add(gameManager.getTowerClass("Emerald Pheonix"));
+                shopTowerList.addAll(getShopTowerList(7));
+                break;
+            case 9:
+                shopTowerList.addAll(getShopTowerList(8));
+                shopTowerList.add(gameManager.getTowerClass("Emerald Pegasus"));
+                break;
+            case 10:
+                shopTowerList.add(gameManager.getTowerClass("Ruby Dragon"));
+                shopTowerList.add(gameManager.getTowerClass("Ruby Wyvern"));
+                shopTowerList.add(gameManager.getTowerClass("Ruby Golem"));
+                break;
+            default:
+                shopTowerList.addAll(gameManager.getDefaultTowers());
         }
-        if (roundNumber == 1) {
-            //shopTowerList.add(bronzeDward, bronzeVillager)
-        }
+        return shopTowerList;
     }
 }
-*/

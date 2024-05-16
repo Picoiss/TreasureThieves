@@ -22,8 +22,12 @@ public class Cart {
         return waypoints.get(waypointIndex);
     }
 
-    public void move() {
-        if (waypointIndex < waypoints.size() - 1) {
+    public boolean hasNextWaypoint() {
+        return waypointIndex < waypoints.size() - 1;
+    }
+
+    public void nextWaypoint() {
+        if (hasNextWaypoint()) {
             waypointIndex++;
         }
     }

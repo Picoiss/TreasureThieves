@@ -256,6 +256,7 @@ public class ShopController {
         List<Tower> shopTowerList = new ArrayList<>();
         switch (currentRound) {
             case 1:
+                shopTowerList.addAll(gameManager.getDefaultTowers());
                 shopTowerList.add(gameManager.getTowerClass("Bronze Archer"));
                 shopTowerList.add(gameManager.getTowerClass("Bronze Dwarf"));
                 shopTowerList.add(gameManager.getTowerClass("Silver Knight"));
@@ -307,7 +308,7 @@ public class ShopController {
                 break;
             case 10:
                 shopTowerList.add(gameManager.getTowerClass("Ruby Dragon"));
-                shopTowerList.add(gameManager.getTowerClass("Ruby Wyvern"));
+                shopTowerList.add(gameManager.getTowerClass("Ruby OrcMage"));
                 shopTowerList.add(gameManager.getTowerClass("Ruby Golem"));
                 break;
             default:

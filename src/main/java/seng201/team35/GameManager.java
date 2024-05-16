@@ -43,7 +43,7 @@ public class GameManager {
     private Tower EmeraldPheonix = new Tower("Emerald Pheonix", 120,60, "Emerald", 2000);
     private Tower EmeraldPegasus = new Tower("Emerald Pegasus", 100,120, "Emerald", 2000);
     private Tower RubyDragon = new Tower("Ruby Dragon",150, 50, "Ruby", 3000);
-    private Tower RubyWyvern = new Tower("Ruby Wyvern",90, 200, "Ruby", 3000);
+    private Tower RubyWyvern = new Tower("Ruby OrcMage",90, 200, "Ruby", 3000);
     private Tower RubyGolem = new Tower("Ruby Golem",100, 250, "Ruby", 3000);
 
     public GameManager(Consumer<GameManager> setupScreenLauncher,

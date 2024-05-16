@@ -203,7 +203,7 @@ public class GameManager {
                 return tower;
             }
         }
-        System.out.println("error in getting tower class from name");
+        System.out.println("potential error in getting tower class from name");
         return null;
     }
     public Upgrade getUpgradeClass(String upgradeName) {
@@ -212,7 +212,7 @@ public class GameManager {
                 return upgrade;
             }
         }
-        System.out.println("error in getting upgrade class from type");
+        System.out.println("potential error in getting upgrade class from type");
         return null;
     }
 }

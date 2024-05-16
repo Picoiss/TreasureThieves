@@ -159,94 +159,77 @@ public class ShopController {
         gameManager.closeShopScreen();
     }
 
-    @FXML
-    private void selectedShopTower() {
-        isUpgrade = false;
-        isOwnTower = false;
+    private void displaySelectedTower() {
         towerName.setText("Tower name");
         speed.setText("Speed");
         level.setText("Level");
         resourceAmount.setText("Resource Amount");
         resourceType.setText("Resource Type");
+        if (currentTower != null) {
+            towerNamelabel.setText(currentTower.getName());
+            speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
+            levelLabel.setText(String.valueOf(currentTower.getLevel()));
+            costLabel.setText(String.valueOf(currentTower.getCost()));
+            resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
+            resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+        }
+    }
+
+    private void displaySelectedUpgrade() {
+        towerName.setText("Upgrade type");
+        speed.setText("Resource Boost");
+        level.setText("Reload Speed Boost");
+        resourceAmount.setText("");
+        resourceAmountLabel.setText("");
+        resourceTypeLabel.setText("");
+        resourceType.setText("");
+        if (currentUpgrade != null) {
+            towerNamelabel.setText(currentUpgrade.getResourceType());
+            speedLabel.setText(String.valueOf(currentUpgrade.getBoostResourceAmount()));
+            levelLabel.setText(String.valueOf(currentUpgrade.getReduceReloadSpeed()));
+            costLabel.setText(String.valueOf(currentUpgrade.getCost()));
+        }
+    }
+
+    @FXML
+    private void selectedShopTower() {
+        isUpgrade = false;
+        isOwnTower = false;
         currentTower = gameManager.getTowerClass(shopTowersComboBox.getValue().toString());
-        towerNamelabel.setText(currentTower.getName());
-        speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
-        levelLabel.setText(String.valueOf(currentTower.getLevel()));
-        costLabel.setText(String.valueOf(currentTower.getCost()));
-        resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
-        resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+        displaySelectedTower();
     }
 
     @FXML
     private void selectedShopUpgrade() {
         isUpgrade = true;
         isOwnTower = false;
-        towerName.setText("Upgrade type");
-        speed.setText("Resource Boost");
-        level.setText("Reload Speed Boost");
-        resourceAmount.setText("");
-        resourceAmountLabel.setText("");
-        resourceTypeLabel.setText("");
-        resourceType.setText("");
         currentUpgrade = gameManager.getUpgradeClass(shopUpgradesComboBox.getValue().toString());
-        towerNamelabel.setText(currentUpgrade.getResourceType());
-        speedLabel.setText(String.valueOf(currentUpgrade.getBoostResourceAmount()));
-        levelLabel.setText(String.valueOf(currentUpgrade.getReduceReloadSpeed()));
-        costLabel.setText(String.valueOf(currentUpgrade.getCost()));
+        displaySelectedUpgrade();
     }
 
     @FXML
     private void selectedMainTower() {
         isUpgrade = false;
         isOwnTower = true;
-        towerName.setText("Tower name");
-        speed.setText("Speed");
-        level.setText("Level");
-        resourceAmount.setText("Resource Amount");
-        resourceType.setText("Resource Type");
+
         currentTower = gameManager.getTowerClass(mainTowersComboBox.getValue().toString());
-        towerNamelabel.setText(currentTower.getName());
-        speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
-        levelLabel.setText(String.valueOf(currentTower.getLevel()));
-        costLabel.setText(String.valueOf(currentTower.getCost()));
-        resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
-        resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+        displaySelectedTower();
     }
 
     @FXML
     private void selectedReserveTower() {
         isUpgrade = false;
         isOwnTower = true;
-        towerName.setText("Tower name");
-        speed.setText("Speed");
-        level.setText("Level");
-        resourceAmount.setText("Resource Amount");
-        resourceType.setText("Resource Type");
         currentTower = gameManager.getTowerClass(reserveTowersComboBox.getValue().toString());
-        towerNamelabel.setText(currentTower.getName());
-        speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
-        levelLabel.setText(String.valueOf(currentTower.getLevel()));
-        costLabel.setText(String.valueOf(currentTower.getCost()));
-        resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
-        resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+        displaySelectedTower();
     }
 
     @FXML
     private void selectedMyUpgrade() {
         isUpgrade = true;
         isOwnTower = true;
-        towerName.setText("Upgrade type");
-        speed.setText("Resource Boost");
-        level.setText("Reload Speed Boost");
-        resourceAmount.setText("");
-        resourceAmountLabel.setText("");
-        resourceTypeLabel.setText("");
-        resourceType.setText("");
         currentUpgrade = gameManager.getUpgradeClass(upgradesComboBox.getValue().toString());
-        towerNamelabel.setText(currentUpgrade.getResourceType());
-        speedLabel.setText(String.valueOf(currentUpgrade.getBoostResourceAmount()));
-        levelLabel.setText(String.valueOf(currentUpgrade.getReduceReloadSpeed()));
-        costLabel.setText(String.valueOf(currentUpgrade.getCost()));
+        displaySelectedUpgrade();
     }
 
     private List<Tower> getShopTowerList(int roundNumber) {

@@ -39,6 +39,12 @@ public class MainMenuController {
     private Label moneyLabel;
     @FXML
     private Label playerNameLabel;
+    @FXML
+    private Label livesLabel;
+    @FXML
+    private Label roundsLabel;
+    @FXML
+    private Label roundsLeftLabel;
     private final List<String> modifiers = Arrays.asList(new String[]{"Tower Speed Increase 10%", "Tower Speed Increase 5%", "Tower Speed Decrease 5%",
             "Tower Speed Decrease 10%", "Cart Number Decrease by 2", "Cart Number Decrease by 1", "Cart Number Increase by 1", "Cart Number Increase by 2", "Cart Fill Amount Decrease 10%"
     , "Cart Fill Amount Increase 5%", "Cart Fill Amount Increase 10%", "Cart Fill Amount Decrease 5%"});
@@ -56,7 +62,10 @@ public class MainMenuController {
         modifiertext2.setText(modifiers.get(randomModifier2));
         modifiertext3.setText(modifiers.get(randomModifier3));
         playerNameLabel.setText(gameManager.getPlayerName());
+        livesLabel.setText(String.valueOf(gameManager.getLives()));
         moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
+        roundsLabel.setText(String.valueOf(gameManager.getCurrentRound()));
+        roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
     }
     @FXML
     public void shopclicked() {

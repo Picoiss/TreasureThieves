@@ -12,6 +12,8 @@ public class GameManager {
     private int moneyAmount = 0;
     private int numOfRounds;
     private String gameDifficulty;
+    private int lives;
+    private int currentRound = 1;
     private List<Tower> mainTowerList = new ArrayList<>();
     private List<Tower> reserveTowerList= new ArrayList<>();
     private List<Upgrade> upgradesList= new ArrayList<>();
@@ -88,6 +90,20 @@ public class GameManager {
     }
     public String getGameDifficulty() {
         return gameDifficulty;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+    public int getLives() {
+        return lives;
+    }
+
+    public void changeCurrentRound() {
+        currentRound += 1;
+    }
+    public int getCurrentRound() {
+        return currentRound;
     }
 
     public void setMainTowerList(List<Tower> towerList) { this.mainTowerList = towerList; }

@@ -56,6 +56,10 @@ public class GameController {
             public void handle(long now) {
                 if (gameRunning && now - lastUpdate >= updateInterval) {
                     updateGame();
+                    //check finish conditions
+                    // check if cart fill
+                    //check if tower empty
+
                     lastUpdate = now;
                 }
             }
@@ -73,7 +77,7 @@ public class GameController {
         cart.move();
         Point currentPosition = cart.getPosition();
         gameToken.setLayoutX(currentPosition.x);
-        gameToken.setLayoutY(currentPosition.y);
+        gameToken.setLayoutY(currentPosition.y); //maybe has to be inside the cart function
     }
 
     @FXML

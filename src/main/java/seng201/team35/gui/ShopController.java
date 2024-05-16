@@ -59,6 +59,8 @@ public class ShopController {
     private Button returnToMainMenuButton;
     @FXML
     private Label resourceTypeLabel;
+    @FXML
+    private Label errorLabel;
     private Upgrade currentUpgrade;
     private GameManager gameManager;
     private List<Tower> shopTowerList = new ArrayList<>();
@@ -136,11 +138,19 @@ public class ShopController {
     private void buy() {
         if (isOwnTower == false) {
             if (isUpgrade == false) {
-                if (shopTowersComboBox.getValue() != "") {
-                    System.out.println("currentTower has been Bought");
-                    gameManager.addMainTower(currentTower);
-                    gameManager.changeMoneyAmount(-1 * currentTower.getCost());
+                if (gameManager.getMainTowerList().size() >= 5) {
+                    errorLabel.setText("Max 5 Main Towers (Tower has been placed in reserve)");
+                    gameManager.addReserveTower(currentTower);
+                    gameManager.changeMoneyAmount(-1*currentTower.getCost());
                     updateComboBox();
+                }
+                if (gameManager.getMainTowerList().size() < 5) {
+                    if (shopTowersComboBox.getValue() != "") {
+                        System.out.println("currentTower has been Bought");
+                        gameManager.addMainTower(currentTower);
+                        gameManager.changeMoneyAmount(-1 * currentTower.getCost());
+                        updateComboBox();
+                    }
                 }
             }
             if (isUpgrade == true) {

@@ -56,6 +56,8 @@ public class InventoryController {
     private Button swapMainButton;
     @FXML
     private Button toggleUpgradeButton;
+    @FXML
+    private Label errorLabel;
     private GameManager gameManager;
 
     public InventoryController(GameManager x) {
@@ -157,10 +159,15 @@ public class InventoryController {
     private void swapMain() {
         if (isUpgrade == false) {
             if (isMainTower == false) {
-                if (reserveTowersComboBox.getValue() != "") {
-                    gameManager.removeReserveTower(currentTower);
-                    gameManager.addMainTower(currentTower);
-                    updateComboBox();
+                if(gameManager.getMainTowerList().size() >= 5) {
+                    errorLabel.setText("You can only have 5 main towers!");
+                }
+                if(gameManager.getMainTowerList().size() < 5) {
+                    if (reserveTowersComboBox.getValue() != "") {
+                        gameManager.removeReserveTower(currentTower);
+                        gameManager.addMainTower(currentTower);
+                        updateComboBox();
+                    }
                 }
             }
         }

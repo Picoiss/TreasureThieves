@@ -18,8 +18,8 @@
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="66.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="83.33333587646484" minHeight="10.0" prefHeight="83.33333587646484" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="32.666664123535156" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="175.3333282470703" minHeight="10.0" prefHeight="175.3333282470703" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="199.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="196.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES" />
@@ -83,10 +83,10 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="10.0" prefWidth="288.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="returnToMainMenuButton" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="66.0" prefWidth="328.0" text="Main Menu">
+            <Button fx:id="returnToMainMenuButton" mnemonicParsing="false" onAction="#goToMainMenu" prefHeight="75.0" prefWidth="307.0" text="Main Menu">
                <font>
                   <Font size="20.0" />
                </font></Button>
@@ -152,7 +152,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="roundsRemainingLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
+            <Label fx:id="roundsLeftLabel" text="0" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
                <padding>
                   <Insets right="10.0" />
                </padding>

@@ -9,6 +9,8 @@ import javafx.scene.control.Slider;
 import seng201.team35.GameManager;
 
 import java.awt.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Controller for the gameSetup.fxml window
@@ -55,35 +57,49 @@ public class SetupScreenController {
         if (gameDifficulty == null) {
             warningLabel.setText("Please Select a Difficulty");
         }
-        if (gameDifficulty != null) {
+        else {
             getName();
-            if (playerName.isBlank() == true) {
+            playerName = playerName.trim();
+            if (playerName.isBlank()) {
                 warningLabel.setText("Please Enter a Name");
+            }
+            else if (playerName.length() < 3) {
+                warningLabel.setText("Name must have at least 3 characters");
+            }
+            else if (playerName.length() > 15) {
+                warningLabel.setText("Name must have 15 characters maximum");
+            }
+            else {
+                Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+                Matcher m = p.matcher(playerName);
+                if (m.find()) {
+                    warningLabel.setText("Name must not contain special characters");
                 }
-            if (playerName.isBlank() != true) {
-                getRounds();
-                System.out.println(playerName);
-                System.out.println(numRounds);
-                System.out.println(gameDifficulty);
-                //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
-                gameManager.setPlayerName(playerName);
-                gameManager.setNumOfRounds(numRounds);
-                gameManager.setGameDifficulty(gameDifficulty);
-                //Need to be able to select towers in setup
-                //gameManager.setTowerList();
-                if (gameDifficulty == "Easy") {
-                    gameManager.changeMoneyAmount(200000);
-                    System.out.println("Money set to easy");
+                else {
+                    getRounds();
+                    System.out.println(playerName);
+                    System.out.println(numRounds);
+                    System.out.println(gameDifficulty);
+                    //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
+                    gameManager.setPlayerName(playerName);
+                    gameManager.setNumOfRounds(numRounds);
+                    gameManager.setGameDifficulty(gameDifficulty);
+                    //Need to be able to select towers in setup
+                    //gameManager.setTowerList();
+                    if (gameDifficulty == "Easy") {
+                        gameManager.changeMoneyAmount(200000);
+                        System.out.println("Money set to easy");
+                    }
+                    if (gameDifficulty == "Medium") {
+                        gameManager.changeMoneyAmount(150000);
+                        System.out.println("Money set to medium");
+                    }
+                    if (gameDifficulty == "Hard") {
+                        gameManager.changeMoneyAmount(100000);
+                        System.out.println("Money set to hard");
+                    }
+                    gameManager.closeSetupScreen();
                 }
-                if (gameDifficulty == "Medium") {
-                    gameManager.changeMoneyAmount(150000);
-                    System.out.println("Money set to medium");
-                }
-                if (gameDifficulty == "Hard") {
-                    gameManager.changeMoneyAmount(100000);
-                    System.out.println("Money set to hard");
-                }
-                gameManager.closeSetupScreen();
             }
         }
     }

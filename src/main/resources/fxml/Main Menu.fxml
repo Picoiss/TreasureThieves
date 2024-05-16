@@ -121,7 +121,7 @@
             <Label text="Modifier 1" GridPane.halignment="CENTER" />
             <Label text="Modifier 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             <Label text="Modifier 3" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-            <Button fx:id="modifier1button" mnemonicParsing="false" onAction="#modifier1clicked" prefHeight="44.0" prefWidth="216.0" text="Modifier 1">
+            <Button fx:id="modifier1button" mnemonicParsing="false" onAction="#modifier1clicked" prefHeight="83.0" prefWidth="190.0" text="Modifier 1">
                <font>
                   <Font size="18.0" />
                </font></Button>

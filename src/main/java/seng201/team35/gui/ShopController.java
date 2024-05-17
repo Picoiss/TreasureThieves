@@ -302,7 +302,7 @@ public class ShopController {
                 shopTowerList.add(gameManager.getTowerClass("Gold Goblin"));
                 break;
             case 4:
-                shopTowerList.add(gameManager.getTowerClass("Gold Wolf"));
+                shopTowerList.add(gameManager.getTowerClass("Gold Pirate"));
                 shopTowerList.add(gameManager.getTowerClass("Silver Priest"));
                 shopTowerList.add(gameManager.getTowerClass("Bronze Villager"));
                 break;
@@ -310,7 +310,7 @@ public class ShopController {
                 shopTowerList.add(gameManager.getTowerClass("Diamond Mage"));
                 shopTowerList.add(gameManager.getTowerClass("Silver Priest"));
                 shopTowerList.add(gameManager.getTowerClass("Bronze Villager"));
-                shopTowerList.add(gameManager.getTowerClass("Gold Wolf"));
+                shopTowerList.add(gameManager.getTowerClass("Gold Pirate"));
                 break;
             case 6:
                 shopTowerList.add(gameManager.getTowerClass("Diamond Necromancer"));
@@ -327,7 +327,7 @@ public class ShopController {
                 break;
             case 8:
                 shopTowerList.add(gameManager.getTowerClass("Emerald Elf"));
-                shopTowerList.add(gameManager.getTowerClass("Emerald Pheonix"));
+                shopTowerList.add(gameManager.getTowerClass("Emerald Phoenix"));
                 shopTowerList.addAll(getShopTowerList(7));
                 break;
             case 9:

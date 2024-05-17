@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class SpriteSheet {
     private Map<String, Image> spriteMap;
-    private static final String DEFAULT_SPRITE = "/images/Ruby Dragon.png";
-    private static final String SPRITE_PATH = "/images/";
+    private static final String DEFAULT_SPRITE = "/images/Towers/Ruby Dragon.png";
+    private static final String SPRITE_PATH = "/images/Towers/";
 
     private static final int FRAME_COUNT = 5;
 
@@ -22,10 +22,10 @@ public class SpriteSheet {
         String[] towers = {
                 "Bronze Archer", "Bronze Dwarf", "Bronze Villager",
                 "Silver Knight", "Silver Priest", "Silver Assassin",
-                "Gold Giant", "Gold Goblin", "Gold Wolf",
+                "Gold Giant", "Gold Goblin", "Gold Pirate",
                 "Diamond Mage", "Diamond Necromancer", "Diamond Minotaur",
-                "Emerald Elf", "Emerald Pheonix", "Emerald Pegasus",
-                "Ruby Dragon", "Ruby Wyvern", "Ruby Golem"
+                "Emerald Elf", "Emerald Phoenix", "Emerald Pegasus",
+                "Ruby Dragon", "Ruby OrcMage", "Ruby Golem"
         };
 
         for (String tower : towers) {

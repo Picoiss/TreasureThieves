@@ -35,15 +35,15 @@ public class GameManager {
     private Tower SilverAlchemist = new Tower("Silver Alchemist",150,130, "Silver", 350);
     private Tower GoldGiant = new Tower("Gold Giant", 70,80, "Gold", 500);
     private Tower GoldGoblin = new Tower("Gold Goblin", 100,50, "Gold", 500);
-    private Tower GoldWolf = new Tower("Gold Wolf", 40,70, "Gold", 500);
+    private Tower GoldPirate = new Tower("Gold Pirate", 40,70, "Gold", 500);
     private Tower DiamondMage = new Tower("Diamond Mage",20, 50, "Diamond", 1000);
     private Tower DiamondNecromancer = new Tower("Diamond Necromancer",80, 70, "Diamond", 1000);
     private Tower DiamondMinotaur = new Tower("Diamond Minotaur",100, 50, "Diamond", 1000);
     private Tower EmeraldElf = new Tower("Emerald Elf", 100,80, "Emerald", 2000);
-    private Tower EmeraldPheonix = new Tower("Emerald Pheonix", 120,60, "Emerald", 2000);
+    private Tower EmeraldPhoenix = new Tower("Emerald Phoenix", 120,60, "Emerald", 2000);
     private Tower EmeraldPegasus = new Tower("Emerald Pegasus", 100,120, "Emerald", 2000);
     private Tower RubyDragon = new Tower("Ruby Dragon",150, 50, "Ruby", 3000);
-    private Tower RubyWyvern = new Tower("Ruby OrcMage",90, 200, "Ruby", 3000);
+    private Tower RubyOrcMage = new Tower("Ruby OrcMage",90, 200, "Ruby", 3000);
     private Tower RubyGolem = new Tower("Ruby Golem",100, 250, "Ruby", 3000);
 
     public GameManager(Consumer<GameManager> setupScreenLauncher,
@@ -64,8 +64,8 @@ public class GameManager {
         this.clearScreen = clearScreen;
         defaultTowers.addAll(List.of(BronzeArcher, BronzeDwarf, BronzeVillager,
                 SilverKnight, SilverPriest, SilverAlchemist, GoldGiant, GoldGoblin,
-                GoldWolf, DiamondMage, DiamondNecromancer, DiamondMinotaur, EmeraldElf,
-                EmeraldPheonix, EmeraldPegasus, RubyDragon, RubyWyvern, RubyGolem));
+                GoldPirate, DiamondMage, DiamondNecromancer, DiamondMinotaur, EmeraldElf,
+                EmeraldPhoenix, EmeraldPegasus, RubyDragon, RubyOrcMage, RubyGolem));
         defaultUpgrades.addAll(List.of(new Upgrade(10, 10, "Bronze", 100, "Active"),
                 new Upgrade(10, 10, "Silver", 150, "Active"),
                 new Upgrade(10, 10, "Gold", 200, "Active"),

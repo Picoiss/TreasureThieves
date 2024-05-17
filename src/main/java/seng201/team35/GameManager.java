@@ -28,23 +28,23 @@ public class GameManager {
     private final Consumer<GameManager> winMenuLauncher;
     private final Runnable clearScreen;
     private Tower BronzeArcher = new Tower("Bronze Archer", 100,75, "Bronze", 100);
-    private Tower BronzeDwarf = new Tower("Bronze Dwarf", 75,100, "Bronze", 100);
-    private Tower BronzeVillager = new Tower("Bronze Villager", 120,100, "Bronze", 100);
-    private Tower SilverKnight = new Tower("Silver Knight",80,50, "Silver", 350);
+    private Tower BronzeDwarf = new Tower("Bronze Dwarf", 75,100, "Bronze", 150);
+    private Tower BronzeVillager = new Tower("Bronze Villager", 120,100, "Bronze", 200);
+    private Tower SilverKnight = new Tower("Silver Knight",80,50, "Silver", 300);
     private Tower SilverPriest = new Tower("Silver Priest",100,120, "Silver", 350);
-    private Tower SilverAlchemist = new Tower("Silver Alchemist",150,130, "Silver", 350);
+    private Tower SilverAlchemist = new Tower("Silver Alchemist",150,130, "Silver", 400);
     private Tower GoldGiant = new Tower("Gold Giant", 70,80, "Gold", 500);
-    private Tower GoldGoblin = new Tower("Gold Goblin", 100,50, "Gold", 500);
-    private Tower GoldPirate = new Tower("Gold Pirate", 40,70, "Gold", 500);
-    private Tower DiamondMage = new Tower("Diamond Mage",20, 50, "Diamond", 1000);
-    private Tower DiamondNecromancer = new Tower("Diamond Necromancer",80, 70, "Diamond", 1000);
+    private Tower GoldGoblin = new Tower("Gold Goblin", 100,50, "Gold", 550);
+    private Tower GoldPirate = new Tower("Gold Pirate", 40,70, "Gold", 600);
+    private Tower DiamondMage = new Tower("Diamond Mage",20, 50, "Diamond", 900);
+    private Tower DiamondNecromancer = new Tower("Diamond Necromancer",80, 70, "Diamond", 950);
     private Tower DiamondMinotaur = new Tower("Diamond Minotaur",100, 50, "Diamond", 1000);
-    private Tower EmeraldElf = new Tower("Emerald Elf", 100,80, "Emerald", 2000);
-    private Tower EmeraldPhoenix = new Tower("Emerald Phoenix", 120,60, "Emerald", 2000);
+    private Tower EmeraldElf = new Tower("Emerald Elf", 100,80, "Emerald", 1700);
+    private Tower EmeraldPhoenix = new Tower("Emerald Phoenix", 120,60, "Emerald", 1800);
     private Tower EmeraldPegasus = new Tower("Emerald Pegasus", 100,120, "Emerald", 2000);
     private Tower RubyDragon = new Tower("Ruby Dragon",150, 50, "Ruby", 3000);
-    private Tower RubyOrcMage = new Tower("Ruby OrcMage",90, 200, "Ruby", 3000);
-    private Tower RubyGolem = new Tower("Ruby Golem",100, 250, "Ruby", 3000);
+    private Tower RubyOrcMage = new Tower("Ruby OrcMage",90, 200, "Ruby", 3500);
+    private Tower RubyGolem = new Tower("Ruby Golem",100, 250, "Ruby", 4000);
 
     public GameManager(Consumer<GameManager> setupScreenLauncher,
                        Consumer<GameManager> mainMenuLauncher,

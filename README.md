@@ -1,4 +1,4 @@
-# SENG201 Template Project Overview
+# game name (to decide soon)
 Welcome to the template project for SENG201 which you will transform into your own.
 This README file includes some useful information to help you get started.
 However, we expect that this README becomes your own

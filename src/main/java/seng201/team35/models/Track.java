@@ -1,5 +1,5 @@
 package seng201.team35.models;
-
+/**
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,3 +32,4 @@ public class Track {
         return waypoints;
     }
 }
+ */

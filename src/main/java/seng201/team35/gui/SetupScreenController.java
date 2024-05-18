@@ -7,8 +7,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import seng201.team35.GameManager;
+import seng201.team35.models.Tower;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +29,12 @@ public class SetupScreenController {
     @FXML
     private ComboBox difficultyComboBox;
     @FXML
+    private ComboBox startingTower1Combo;
+    @FXML
+    private ComboBox startingTower2Combo;
+    @FXML
+    private ComboBox startingTower3Combo;
+    @FXML
     private Label warningLabel;
     private String playerName;
     private int numRounds; // maxrounds
@@ -39,6 +48,9 @@ public class SetupScreenController {
 
     public void initialize() {
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
+        startingTower1Combo.getItems().addAll("Bronze Archer", "Bronze Dwarf", "Bronze Villager");
+        startingTower2Combo.getItems().addAll("Bronze Archer", "Bronze Dwarf", "Bronze Villager");
+        startingTower3Combo.getItems().addAll("Bronze Archer", "Bronze Dwarf", "Bronze Villager");
     }
     @FXML
     public void getName() {
@@ -54,56 +66,60 @@ public class SetupScreenController {
     }
     @FXML
     public void gameSetupComplete() {
-        if (gameDifficulty == null) {
+        getName();
+        playerName = playerName.trim();
+        Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(playerName);
+        if (playerName.isBlank()) {
+            warningLabel.setText("Please Enter a Name");
+        }
+        else if (playerName.length() < 3) {
+            warningLabel.setText("Name must have at least 3 characters");
+        }
+        else if (playerName.length() > 15) {
+            warningLabel.setText("Name must have 15 characters maximum");
+        }
+        else if (m.find()) {
+            warningLabel.setText("Name must not contain special characters");
+        }
+        else if (gameDifficulty == null) {
             warningLabel.setText("Please Select a Difficulty");
         }
+        else if (startingTower1Combo.getValue() == null || startingTower2Combo.getValue() == null || startingTower3Combo.getValue() == null) {
+            warningLabel.setText("Please Select 3 Starting Towers");
+        }
         else {
-            getName();
-            playerName = playerName.trim();
-            if (playerName.isBlank()) {
-                warningLabel.setText("Please Enter a Name");
+            getRounds();
+            System.out.println(playerName);
+            System.out.println(numRounds);
+            System.out.println(gameDifficulty);
+            //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
+            gameManager.setPlayerName(playerName);
+            gameManager.setNumOfRounds(numRounds);
+            gameManager.setGameDifficulty(gameDifficulty);
+            //Need to be able to select towers in setup
+            //gameManager.setTowerList();
+            List<Tower> startingTowers = new ArrayList<>();
+            startingTowers.add(gameManager.getTowerClass((String) startingTower1Combo.getValue()));
+            startingTowers.add(gameManager.getTowerClass((String) startingTower2Combo.getValue()));
+            startingTowers.add(gameManager.getTowerClass((String) startingTower3Combo.getValue()));
+            gameManager.setMainTowerList(startingTowers);
+            if (gameDifficulty == "Easy") {
+                gameManager.setLives(15);
+                gameManager.changeMoneyAmount(200000);
+                System.out.println("Money set to easy");
             }
-            else if (playerName.length() < 3) {
-                warningLabel.setText("Name must have at least 3 characters");
+            if (gameDifficulty == "Medium") {
+                gameManager.setLives(10);
+                gameManager.changeMoneyAmount(150000);
+                System.out.println("Money set to medium");
             }
-            else if (playerName.length() > 15) {
-                warningLabel.setText("Name must have 15 characters maximum");
+            if (gameDifficulty == "Hard") {
+                gameManager.setLives(5);
+                gameManager.changeMoneyAmount(100000);
+                System.out.println("Money set to hard");
             }
-            else {
-                Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-                Matcher m = p.matcher(playerName);
-                if (m.find()) {
-                    warningLabel.setText("Name must not contain special characters");
-                }
-                else {
-                    getRounds();
-                    System.out.println(playerName);
-                    System.out.println(numRounds);
-                    System.out.println(gameDifficulty);
-                    //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
-                    gameManager.setPlayerName(playerName);
-                    gameManager.setNumOfRounds(numRounds);
-                    gameManager.setGameDifficulty(gameDifficulty);
-                    //Need to be able to select towers in setup
-                    //gameManager.setTowerList();
-                    if (gameDifficulty == "Easy") {
-                        gameManager.setLives(15);
-                        gameManager.changeMoneyAmount(200000);
-                        System.out.println("Money set to easy");
-                    }
-                    if (gameDifficulty == "Medium") {
-                        gameManager.setLives(10);
-                        gameManager.changeMoneyAmount(150000);
-                        System.out.println("Money set to medium");
-                    }
-                    if (gameDifficulty == "Hard") {
-                        gameManager.setLives(5);
-                        gameManager.changeMoneyAmount(100000);
-                        System.out.println("Money set to hard");
-                    }
-                    gameManager.closeSetupScreen();
-                }
-            }
+            gameManager.closeSetupScreen();
         }
     }
 }

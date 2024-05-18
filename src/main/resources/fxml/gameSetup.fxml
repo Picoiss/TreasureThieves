@@ -23,6 +23,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="Choose name:" GridPane.rowIndex="1">
@@ -72,14 +73,37 @@
             <Insets top="16.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="continueButton" mnemonicParsing="false" onAction="#gameSetupComplete" prefHeight="82.0" prefWidth="266.0" text="Continue" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+      <Button fx:id="continueButton" mnemonicParsing="false" onAction="#gameSetupComplete" prefHeight="82.0" prefWidth="266.0" text="Continue" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
          <font>
             <Font size="24.0" />
          </font></Button>
-      <Label fx:id="warningLabel" alignment="CENTER" maxWidth="1312.0" prefHeight="54.0" prefWidth="1312.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <Label fx:id="warningLabel" alignment="CENTER" maxWidth="1312.0" prefHeight="54.0" prefWidth="1312.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
          <font>
             <Font size="37.0" />
          </font>
       </Label>
+      <Label text="Select 3 starting towers:" GridPane.rowIndex="4">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <padding>
+            <Insets left="80.0" />
+         </padding>
+      </Label>
+      <ComboBox fx:id="startingTower2Combo" prefHeight="25.0" prefWidth="184.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="232.0" />
+         </GridPane.margin>
+      </ComboBox>
+      <ComboBox fx:id="startingTower1Combo" prefHeight="25.0" prefWidth="184.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="16.0" />
+         </GridPane.margin>
+      </ComboBox>
+      <ComboBox fx:id="startingTower3Combo" prefHeight="25.0" prefWidth="184.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="448.0" />
+         </GridPane.margin>
+      </ComboBox>
    </children>
 </GridPane>

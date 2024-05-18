@@ -52,7 +52,7 @@
                 </GridPane>
             </children>
         </Pane>
-        <AnchorPane fx:id="gamePane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="3">
+        <AnchorPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1000.0" GridPane.columnIndex="1" GridPane.rowSpan="3">
             <children>
             <Circle fill="DODGERBLUE" layoutX="860.0" layoutY="72.0" radius="28.0" stroke="BLACK" strokeType="INSIDE" />
                 <GridPane fx:id="gameGrid" layoutX="20.0" prefHeight="900.0" prefWidth="1000.0">

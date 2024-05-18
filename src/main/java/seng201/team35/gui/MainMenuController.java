@@ -21,7 +21,7 @@ public class MainMenuController {
     @FXML
     private TextArea modifierText3;
     @FXML
-    private Label noModifierWarning;
+    private Label warningLabel;
     @FXML
     private Label moneyLabel;
     @FXML
@@ -64,21 +64,20 @@ public class MainMenuController {
     }
     @FXML
     public void nextRoundClicked() {
-        gameManager.mainMenuToGameScreen();
         System.out.println("NextRoundClicked");
         if (modifierSelected) {
-            if (gameManager.getMainTowerList().size() < 5) {
-                noModifierWarning.setText("Please have at least 5 main towers");
-            }
-            else {
+            if (gameManager.getMainTowerList().size() >= 3) {
                 System.out.println("ModifierBeenSelected");
                 gameManager.mainMenuToGameScreen();
+            }
+            else {
+                warningLabel.setText("Please have at least 3 main towers");
             }
         }
         else {
             System.out.println("ModifierNotSelected");
             System.out.println(MODIFIERSLIST);
-            noModifierWarning.setText("Please select a Modifier");
+            warningLabel.setText("Please select a Modifier");
         }
     }
     @FXML

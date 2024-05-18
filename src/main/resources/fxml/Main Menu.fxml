@@ -138,7 +138,7 @@
             <TextArea fx:id="modifierText3" editable="false" prefHeight="159.0" prefWidth="249.0" text="3 " wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Label fx:id="noModifierWarning" prefHeight="26.0" prefWidth="303.0" textFill="RED" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+      <Label fx:id="warningLabel" alignment="CENTER" maxWidth="1400.0" prefHeight="26.0" prefWidth="303.0" textFill="RED" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5">
          <font>
             <Font size="22.0" />
          </font>

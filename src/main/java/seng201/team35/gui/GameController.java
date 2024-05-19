@@ -27,9 +27,7 @@ import seng201.team35.models.CartDirectionMap;
 import seng201.team35.models.CartSprite;
 
 import java.awt.Point;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameController {
     @FXML
@@ -186,13 +184,6 @@ public class GameController {
         };
         animationTimer.start();
     }
-    /**
-    private void createGameToken() {
-        gameToken = new Circle(10);
-        gameToken.setFill(Color.GOLD);
-        gamePane.getChildren().add(gameToken);
-    }
-     */
 
     private void setupGameLoop() {
         startTime = System.nanoTime();
@@ -235,15 +226,29 @@ public class GameController {
         // little debugging
     }
 
+    private int getInitialCartDirection(int[][] pathGraph) {
+        for (int i = 0; i < pathGraph.length; i++) {
+            for (int j = 0; j < pathGraph[i].length; j++) {
+                if (pathGraph[i][j] == 1) {
+                    return cartDirectionMap.getDirectionGraph()[i][j];
+                }
+            }
+        }
+        return 0;
+    }
+
     private void spawnCart(Cart cart) {
         ImageView cartToken = new ImageView();
         // create s anew ImageView called cartToken
         cartToken.setFitWidth(50); // set the width
         cartToken.setFitHeight(50); // and the height
-        cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 0)); // Initial direction 0 probably wrong but ok
         int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
-        Point startPosition = getCartPosition(pathGraph, 1); // Initialize at position 1
+        cart.setDirection(getInitialCartDirection(pathGraph));
+        cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), cart.getDirection())); // Initial direction 0 probably wrong but ok
+        Point startPosition = getCartPosition(pathGraph, 1, -1, -1); // Initialize at position 1
         if (startPosition != null) { // if the startPosition exists;
+            cart.setX(startPosition.x);
+            cart.setY(startPosition.y);
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             double startX = startPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 2;
@@ -266,17 +271,42 @@ public class GameController {
         // debugging
     }
 
-    private Point getCartPosition(int[][] pathGraph, int step) {
+    private Point getCartPosition(int[][] pathGraph, int step, int prevX, int prevY) {
         //essentially, this function iterates through pathGraph indexMap and finds matches the step to
         // a  grid in the pathGraph.
+        List<Point> nextPossibleSteps = new ArrayList<>();
+        boolean stranded = true;
         for (int i = 0; i < pathGraph.length; i++) {
             for (int j = 0; j < pathGraph[i].length; j++) {
                 if (pathGraph[i][j] == step) {
-                    return new Point(j, i);
+                    nextPossibleSteps.add(new Point(j, i));
+                    if ((Math.abs(nextPossibleSteps.getLast().x - prevX) == 1 && Math.abs(nextPossibleSteps.getLast().y - prevY) == 0) ||
+                            (Math.abs(nextPossibleSteps.getLast().x - prevX) == 0 && Math.abs(nextPossibleSteps.getLast().y - prevY) == 1)) {
+                        stranded = false;
+                    }
                 }
             }
         }
-        return null;
+        System.out.println(prevX);
+        System.out.println(prevY);
+        Random rand = new Random();
+        if (prevX == -1) {
+            return nextPossibleSteps.get(rand.nextInt(nextPossibleSteps.size()));
+        }
+        else {
+            if (stranded || nextPossibleSteps.isEmpty()) {
+                return null;
+            }
+            else {
+                Point nextPoint;
+                do {
+                    nextPoint = nextPossibleSteps.get(rand.nextInt(nextPossibleSteps.size()));
+                } while (!((Math.abs(nextPoint.x - prevX) == 1 && Math.abs(nextPoint.y - prevY) == 0) ||
+                        (Math.abs(nextPoint.x - prevX) == 0 && Math.abs(nextPoint.y - prevY) == 1)));
+                System.out.println(nextPoint);
+                return nextPoint;
+            }
+        }
     }
 
     private void updateCartSprite(Cart cart, ImageView cartToken, int direction) {
@@ -292,9 +322,11 @@ public class GameController {
         for (Cart cart : cartTokens.keySet()) {
             ImageView cartToken = cartTokens.get(cart);
             int currentStep = cartSteps.get(cart);
-            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1);
+            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1, cart.getX(), cart.getY());
 
             if (nextPosition != null) {
+                cart.setX(nextPosition.x);
+                cart.setY(nextPosition.y);
                 double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
                 double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
                 double targetX = nextPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 2;
@@ -304,8 +336,11 @@ public class GameController {
                 transition.setToX(targetX - cartToken.getLayoutX());
                 transition.setToY(targetY - cartToken.getLayoutY());
 
-                int direction = cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x];
-                updateCartSprite(cart, cartToken, direction);
+                //direction 5 signifies where two paths merge on the map
+                if (cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x] != 5) {
+                    cart.setDirection(cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x]);
+                }
+                updateCartSprite(cart, cartToken, cart.getDirection());
 
                 transition.setOnFinished(event -> {
                     cartSteps.put(cart, currentStep + 1);

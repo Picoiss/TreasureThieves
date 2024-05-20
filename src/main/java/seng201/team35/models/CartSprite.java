@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class CartSprite {
     private Map<String, Image> spriteMap;
-    private static final String SPRITE_PATH = "/images/";
+    private static final String SPRITE_PATH = "/images/Carts/";
 
     public CartSprite() {
         spriteMap = new HashMap<>();

@@ -33,7 +33,7 @@ public class CartSprite {
         Image spriteSheet = spriteMap.get(cartType);
         int frameWidth = (int) spriteSheet.getWidth() / 4;
         int frameHeight = (int) spriteSheet.getHeight();
-        int x = direction * frameWidth;
+        int x = direction * frameWidth - frameWidth;
         return new WritableImage(spriteSheet.getPixelReader(), x, 0, frameWidth, frameHeight);
     }
 }

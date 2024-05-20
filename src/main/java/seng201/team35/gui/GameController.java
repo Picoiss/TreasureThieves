@@ -1,20 +1,21 @@
 package seng201.team35.gui;
 
+import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.animation.AnimationTimer;
-import javafx.animation.TranslateTransition;
-import javafx.geometry.Point2D;
-import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import seng201.team35.GameManager;
 import seng201.team35.models.Cart;
 import seng201.team35.models.Path;
@@ -25,6 +26,7 @@ import seng201.team35.models.CartRound.CartSpawn;
 import seng201.team35.models.CartPath;
 import seng201.team35.models.CartDirectionMap;
 import seng201.team35.models.CartSprite;
+import seng201.team35.models.Projectile;
 
 import java.awt.Point;
 import java.util.HashMap;
@@ -40,12 +42,13 @@ public class GameController {
     private Button startGameButton;
     @FXML
     private ComboBox<String> towerSelectionComboBox;
+    @FXML
+    private Label warningLabel;
     private long startTime;
     private boolean gameRunning = false;
     private long lastUpdate = 0;
     private final long updateInterval = 500_000_000;
     private GameManager gameManager;
-    private Circle gameToken;
     private Image grassImage;
     private Image texturedGrassImage;
     private int[][] currentIndexGraph;
@@ -60,6 +63,7 @@ public class GameController {
     private Map<Cart, ImageView> cartTokens = new HashMap<>();
     private Map<Cart, Integer> cartSteps = new HashMap<>();
     private boolean isMoving = false;
+    private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
 
     public GameController(GameManager x) {
         gameManager = x;
@@ -142,13 +146,32 @@ public class GameController {
             }
         }
     }
+    private void setWarning(String warningText) {
+        System.out.println("aa");
+        warningLabel.setText(warningText);
+        warningLabel.setOpacity(0.7);
 
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(3), new KeyValue(warningLabel.opacityProperty(), 0.7)),
+                new KeyFrame(Duration.seconds(4), new KeyValue(warningLabel.opacityProperty(), 0))
+        );
+        timeline.setOnFinished(event -> warningLabel.setText(""));
+        timeline.play();
+    }
     private void addTower(int colIndex, int rowIndex) {
+        Point newTowerPosition = new Point(colIndex, rowIndex);
+        if (towerPositions.containsKey(newTowerPosition)) {
+            System.out.println("A tower already exists at this position!");
+            setWarning("A tower already exists as this location");
+            return; // Exit the method if a tower already exists at this position
+        }
+
         ImageView towerSprite = new ImageView();
         towerSprite.setFitWidth(50); // Adjust as needed
         towerSprite.setFitHeight(50); // Adjust as needed
         towerSprite.setSmooth(false);
-        towerPositions.put(new Point(colIndex, rowIndex), towerSprite);
+        towerPositions.put(newTowerPosition, towerSprite);
+        // towerPositions is a HashMap which contains information pertaining to towers, specifically their Position, and their SPRITE.
         gameGrid.add(towerSprite, colIndex, rowIndex);
         animateTower(towerSprite, currentTower);
         currentTower = null; // Clear the current tower after placing it
@@ -165,12 +188,12 @@ public class GameController {
             // Animation timer created to handle the animation
             //similar to the one calling the update, this one allows an update every handle
             private int frameIndex = 0;
-            private long lastUpdate = 0;
+            private long lastUpdatesprite = 0;
             // stores the current frame.
 
             @Override
             public void handle(long now) {
-                if (now - lastUpdate >= updateInterval / frameCount) {
+                if (now - lastUpdatesprite >= updateInterval / frameCount) {
                     // if the time between now and last update is greater than the specified update interval (for 1 frame)
                     Image frame = spriteSheet.getSpriteFrame(towerName, frameIndex);
                     // gets the frame from the spriteSheet (stored as frame (Image object))
@@ -179,23 +202,15 @@ public class GameController {
                     // updates the ImageView of the towerSprite to BE the frame
                     frameIndex = (frameIndex + 1) % frameCount;
                     // update the frame index (modular arithmetic to keep it within frameCount always)
-                    lastUpdate = now;
+                    lastUpdatesprite = now;
                     // last update = now.
                 }
             }
         };
         animationTimer.start();
     }
-    /**
-    private void createGameToken() {
-        gameToken = new Circle(10);
-        gameToken.setFill(Color.GOLD);
-        gamePane.getChildren().add(gameToken);
-    }
-     */
 
     private void setupGameLoop() {
-        startTime = System.nanoTime();
         AnimationTimer gameLoop = new AnimationTimer() {
             // AnimationTime created, which calls handle() method every frame
             // name = gameLoop.
@@ -209,8 +224,11 @@ public class GameController {
                         lastUpdate = now; // reset lastupdate to now.
                     }
                     if (currentCartIndex < carts.size() && now - startTime >= carts.get(currentCartIndex).spawnTime) {
+                        if (now - startTime >= carts.get(currentCartIndex).spawnTime) {
+                            System.out.println((now - startTime) + "," + carts.get(currentCartIndex).spawnTime);
+                        }
                         // check if currentCartIndex is less than carts.size
-                        // and if the time between now and last-update and if now - lastUpdate is greater than carts.get(spawntime..)
+                        // and if the time between now and last-update and if now - lastUpdate is greater than carts.get(spawnTime..)
                         // wait i think there is an error here. (FIXED)
                         spawnCart(carts.get(currentCartIndex).cart);
                         //spawn the cart
@@ -229,6 +247,7 @@ public class GameController {
         cartPath = CartPath.getCartPathForRound(1);
         cartDirectionMap = CartDirectionMap.getDirectionMapForRound(1);
         currentCartIndex = 0;
+        startTime = System.nanoTime(); // Set start time to current time
         gameRunning = true; // game is now running
         lastUpdate = System.nanoTime(); // set lastUpdate to now
         System.out.println("Game started, carts to spawn: " + carts.size());
@@ -240,7 +259,7 @@ public class GameController {
         // create s anew ImageView called cartToken
         cartToken.setFitWidth(50); // set the width
         cartToken.setFitHeight(50); // and the height
-        cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 0)); // Initial direction 0 probably wrong but ok
+        cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1)); // Initial direction 0 probably wrong but ok
         int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
         Point startPosition = getCartPosition(pathGraph, 1); // Initialize at position 1
         if (startPosition != null) { // if the startPosition exists;
@@ -266,6 +285,174 @@ public class GameController {
         // debugging
     }
 
+    private void rotateTowerTowardsTarget(ImageView tower, Point2D target) {
+        // this function calculates the rotation of the Tower towards the (nearest?) Cart.
+        Point2D towerPosition = new Point2D(tower.getLayoutX() + tower.getFitWidth() / 2, tower.getLayoutY() + tower.getFitHeight() / 2);
+        // this calculates the Towers' Position using a Point2D Variable (a x and a y co-ordinate)
+        double angle = Math.atan2(target.getY() - towerPosition.getY(), target.getX() - towerPosition.getX()) * 180 / Math.PI;
+        // Then calculates an ANGLE for the tower to the target by taking the difference in distance from the tower and the target,
+        // and applies trig rules to find the angle
+        // using the atan2 function via Math, (which takes two co-ordinates and changes the rect. co-ordinates to polar co-ordinates in terms of r and theta)
+        // however, as this function is in radians, will need to convert to degrees in order to use setRotate
+        // (which is a javafx NODE function.
+        // However, as all the images are upright (facing up), we will need to correct the angle by adding 90degrees to our angle calculation. ( this is assuming
+        // that 0 degrees is facing RIGHT.
+        tower.setRotate(angle + 90); // Rotate the tower to face the target
+    }
+
+    private void checkTowersTargeting() {
+        double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
+        double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
+        // calculates the Width and Height, of each gameGrid cell
+        // in theory, this can both be set to GLOBAL variables of GAME_HEIGHT
+        // and GAME_WIDTH as both are set to 50 px, but keeping this function here
+        // allows for future modular/dynamic game grids. (gridpanes)
+
+        for (Map.Entry<Point, ImageView> entry : towerPositions.entrySet()) {
+            // note, towerPositions is a hashMap containing the towers' (Position, Sprite)
+            Point towerGridPos = entry.getKey();
+            ImageView towerSprite = entry.getValue();
+            System.out.println(entry.getValue());
+            // as follows.
+
+            // Calculate the center of the tower's grid cell in pixel coordinates
+            double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
+            // this calculates the tower Center (X co-ordinate). This is done by taking the gridposition of the tower
+            // adding 0.5 (to get the center), then multiplying by the cellWidth (which could have been set at 50, but oh well)
+            double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
+            //same for the y co-ordinate of the tower.
+
+            for (Map.Entry<Cart, ImageView> cartEntry : cartTokens.entrySet()) {
+                //iterates over the carts which are in the game.
+                // for (position of cart, cartSprite) in the cartTokens hashMap;
+                Cart cart = cartEntry.getKey();
+                ImageView cartToken = cartEntry.getValue();
+
+                // Get the bounds of the cart token in the parent's coordinate system
+                Bounds cartBounds = cartToken.getBoundsInParent();
+                // using the .getBoundsInParent() is very important, as otherwise, the cart's position is calculated
+                // incorrectly. (for some reason the gridpane becomes like -850, 850)..
+                // Calculate the center of the cart's image using bounds
+                double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
+                double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
+                // unsure if the cartBounds.getMinX() is even required... but..
+                // calculates the center of the Cart by getting the Min of the boundaries of the cart (e.g most left point of cart)
+                // + the width of the Cart divided by 2, in order to get the middle of the Cart (done with both X and Y)
+                // Calculate the distance in pixel coordinates
+                double distance = Math.sqrt(Math.pow(towerCenterX - cartCenterX, 2) + Math.pow(towerCenterY - cartCenterY, 2));
+                // pythag.
+                if (distance <= 2 * Math.min(cellWidth, cellHeight)) { // Assuming a range of 2 tiles (in pixels). although perhaps in the future this could
+                    // be changed to be tower specific..
+                    System.out.println("Within Range " + distance);
+                    rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
+                    // rotates the tower towards the cart
+                    shootProjectile(towerGridPos, cart);
+                    // shoots a projectile at the cart.
+                }
+            }
+        }
+    }
+
+    private void shootProjectile(Point towerGridPos, Cart targetCart) {
+        ImageView towerSprite = towerPositions.get(towerGridPos);
+        // gets the ImageView of the tower via the towerPositions map
+        if (towerSprite == null) return;
+
+        // Calculate tower and cart positions
+        double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
+        double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
+        double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
+        double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
+        // the tower Center (X) is calculated via getting the towerGridPos (what grid the tower is in) + 0.5 to get the center
+        // then multiply by the CEll Width
+        //same for the height
+        ImageView cartToken = cartTokens.get(targetCart);
+        //gets the Image of the Cart via the cartTokens Map.
+        if (cartToken == null) return;
+
+        Bounds cartBounds = cartToken.getBoundsInParent();
+        double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
+        double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
+        // gets the position of the Cart
+        // Calculate the predicted position of the cart
+        Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
+        if (nextPosition != null) {
+            double targetX = nextPosition.x * cellWidth + cellWidth / 2;
+            double targetY = nextPosition.y * cellHeight + cellHeight / 2;
+            // the target X is set at the nextPosition location
+            double distance = towerGridPos.distance(nextPosition);
+
+
+            // Adjust prediction based on distance
+            if (distance > 1.5) {
+                targetX = (cartCenterX + targetX) / 2;
+                targetY = (cartCenterY + targetY) / 2;
+                // if the distance is GREATER than 1.5 Tiles, we will need to predict the locaiton of the cart.
+                // this is done by adding the location of the cart (center of cart) plus the target X
+                // Although confusing, this is parsewd through in the launchProjectile function which will take these co-ordinates and
+                // generate the projectile track
+                // essentially, if the distance is greater than 1.5, the target should be 1 step further, as to predict the Cart location.
+                // actually, upon studying the code, it seem due to the / 2, the actually targets between 0 to 1 steps ahead.
+            } else {
+                targetX = cartCenterX;
+                targetY = cartCenterY;
+                // else, the trajectory is simply calculated at the targets location ( the actual location of the cart ).
+            }
+
+            System.out.println("Shooting projectile from: (" + towerCenterX + ", " + towerCenterY + ") to: (" + targetX + ", " + targetY + ")");
+            // Create and launch the projectile
+            launchProjectile(towerCenterX, towerCenterY, targetX, targetY, targetCart);
+        }
+    }
+
+    private void launchProjectile(double startX, double startY, double targetX, double targetY, Cart targetCart) {
+        ImageView projectile = new ImageView(Projectile.getProjectileSprite("Arrow Long.png"));
+        // although it does just say "Arrow Long.png" right now, this will be made dynamic so  different tower types can have different projectiles.
+        projectile.setFitWidth(20); // set the projectile to be 20 px in height and width
+        projectile.setFitHeight(20);
+        projectile.setLayoutX(startX);
+        projectile.setLayoutY(startY);
+        // initialise the projectile at the startX and startY (Tower center Co-ordinates)
+
+        gamePane.getChildren().add(projectile);
+
+        // Calculate the differences in positions for the transition
+        double deltaX = targetX - startX;
+        double deltaY = targetY - startY;
+        // change in X and Y for the tower and cart position
+
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
+        transition.setByX(deltaX);
+        transition.setByY(deltaY);
+
+        transition.setOnFinished(event -> {
+            checkProjectileCollision(projectile, targetCart);
+            // when the event is done, we check a collision, and also remove the projectile
+            // We also could just have it so there is no collision check, we simply force a collision (some cases are
+            // sketchy where the arrow looks like it hits, but it actually misses technically.
+            gamePane.getChildren().remove(projectile);
+        });
+        transition.play();
+
+        activeProjectiles.put(projectile, new ProjectileController(targetCart, projectile));
+    }
+
+    private void checkProjectileCollision(ImageView projectile, Cart targetCart) {
+        ImageView cartToken = cartTokens.get(targetCart);
+        if (cartToken == null) return;
+
+        Bounds projectileBounds = projectile.getBoundsInParent();
+        Bounds cartBounds = cartToken.getBoundsInParent();
+
+        if (projectileBounds.intersects(cartBounds)) {
+            // Handle hit (e.g., reduce cart's health, remove cart if health <= 0)
+            System.out.println("Projectile hit the cart!");
+            //gamePane.getChildren().remove(cartToken);
+            //cartTokens.remove(targetCart);
+            //cartSteps.remove(targetCart);
+        }
+    }
+
     private Point getCartPosition(int[][] pathGraph, int step) {
         //essentially, this function iterates through pathGraph indexMap and finds matches the step to
         // a  grid in the pathGraph.
@@ -286,7 +473,9 @@ public class GameController {
 
     private void moveCarts() {
         // ill make comments later.
-        if (isMoving) return;
+        if (isMoving = false) {
+            return;
+        }
         isMoving = true;
 
         for (Cart cart : cartTokens.keySet()) {
@@ -322,6 +511,7 @@ public class GameController {
 
     private void updateGame() {
         moveCarts();
+        checkTowersTargeting();
     }
 
     @FXML
@@ -337,5 +527,15 @@ public class GameController {
     private void updateComboBox() {
         towerSelectionComboBox.setValue("");
         towerSelectionComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getMainTowerList()));
+    }
+
+    public class ProjectileController {
+        private Cart targetCart;
+        private ImageView projectile;
+
+        public ProjectileController(Cart targetCart, ImageView projectile) {
+            this.targetCart = targetCart;
+            this.projectile = projectile;
+        }
     }
 }

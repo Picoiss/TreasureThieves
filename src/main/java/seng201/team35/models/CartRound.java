@@ -1,5 +1,6 @@
 package seng201.team35.models;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,9 @@ public class CartRound {
         List<CartSpawn> carts = new ArrayList<>();
         switch (roundNumber) {
             case 1:
-                carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), 0));
-                carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), 1_000_000_000));
-                carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), 2_000_000_000));
+                carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), Duration.ofSeconds(1).toNanos()));
+                //carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), Duration.ofSeconds(3).toNanos()));
+                //carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), Duration.ofSeconds(5).toNanos()));
                 break;
         }
         return carts;

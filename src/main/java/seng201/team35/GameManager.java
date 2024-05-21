@@ -13,10 +13,12 @@ import java.util.function.Consumer;
 public class GameManager {
     private String playerName;
     private int moneyAmount = 0;
+    private int totalMoney = 0;
     private int numOfRounds;
     private String gameDifficulty;
     private int lives;
     private int currentRound = 1;
+    private int totalCartsDestroyed = 0;
     private Map<Point, Tower> towerPositionMap = new HashMap<>();
     private List<Tower> mainTowerList = new ArrayList<>();
     private List<Tower> reserveTowerList= new ArrayList<>();
@@ -117,6 +119,19 @@ public class GameManager {
     }
     public int getNumOfRounds() {
         return numOfRounds;
+    }
+    public int getTotalMoney() {
+        return totalMoney;
+    }
+    public void incrementTotalMoney(int money) {
+        this.totalMoney += money;
+    }
+
+    public int getTotalCartsDestroyed() {
+        return totalCartsDestroyed;
+    }
+    public void incrementTotalCartsDestroyed() {
+        this.totalCartsDestroyed += 1;
     }
 
     public void setGameDifficulty(String difficulty) {

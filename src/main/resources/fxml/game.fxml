@@ -92,6 +92,16 @@
                         </Label>
                      </children>
                   </GridPane>
+                  <Label fx:id="winOrLoseLabel" alignment="CENTER" prefHeight="31.0" prefWidth="602.0" textFill="#111111" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#mainMenu" prefHeight="53.0" prefWidth="226.0" text="Main Menu" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Button>
                     </children>
                 </GridPane>
             </children>
@@ -140,21 +150,12 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                <children>
-                  <Label fx:id="warningLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="600.0" text="test" textFill="RED" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="11">
+                  <Label fx:id="warningLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="600.0" text="test" textFill="RED" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="12">
                      <font>
                         <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#mainMenu" prefHeight="53.0" prefWidth="158.0" text="Main Menu" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="7" GridPane.rowSpan="2">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                  </Button>
-                  <Label fx:id="winOrLoseLabel" alignment="CENTER" prefHeight="31.0" prefWidth="188.0" text="temp" textFill="#111111" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="6">
-                     <font>
-                        <Font size="21.0" />
                      </font>
                   </Label>
                </children>

@@ -31,10 +31,7 @@ import seng201.team35.models.CartSprite;
 import seng201.team35.models.Projectile;
 
 import java.awt.Point;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //questions for tutorial
 //Can we include comments in Final Code
@@ -409,9 +406,35 @@ public class GameController {
         currentCartIndex = 0;
         carts.clear();
         // Transition to main menu or change the round
-        gameManager.changeCurrentRound();
-        gameManager.gameToMainMenuScreen();
+        if (winOrLoseLabel.getTextFill() == Color.GREEN) {
+            if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {
+                gameManager.gameToWinMenuScreen(); // If final round was won, transition to win menu
+            }
+            else {
+                gameManager.changeCurrentRound();
+                gameManager.gameToMainMenuScreen(); // If non-final round was won, change round and go to main menu
+            }
+        }
+        else if (winOrLoseLabel.getTextFill() == Color.ORANGE) {
+            gameManager.gameToMainMenuScreen(); // If round failed, remain on same round and go to main menu
+        }
+        else {
+            gameManager.gameToFailMenuScreen(); // If all lives lost, transition to fail menu
+        }
     }
+
+    private int getInitialCartDirection(int[][] pathGraph) {
+        for (int i = 0; i < pathGraph.length; i++) {
+            for (int j = 0; j < pathGraph[i].length; j++) {
+                if (pathGraph[i][j] == 1) {
+                    return cartDirectionMap.getDirectionGraph()[i][j];
+                }
+            }
+        }
+        return 0;
+    }
+
+
     private void spawnCart(Cart cart) {
         ImageView cartToken = new ImageView();
         // create s anew ImageView called cartToken
@@ -419,8 +442,11 @@ public class GameController {
         cartToken.setFitHeight(50); // and the height
         cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1)); // Initial direction 0 probably wrong but ok
         int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
-        Point startPosition = getCartPosition(pathGraph, gameManager.getCurrentRound()); // Initialize at position 1
+        Point startPosition = getCartPosition(pathGraph, gameManager.getCurrentRound(), -1, -1); // Initialize at position 1
+        cart.setDirection(getInitialCartDirection(pathGraph));
         if (startPosition != null) { // if the startPosition exists;
+            cart.setX(startPosition.x);
+            cart.setY(startPosition.y);
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             double startX = startPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 2;
@@ -559,7 +585,7 @@ public class GameController {
 
         if (distance > 0.8 && distance <= 1.25) {
             // Shoot between current and next position
-            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
+            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1, targetCart.getX(), targetCart.getY());
             if (nextPosition != null) {
                 double nextPosX = nextPosition.x * cellWidth + cellWidth / 2;
                 double nextPosY = nextPosition.y * cellHeight + cellHeight / 2;
@@ -568,7 +594,7 @@ public class GameController {
             }
         } else if (distance > 1.25 && distance <= 2) {
             // Shoot netween next position and current, but more so to the next position
-            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
+            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1, targetCart.getX(), targetCart.getY());
             if (nextPosition != null) {
                 double nextPosX = nextPosition.x * cellWidth + cellWidth / 2;
                 double nextPosY = nextPosition.y * cellHeight + cellHeight / 2;
@@ -635,6 +661,7 @@ public class GameController {
                 gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
                 cartTokens.remove(targetCart); // Remove the cart from active carts
                 cartsLeft -= 1; // Update remaining carts to fill
+                gameManager.incrementTotalCartsDestroyed();
                 Rectangle healthBar = cartHealthBars.get(targetCart);
                 if (healthBar != null) {
                     gamePane.getChildren().remove(healthBar); // Remove health bar associated with the cart
@@ -646,7 +673,7 @@ public class GameController {
         }
     }
 
-    private Point getCartPosition(int[][] pathGraph, int step) {
+    private Point getCartPosition(int[][] pathGraph, int step, int prevX, int prevY) {
         //essentially, this function iterates through pathGraph indexMap and finds matches the step to
         // a  grid in the pathGraph.
         for (int i = 0; i < pathGraph.length; i++) {
@@ -658,6 +685,7 @@ public class GameController {
         }
         return null;
     }
+
 
     private void updateCartSprite(Cart cart, ImageView cartToken, int direction) {
         //updates direction, req, direct as a parameter though.
@@ -688,9 +716,11 @@ public class GameController {
                 continue;  // Skip further processing for this cart
             }
 
-            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1);
+            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1, cart.getX(), cart.getY());
 
             if (nextPosition != null) {
+                cart.setX(nextPosition.x);
+                cart.setY(nextPosition.y);
                 double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
                 double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
                 double targetX = nextPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 2;
@@ -699,8 +729,12 @@ public class GameController {
                 transition.setToX(targetX - cartToken.getLayoutX());
                 transition.setToY(targetY - cartToken.getLayoutY());
 
-                int direction = cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x];
-                updateCartSprite(cart, cartToken, direction);
+                //direction 5 signifies where two paths merge on the map
+                if (cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x] != 5) {
+                    cart.setDirection(cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x]);
+                }
+                updateCartSprite(cart, cartToken, cart.getDirection());
+
 
                 transition.setOnFinished(event -> {
                     cartSteps.put(cart, currentStep + 1);
@@ -724,7 +758,12 @@ public class GameController {
                 cartSteps.remove(cart);
                 isMoving = false;
                 gameManager.changeLives(1);
-                System.out.println("Cart removed from the game.");
+                gameRunning = false;
+                winOrLoseLabel.toFront();
+                mainMenuButton.toFront();
+                winOrLoseLabel.setText("You failed Round " + gameManager.getCurrentRound() + "!");
+                winOrLoseLabel.setTextFill(Color.ORANGE);  // Set text color to orange
+                mainMenuButton.setVisible(true);  // Show the main menu button
             }
         }
     }
@@ -750,10 +789,9 @@ public class GameController {
             gameRunning = false;
             winOrLoseLabel.toFront();
             mainMenuButton.toFront();
-            winOrLoseLabel.setText("You Won!");
+            winOrLoseLabel.setText("You cleared Round " + gameManager.getCurrentRound() + "!");
             winOrLoseLabel.setTextFill(Color.GREEN);  // Set text color to green
             mainMenuButton.setVisible(true);  // Show the main menu button
-            gameRunning = false;
         }
 
         // Check lose condition
@@ -764,8 +802,6 @@ public class GameController {
             winOrLoseLabel.setText("You Lost");
             winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
             mainMenuButton.setVisible(true);  // Show the main menu button
-            gameRunning = false;
-            gameManager.gameToFailMenuScreen();
         }
     }
 

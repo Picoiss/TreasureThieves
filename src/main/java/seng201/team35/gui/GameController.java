@@ -154,6 +154,7 @@ public class GameController {
         System.out.println("aa");
         warningLabel.setText(warningText);
         warningLabel.setOpacity(0.7);
+        warningLabel.toFront();
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(3), new KeyValue(warningLabel.opacityProperty(), 0.7)),
@@ -451,6 +452,8 @@ public class GameController {
         projectile.setLayoutX(startX);
         projectile.setLayoutY(startY);
         gamePane.getChildren().add(projectile);
+        double angle = Math.atan2(targetY - startY, targetX - startX) * 180 / Math.PI;
+        projectile.setRotate(angle - 90);  // Adjust by -90 degrees because the projectile points down by default
 
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
         transition.setByX(targetX - startX);

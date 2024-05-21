@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -58,6 +60,7 @@ public class GameController {
     private SpriteSheet spriteSheet;
     private CartSprite cartSprite;
     private List<CartSpawn> carts;
+    private Map<Cart, Rectangle> cartHealthBars = new HashMap<>();
     private int currentCartIndex = 0;
     private CartPath cartPath;
     private CartDirectionMap cartDirectionMap;
@@ -295,11 +298,32 @@ public class GameController {
             // stores information about the Carts in two dictionaries, cartTokens, and cartSteps
             // cartTokens is a dict which maps the cart to the cartToken ( which was created from the cart )
             // cartSteps matches the cart to the .. ''current step''?
+            Rectangle healthBar = new Rectangle(50, 5);  // Health bar width matches the cart width
+            healthBar.setLayoutX(startX);
+            healthBar.setLayoutY(startY + 55);  // Offset slightly below the cart
+            healthBar.setFill(Color.GREEN);  // Green health bar
+            gamePane.getChildren().add(healthBar);
+            cartHealthBars.put(cart, healthBar);
+            updateHealthBar(cart);
             System.out.println("Spawned cart at: " + startX + ", " + startY);
         } else {
             System.out.println("Start position not found in pathGraph.");
         }
         // debugging
+    }
+    private void updateHealthBar(Cart cart) {
+        Rectangle healthBar = cartHealthBars.get(cart);
+        if (healthBar != null) {
+            double fillPercentage = (double) (cart.getSize() - cart.getCurrentAmount()) / cart.getSize();
+            healthBar.setWidth(50 * fillPercentage);
+            if (fillPercentage < 0.3) {
+                healthBar.setFill(Color.RED);  // Red when health is low
+            } else if (fillPercentage < 0.6) {
+                healthBar.setFill(Color.YELLOW);  // Yellow when health is medium
+            } else {
+                healthBar.setFill(Color.GREEN);  // Green when health is high
+            }
+        }
     }
 
     private void rotateTowerTowardsTarget(ImageView tower, Point2D target) {
@@ -455,8 +479,13 @@ public class GameController {
                 System.out.println("Cart destroyed");
                 gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
                 cartTokens.remove(targetCart); // Remove the cart from active carts
+                Rectangle healthBar = cartHealthBars.get(targetCart);
+                if (healthBar != null) {
+                    gamePane.getChildren().remove(healthBar);
+                }
             } else {
                 System.out.println("Projectile hit the cart! Damage: " + damage);
+                updateHealthBar(targetCart);
             }
         }
     }
@@ -489,6 +518,7 @@ public class GameController {
         while (iterator.hasNext()) {
             Map.Entry<Cart, ImageView> entry = iterator.next();
             Cart cart = entry.getKey();
+            Rectangle healthBar = cartHealthBars.get(cart);
             ImageView cartToken = entry.getValue();
             Integer currentStep = cartSteps.get(cart); // Get the current step
 
@@ -496,6 +526,9 @@ public class GameController {
                 System.out.println("Error: No tracking info for cart. Removing cart.");
                 gamePane.getChildren().remove(cartToken);
                 iterator.remove();
+                if (healthBar != null) {
+                    gamePane.getChildren().remove(healthBar);
+                }
                 continue;  // Skip further processing for this cart
             }
 
@@ -518,8 +551,18 @@ public class GameController {
                     isMoving = false;
                 });
                 transition.play();
+                if (healthBar != null) {
+                    TranslateTransition healthBarTransition = new TranslateTransition(Duration.seconds(cart.getSpeed()), healthBar);
+                    healthBarTransition.setToX(targetX - healthBar.getLayoutX());
+                    healthBarTransition.setToY(targetY - healthBar.getLayoutY() + 55);
+
+                    healthBarTransition.play();
+                }
             } else {
                 System.out.println("Cart reached the end of the path or next position is invalid. Current step: " + currentStep);
+                if (healthBar != null) {
+                    gamePane.getChildren().remove(healthBar);
+                }
                 gamePane.getChildren().remove(cartToken);
                 iterator.remove();
                 cartSteps.remove(cart);

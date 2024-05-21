@@ -5,6 +5,7 @@ public class Cart {
     private double speed;
     private String resourceType;
     private int x;
+
     private int y;
     private int direction;
     private int currentAmount;
@@ -26,7 +27,9 @@ public class Cart {
         isFilled = currentAmount >= this.size;
         return isFilled;
     }
-
+    public int getCurrentAmount() {
+        return currentAmount;
+    }
     public int getSize() {
         return size;
     }

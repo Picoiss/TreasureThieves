@@ -47,6 +47,10 @@ public class GameController {
     private ComboBox<String> towerSelectionComboBox;
     @FXML
     private Label warningLabel;
+    @FXML
+    private Label winOrLoseLabel;
+    @FXML
+    private Button mainMenuButton;
     private long startTime;
     private boolean gameRunning = false;
     private long lastUpdate = 0;
@@ -67,7 +71,9 @@ public class GameController {
     private Map<Cart, ImageView> cartTokens = new HashMap<>();
     private Map<Cart, Integer> cartSteps = new HashMap<>();
     private boolean isMoving = false;
+    private boolean gameStartState = false;
     private String currentModifier;
+    private double difficultyScaling;
     private double speedIncrease;
     private int cartNumIncrease;
     private int cartNumDecrease;
@@ -86,9 +92,11 @@ public class GameController {
         grassImage = new Image(getClass().getResourceAsStream("/images/Grass.png"));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
         setupGameLoop();
+        mainMenuButton.setVisible(false);
         loadGroundAssets(); // load the ground (path and grass etc).
         drawPathForRound(1); // Example for round 1
         checkModifiers();
+        getDifficultyScaling();
         // Populate the ComboBox with tower names from the GameManager
         towerSelectionComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
 
@@ -97,7 +105,20 @@ public class GameController {
 
         updateComboBox();
     }
-
+    private void getDifficultyScaling() {
+        String difficulty =gameManager.getGameDifficulty();
+        switch(difficulty) {
+            case "Easy":
+                difficultyScaling = 1.75;
+                break;
+            case "Medium":
+                difficultyScaling = 1.5;
+                break;
+            case "Hard":
+                difficultyScaling = 1;
+                break;
+        }
+    }
     private void loadGroundAssets() {
         int rows = 20;
         int columns = 18;
@@ -313,18 +334,28 @@ public class GameController {
 
     @FXML
     private void gameStarted() {
-        // this is called upon the button being pressed
-        carts = CartRound.getCartsForRound(1); // the int will need to be changed to a var roundNum eventually
-        cartPath = CartPath.getCartPathForRound(1);
-        cartDirectionMap = CartDirectionMap.getDirectionMapForRound(1);
-        currentCartIndex = 0;
-        startTime = System.nanoTime(); // Set start time to current time
-        gameRunning = true; // game is now running
-        lastUpdate = System.nanoTime(); // set lastUpdate to now
-        System.out.println("Game started, carts to spawn: " + carts.size());
-        // little debugging
+        if (gameStartState == false) {
+            gameStartState = true;
+            // this is called upon the button being pressed
+            carts = CartRound.getCartsForRound(1); // the int will need to be changed to a var roundNum eventually
+            cartPath = CartPath.getCartPathForRound(1);
+            cartDirectionMap = CartDirectionMap.getDirectionMapForRound(1);
+            currentCartIndex = 0;
+            startTime = System.nanoTime(); // Set start time to current time
+            gameRunning = true; // game is now running
+            lastUpdate = System.nanoTime(); // set lastUpdate to now
+            System.out.println("Game started, carts to spawn: " + carts.size());
+            // little debugging
+        }
+        else {
+            setWarning("You already Started the Game");
+        }
     }
-
+    @FXML
+    private void mainMenu() {
+        gameManager.changeCurrentRound();
+        gameManager.gameToMainMenuScreen();
+    }
     private void spawnCart(Cart cart) {
         ImageView cartToken = new ImageView();
         // create s anew ImageView called cartToken
@@ -531,10 +562,10 @@ public class GameController {
             // Calculate damage based on resource type match
             int damage;
             if (isResourceMatch) {
-                damage = (int) (cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
+                damage = (int) (difficultyScaling * cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
                 System.out.println("Damage Full");
             } else {
-                damage = (int) (cartFillIncrease * shootingTower.getMaxAmount() / 50); // Reduced damage (20% of full damage)
+                damage = (int) (difficultyScaling * cartFillIncrease * shootingTower.getMaxAmount() / 50); // Reduced damage (20% of full damage)
                 System.out.println("Damage 20%");
             }
 
@@ -631,6 +662,7 @@ public class GameController {
                 iterator.remove();
                 cartSteps.remove(cart);
                 isMoving = false;
+                gameManager.changeLives(1);
                 System.out.println("Cart removed from the game.");
             }
         }
@@ -640,6 +672,30 @@ public class GameController {
     private void updateGame() {
         moveCarts();
         checkTowersTargeting();
+        checkWinOrLose();
+    }
+    private void checkWinOrLose() {
+        boolean allCartsSpawned = currentCartIndex >= carts.size();  // Check if all carts have been spawned
+        if (allCartsSpawned && cartTokens.isEmpty()) {  // No active carts left
+            gameRunning = false;
+            winOrLoseLabel.toFront();
+            mainMenuButton.toFront();
+            winOrLoseLabel.setText("You Won!");
+            winOrLoseLabel.setTextFill(Color.GREEN);  // Set text color to green
+            mainMenuButton.setVisible(true);  // Show the main menu button
+            gameRunning = false;
+        }
+
+        // Check lose condition
+        if (gameManager.getLives() <= 0) {  // This will be implemented based on your game health logic
+            gameRunning = false;
+            winOrLoseLabel.toFront();
+            mainMenuButton.toFront();
+            winOrLoseLabel.setText("You Lost");
+            winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
+            mainMenuButton.setVisible(true);  // Show the main menu button
+            gameRunning = false;
+        }
     }
 
     @FXML

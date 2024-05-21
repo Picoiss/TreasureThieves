@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.scene.image.Image;
 import java.io.IOException;
 
 /**
@@ -23,7 +23,9 @@ public class FXWindow extends Application {
         FXMLLoader baseLoader = new FXMLLoader(getClass().getResource("/fxml/fx_wrapper.fxml"));
         Parent root = baseLoader.load();
         FXWrapper fxWrapper = baseLoader.getController();
+        Image appIcon = new Image(getClass().getResourceAsStream("/images/GameIcon.png"));
         Scene scene = new Scene(root, 1440, 900);
+        primaryStage.getIcons().add(appIcon);
         primaryStage.setTitle("FX Wrapper");
         primaryStage.setScene(scene);
         primaryStage.show();

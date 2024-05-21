@@ -135,7 +135,9 @@ public class GameManager {
     public int getLives() {
         return lives;
     }
-
+    public void changeLives(int livesLost) {
+        lives -= livesLost;
+    }
     public void changeCurrentRound() {
         currentRound += 1;
     }

@@ -103,6 +103,16 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#mainMenu" prefHeight="53.0" prefWidth="158.0" text="Main Menu" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="7" GridPane.rowSpan="2">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="winOrLoseLabel" alignment="CENTER" prefHeight="31.0" prefWidth="188.0" text="temp" textFill="#111111" GridPane.columnIndex="8" GridPane.columnSpan="3" GridPane.rowIndex="6">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Label>
                </children>
                 </GridPane>
             </children>

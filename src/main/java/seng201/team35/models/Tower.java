@@ -17,6 +17,7 @@ public class Tower {
     private int resourceAmount;
     private int reloadSpeed;
     private int level;
+    private boolean isShooting;
 
     /**
      * Tower Constructor
@@ -30,6 +31,19 @@ public class Tower {
         level = 1;
     }
 
+    public boolean getShooting() {
+        return isShooting;
+    }
+
+
+    public void toggleShooting() {
+        if (isShooting) {
+            isShooting = false;
+        }
+        else if (!isShooting) {
+            isShooting = true;
+        }
+    }
     /**
      * Get the tower's name
      * @return name

@@ -265,7 +265,7 @@ public class GameController {
         towerPositions.put(newTowerPosition, towerSprite);
         gameGrid.add(towerSprite, colIndex, rowIndex);
         animateTower(towerSprite, tower.getName());
-        gameManager.removeMainTower(tower);
+        towerSelectionComboBox.getItems().remove(tower.getName());
         currentTower = null; // set currentTower -> null afterplacing.
     }
     private Tower retrieveSelectedTower() {
@@ -571,9 +571,8 @@ public class GameController {
         transition.setByY(targetY - startY);
         transition.setOnFinished(event -> {
             checkProjectileCollision(projectile, targetCart, shootingTower);
-            // when the transition is done, check if the projectile hit the targetCart. (shootingTower here to parse damage details for later)
+            // when the transition
             gamePane.getChildren().remove(projectile);
-            // remove the projectile from the Pane.
         });
         transition.play();
     }
@@ -598,7 +597,6 @@ public class GameController {
                 System.out.println("Damage Full");
             } else {
                 damage = (int) (difficultyScaling * cartFillIncrease * shootingTower.getMaxAmount() / 50); // Reduced damage (20% of full damage)
-                // maybe will need to up damage later?
                 System.out.println("Damage 20%");
             }
 
@@ -644,7 +642,6 @@ public class GameController {
 
         Iterator<Map.Entry<Cart, ImageView>> iterator = cartTokens.entrySet().iterator();
         while (iterator.hasNext()) {
-            // iterates through the Carts
             Map.Entry<Cart, ImageView> entry = iterator.next();
             Cart cart = entry.getKey();
             Rectangle healthBar = cartHealthBars.get(cart);
@@ -662,7 +659,6 @@ public class GameController {
             }
 
             Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1);
-            // nextPosition is the next position on cartPath graph.
 
             if (nextPosition != null) {
                 double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
@@ -670,7 +666,6 @@ public class GameController {
                 double targetX = nextPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 2;
                 double targetY = nextPosition.y * cellHeight + cellHeight / 2 - cartToken.getFitHeight() / 2;
                 TranslateTransition transition = new TranslateTransition(Duration.seconds(cart.getSpeed()), cartToken);
-                // the transition is set depending on cart speed
                 transition.setToX(targetX - cartToken.getLayoutX());
                 transition.setToY(targetY - cartToken.getLayoutY());
 
@@ -723,7 +718,7 @@ public class GameController {
         }
 
         // Check lose condition
-        if (gameManager.getLives() <= 0) {  // when lives are less than 0
+        if (gameManager.getLives() <= 0) {  // This will be implemented based on your game health logic
             gameRunning = false;
             winOrLoseLabel.toFront();
             mainMenuButton.toFront();
@@ -741,7 +736,6 @@ public class GameController {
 
     private void updateComboBox() {
         towerSelectionComboBox.setValue("");
-        towerSelectionComboBox.getItems().setAll(Tower.getTowerNames(gameManager.getMainTowerList()));
     }
 
     public class ProjectileController {

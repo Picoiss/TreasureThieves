@@ -91,19 +91,16 @@ public class GameManager {
         return towerPositionMap.get(position);
     }
     public Tower getTowerByName(String towerName) {
-        // Searching in mainTowerList as an example; adjust based on where towers are stored
         for (Tower tower : mainTowerList) {
             if (tower.getName().equals(towerName)) {
                 return tower;
             }
         }
-        // Optionally handle default towers or other lists if needed
         for (Tower tower : defaultTowers) {
             if (tower.getName().equals(towerName)) {
                 return tower;
             }
         }
-        // Return null or throw an exception if the tower is not found
         System.out.println("Tower with name '" + towerName + "' not found.");
         return null;
     }

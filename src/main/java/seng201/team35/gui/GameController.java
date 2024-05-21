@@ -53,6 +53,15 @@ public class GameController {
     private Label winOrLoseLabel;
     @FXML
     private Button mainMenuButton;
+    @FXML
+    private Label livesLabel;
+    @FXML
+    private Label moneyLabel;
+    @FXML
+    private Label roundLabel;
+    @FXML
+    private Label cartsLeftLabel;
+    private int cartsLeft;
     private long startTime;
     private boolean gameRunning = false;
     private long lastUpdate = 0;
@@ -92,6 +101,12 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        cartsLeft = CartRound.getCartsForRound(gameManager.getCurrentRound()).size();
+        livesLabel.setText("Lives: " + gameManager.getLives());
+        moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
+        roundLabel.setText("Round: " + gameManager.getCurrentRound());
+        cartsLeftLabel.setText("Carts Left: " + cartsLeft);
+
         grassImage = new Image(getClass().getResourceAsStream("/images/Grass.png"));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
         // load images of grass, and textured grass (loading grassImage may be redundant)
@@ -349,7 +364,7 @@ public class GameController {
         if (gameStartState == false) {
             gameStartState = true;
             // this is called upon the button being pressed
-            carts = CartRound.getCartsForRound(gameManager.getCurrentRound()); // the int will need to be changed to a var roundNum eventually
+            carts = CartRound.getCartsForRound(gameManager.getCurrentRound());
             cartPath = CartPath.getCartPathForRound(gameManager.getCurrentRound());
             cartDirectionMap = CartDirectionMap.getDirectionMapForRound(gameManager.getCurrentRound());
             currentCartIndex = 0;
@@ -610,6 +625,7 @@ public class GameController {
                 System.out.println("Cart destroyed");
                 gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
                 cartTokens.remove(targetCart); // Remove the cart from active carts
+                cartsLeft -= 1; // Update remaining carts to fill
                 Rectangle healthBar = cartHealthBars.get(targetCart);
                 if (healthBar != null) {
                     gamePane.getChildren().remove(healthBar); // Remove health bar associated with the cart
@@ -706,10 +722,19 @@ public class GameController {
 
 
     private void updateGame() {
+        updateLabels();
         moveCarts();
         checkTowersTargeting();
         checkWinOrLose();
     }
+
+    // Update the lives, money, and carts left labels
+    private void updateLabels() {
+        livesLabel.setText("Lives: " + gameManager.getLives());
+        moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
+        cartsLeftLabel.setText("Carts Left: " + cartsLeft);
+    }
+
     private void checkWinOrLose() {
         boolean allCartsSpawned = currentCartIndex >= carts.size();  // Check if all carts have been spawned
         if (allCartsSpawned && cartTokens.isEmpty()) {  // No active carts left
@@ -731,6 +756,7 @@ public class GameController {
             winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
             mainMenuButton.setVisible(true);  // Show the main menu button
             gameRunning = false;
+            gameManager.gameToFailMenuScreen();
         }
     }
 

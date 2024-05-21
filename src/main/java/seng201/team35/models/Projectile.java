@@ -26,6 +26,7 @@ public class Projectile {
     }
 
     public static Image getProjectileSprite(String spriteName) {
-        return projectileSprites.getOrDefault(spriteName, projectileSprites.get(DEFAULT_SPRITE));
+        String imagePath = SPRITE_PATH + spriteName;
+        return new Image(Projectile.class.getResourceAsStream(imagePath));
     }
 }

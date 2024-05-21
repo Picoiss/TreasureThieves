@@ -36,6 +36,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static seng201.team35.services.ProjectileSwitch.getProjectileSprite;
+
 public class GameController {
     @FXML
     private GridPane gameGrid;
@@ -259,9 +261,10 @@ public class GameController {
         gameManager.placeTowerAt(newTowerPosition, tower);
         ImageView towerSprite = new ImageView();
         // create an image of the towerSprite.
-        towerSprite.setFitWidth(50); // Adjust as needed
-        towerSprite.setFitHeight(50); // Adjust as needed
-        towerSprite.setSmooth(false);
+        towerSprite.setFitWidth(35); // Adjust as needed
+        towerSprite.setFitHeight(35); // Adjust as needed
+        towerSprite.setPreserveRatio(true);
+        towerSprite.setSmooth(true);
         towerPositions.put(newTowerPosition, towerSprite);
         gameGrid.add(towerSprite, colIndex, rowIndex);
         animateTower(towerSprite, tower.getName());
@@ -297,6 +300,8 @@ public class GameController {
                     Image frame = spriteSheet.getSpriteFrame(towerName, frameIndex);
                     // gets the frame from the spriteSheet (stored as frame (Image object))
                     towerSprite.setImage(frame);
+                    towerSprite.setPreserveRatio(true);
+                    towerSprite.setSmooth(true);
                     //set the image of towerSprite
                     // updates the ImageView of the towerSprite to BE the frame
                     frameIndex = (frameIndex + 1) % frameCount;
@@ -555,11 +560,11 @@ public class GameController {
 
 
     private void launchProjectile(double startX, double startY, double targetX, double targetY, Cart targetCart, Tower shootingTower) {
-        ImageView projectile = new ImageView(Projectile.getProjectileSprite("Arrow Long.png"));
+        ImageView projectile = new ImageView(Projectile.getProjectileSprite(getProjectileSprite(shootingTower.getName())));
         // will need to add a function where the Projectile sprite depends on the tower. Luckily, not very hard to implement as the logic is already
         // here.
-        projectile.setFitWidth(20);
-        projectile.setFitHeight(20);
+        projectile.setFitWidth(10);
+        projectile.setFitHeight(18);
         projectile.setLayoutX(startX);
         projectile.setLayoutY(startY);
         gamePane.getChildren().add(projectile);

@@ -94,7 +94,7 @@ public class GameController {
         setupGameLoop();
         mainMenuButton.setVisible(false);
         loadGroundAssets(); // load the ground (path and grass etc).
-        drawPathForRound(1); // Example for round 1
+        drawPathForRound(gameManager.getCurrentRound()); // Example for round 1
         checkModifiers();
         getDifficultyScaling();
         // Populate the ComboBox with tower names from the GameManager
@@ -337,9 +337,9 @@ public class GameController {
         if (gameStartState == false) {
             gameStartState = true;
             // this is called upon the button being pressed
-            carts = CartRound.getCartsForRound(1); // the int will need to be changed to a var roundNum eventually
-            cartPath = CartPath.getCartPathForRound(1);
-            cartDirectionMap = CartDirectionMap.getDirectionMapForRound(1);
+            carts = CartRound.getCartsForRound(gameManager.getCurrentRound()); // the int will need to be changed to a var roundNum eventually
+            cartPath = CartPath.getCartPathForRound(gameManager.getCurrentRound());
+            cartDirectionMap = CartDirectionMap.getDirectionMapForRound(gameManager.getCurrentRound());
             currentCartIndex = 0;
             startTime = System.nanoTime(); // Set start time to current time
             gameRunning = true; // game is now running
@@ -353,6 +353,20 @@ public class GameController {
     }
     @FXML
     private void mainMenu() {
+        // Clear all tiles and elements from the game grid
+        gameGrid.getChildren().clear();
+        gamePane.getChildren().clear();
+        // Optionally, clear specific game-related collections if not already done
+        cartTokens.clear();
+        towerPositions.clear();
+        cartHealthBars.clear();
+        activeProjectiles.clear();
+        // Reset game state variables
+        gameRunning = false;
+        gameStartState = false;
+        currentCartIndex = 0;
+        carts.clear();
+        // Transition to main menu or change the round
         gameManager.changeCurrentRound();
         gameManager.gameToMainMenuScreen();
     }
@@ -363,7 +377,7 @@ public class GameController {
         cartToken.setFitHeight(50); // and the height
         cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1)); // Initial direction 0 probably wrong but ok
         int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
-        Point startPosition = getCartPosition(pathGraph, 1); // Initialize at position 1
+        Point startPosition = getCartPosition(pathGraph, gameManager.getCurrentRound()); // Initialize at position 1
         if (startPosition != null) { // if the startPosition exists;
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();

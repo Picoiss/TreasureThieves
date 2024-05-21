@@ -30,6 +30,7 @@ import seng201.team35.models.Projectile;
 
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -162,20 +163,36 @@ public class GameController {
         Point newTowerPosition = new Point(colIndex, rowIndex);
         if (towerPositions.containsKey(newTowerPosition)) {
             System.out.println("A tower already exists at this position!");
-            setWarning("A tower already exists as this location");
+            setWarning("A tower already exists at this location");
             return; // Exit the method if a tower already exists at this position
         }
 
+        // Example to retrieve or create a tower instance
+        // Make sure to replace this with your actual logic to get the correct Tower instance
+        Tower tower = retrieveSelectedTower(); // This is a hypothetical method, implement according to your app's logic
+
+        // Place the tower in GameManager
+        gameManager.placeTowerAt(newTowerPosition, tower); // This method does not return anything
+
+        // Proceed with adding the tower's visual representation to the GUI
         ImageView towerSprite = new ImageView();
         towerSprite.setFitWidth(50); // Adjust as needed
         towerSprite.setFitHeight(50); // Adjust as needed
         towerSprite.setSmooth(false);
         towerPositions.put(newTowerPosition, towerSprite);
-        // towerPositions is a HashMap which contains information pertaining to towers, specifically their Position, and their SPRITE.
         gameGrid.add(towerSprite, colIndex, rowIndex);
-        animateTower(towerSprite, currentTower);
+        animateTower(towerSprite, tower.getName());
         currentTower = null; // Clear the current tower after placing it
     }
+
+    // Hypothetical method to retrieve the currently selected tower
+    private Tower retrieveSelectedTower() {
+        String towerName = towerSelectionComboBox.getValue();
+        // Assuming you have a method in GameManager to get a tower by name
+        return gameManager.getTowerByName(towerName);
+    }
+
+
 
     private void animateTower(ImageView towerSprite, String towerName) {
         // ImageView object displays the towerSprite.
@@ -312,14 +329,16 @@ public class GameController {
             // note, towerPositions is a hashMap containing the towers' (Position, Sprite)
             Point towerGridPos = entry.getKey();
             ImageView towerSprite = entry.getValue();
-            System.out.println(entry.getValue());
             // as follows.
 
             // Calculate the center of the tower's grid cell in pixel coordinates
             double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
+            System.out.println("towerCenterx = " + towerCenterX);
+
             // this calculates the tower Center (X co-ordinate). This is done by taking the gridposition of the tower
             // adding 0.5 (to get the center), then multiplying by the cellWidth (which could have been set at 50, but oh well)
             double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
+            System.out.println("towerCentery = " + towerCenterY);
             //same for the y co-ordinate of the tower.
 
             for (Map.Entry<Cart, ImageView> cartEntry : cartTokens.entrySet()) {
@@ -341,8 +360,8 @@ public class GameController {
                 // Calculate the distance in pixel coordinates
                 double distance = Math.sqrt(Math.pow(towerCenterX - cartCenterX, 2) + Math.pow(towerCenterY - cartCenterY, 2));
                 // pythag.
-                if (distance <= 2 * Math.min(cellWidth, cellHeight)) { // Assuming a range of 2 tiles (in pixels). although perhaps in the future this could
-                    // be changed to be tower specific..
+                System.out.println(distance);
+                if (distance <= 2 * Math.min(cellWidth, cellHeight)) {
                     System.out.println("Within Range " + distance);
                     rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
                     // rotates the tower towards the cart
@@ -355,89 +374,72 @@ public class GameController {
 
     private void shootProjectile(Point towerGridPos, Cart targetCart) {
         ImageView towerSprite = towerPositions.get(towerGridPos);
-        // gets the ImageView of the tower via the towerPositions map
         if (towerSprite == null) return;
 
-        // Calculate tower and cart positions
+        Tower shootingTower = gameManager.getTowerAt(towerGridPos);
+
         double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
         double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
-        double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
-        double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
-        // the tower Center (X) is calculated via getting the towerGridPos (what grid the tower is in) + 0.5 to get the center
-        // then multiply by the CEll Width
-        //same for the height
+        Point2D towerCenter = new Point2D((towerGridPos.x + 0.5) * cellWidth, (towerGridPos.y + 0.5) * cellHeight);
+
         ImageView cartToken = cartTokens.get(targetCart);
-        //gets the Image of the Cart via the cartTokens Map.
         if (cartToken == null) return;
 
         Bounds cartBounds = cartToken.getBoundsInParent();
-        double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
-        double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
-        // gets the position of the Cart
-        // Calculate the predicted position of the cart
-        Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
-        if (nextPosition != null) {
-            double targetX = nextPosition.x * cellWidth + cellWidth / 2;
-            double targetY = nextPosition.y * cellHeight + cellHeight / 2;
-            // the target X is set at the nextPosition location
-            double distance = towerGridPos.distance(nextPosition);
+        Point2D cartCenter = new Point2D(cartBounds.getMinX() + cartBounds.getWidth() / 2, cartBounds.getMinY() + cartBounds.getHeight() / 2);
 
+        // Calculate the distance in tiles
+        double distance = towerCenter.distance(cartCenter) / cellWidth;
 
-            // Adjust prediction based on distance
-            if (distance > 1.5) {
-                targetX = (cartCenterX + targetX) / 2;
-                targetY = (cartCenterY + targetY) / 2;
-                // if the distance is GREATER than 1.5 Tiles, we will need to predict the locaiton of the cart.
-                // this is done by adding the location of the cart (center of cart) plus the target X
-                // Although confusing, this is parsewd through in the launchProjectile function which will take these co-ordinates and
-                // generate the projectile track
-                // essentially, if the distance is greater than 1.5, the target should be 1 step further, as to predict the Cart location.
-                // actually, upon studying the code, it seem due to the / 2, the actually targets between 0 to 1 steps ahead.
-            } else {
-                targetX = cartCenterX;
-                targetY = cartCenterY;
-                // else, the trajectory is simply calculated at the targets location ( the actual location of the cart ).
+        double targetX = cartCenter.getX();
+        double targetY = cartCenter.getY();
+
+        if (distance > 0.8 && distance <= 1.25) {
+            // Shoot between current and next position
+            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
+            if (nextPosition != null) {
+                double nextPosX = nextPosition.x * cellWidth + cellWidth / 2;
+                double nextPosY = nextPosition.y * cellHeight + cellHeight / 2;
+                targetX += (nextPosX - targetX) / 2;
+                targetY += (nextPosY - targetY) / 2;
             }
-
-            System.out.println("Shooting projectile from: (" + towerCenterX + ", " + towerCenterY + ") to: (" + targetX + ", " + targetY + ")");
-            // Create and launch the projectile
-            launchProjectile(towerCenterX, towerCenterY, targetX, targetY, targetCart);
+        } else if (distance > 1.25 && distance <= 2) {
+            // Shoot netween next position and current, but more so to the next position
+            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
+            if (nextPosition != null) {
+                double nextPosX = nextPosition.x * cellWidth + cellWidth / 2;
+                double nextPosY = nextPosition.y * cellHeight + cellHeight / 2;
+                targetX += (nextPosX - targetX) / 1.6;
+                targetY += (nextPosY - targetY) / 1.6;
+            }
         }
+
+        System.out.println("Shooting projectile from: (" + towerCenter.getX() + ", " + towerCenter.getY() + ") to: (" + targetX + ", " + targetY + ")");
+        launchProjectile(towerCenter.getX(), towerCenter.getY(), targetX, targetY, targetCart, shootingTower);
     }
 
-    private void launchProjectile(double startX, double startY, double targetX, double targetY, Cart targetCart) {
+
+
+    private void launchProjectile(double startX, double startY, double targetX, double targetY, Cart targetCart, Tower shootingTower) {
         ImageView projectile = new ImageView(Projectile.getProjectileSprite("Arrow Long.png"));
-        // although it does just say "Arrow Long.png" right now, this will be made dynamic so  different tower types can have different projectiles.
-        projectile.setFitWidth(20); // set the projectile to be 20 px in height and width
+        projectile.setFitWidth(20);
         projectile.setFitHeight(20);
         projectile.setLayoutX(startX);
         projectile.setLayoutY(startY);
-        // initialise the projectile at the startX and startY (Tower center Co-ordinates)
-
         gamePane.getChildren().add(projectile);
 
-        // Calculate the differences in positions for the transition
-        double deltaX = targetX - startX;
-        double deltaY = targetY - startY;
-        // change in X and Y for the tower and cart position
-
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
-        transition.setByX(deltaX);
-        transition.setByY(deltaY);
-
+        transition.setByX(targetX - startX);
+        transition.setByY(targetY - startY);
         transition.setOnFinished(event -> {
-            checkProjectileCollision(projectile, targetCart);
-            // when the event is done, we check a collision, and also remove the projectile
-            // We also could just have it so there is no collision check, we simply force a collision (some cases are
-            // sketchy where the arrow looks like it hits, but it actually misses technically.
+            checkProjectileCollision(projectile, targetCart, shootingTower);
             gamePane.getChildren().remove(projectile);
         });
         transition.play();
-
-        activeProjectiles.put(projectile, new ProjectileController(targetCart, projectile));
     }
 
-    private void checkProjectileCollision(ImageView projectile, Cart targetCart) {
+
+    private void checkProjectileCollision(ImageView projectile, Cart targetCart, Tower shootingTower) {
         ImageView cartToken = cartTokens.get(targetCart);
         if (cartToken == null) return;
 
@@ -445,11 +447,17 @@ public class GameController {
         Bounds cartBounds = cartToken.getBoundsInParent();
 
         if (projectileBounds.intersects(cartBounds)) {
-            // Handle hit (e.g., reduce cart's health, remove cart if health <= 0)
-            System.out.println("Projectile hit the cart!");
-            //gamePane.getChildren().remove(cartToken);
-            //cartTokens.remove(targetCart);
-            //cartSteps.remove(targetCart);
+            int damage = shootingTower.getMaxAmount() / 10; // Calculate damage
+            targetCart.fillCart(damage); // Fill the cart with the damage value
+            targetCart.isCartFilled();  // Check if the cart is now full
+
+            if (targetCart.isCartFilled()) {
+                System.out.println("Cart destroyed");
+                gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
+                cartTokens.remove(targetCart); // Remove the cart from active carts
+            } else {
+                System.out.println("Projectile hit the cart! Damage: " + damage);
+            }
         }
     }
 
@@ -472,15 +480,25 @@ public class GameController {
     }
 
     private void moveCarts() {
-        // ill make comments later.
         if (isMoving = false) {
             return;
         }
         isMoving = true;
 
-        for (Cart cart : cartTokens.keySet()) {
-            ImageView cartToken = cartTokens.get(cart);
-            int currentStep = cartSteps.get(cart);
+        Iterator<Map.Entry<Cart, ImageView>> iterator = cartTokens.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Cart, ImageView> entry = iterator.next();
+            Cart cart = entry.getKey();
+            ImageView cartToken = entry.getValue();
+            Integer currentStep = cartSteps.get(cart); // Get the current step
+
+            if (currentStep == null) {
+                System.out.println("Error: No tracking info for cart. Removing cart.");
+                gamePane.getChildren().remove(cartToken);
+                iterator.remove();
+                continue;  // Skip further processing for this cart
+            }
+
             Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1);
 
             if (nextPosition != null) {
@@ -488,7 +506,6 @@ public class GameController {
                 double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
                 double targetX = nextPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 2;
                 double targetY = nextPosition.y * cellHeight + cellHeight / 2 - cartToken.getFitHeight() / 2;
-
                 TranslateTransition transition = new TranslateTransition(Duration.seconds(cart.getSpeed()), cartToken);
                 transition.setToX(targetX - cartToken.getLayoutX());
                 transition.setToY(targetY - cartToken.getLayoutY());
@@ -501,13 +518,17 @@ public class GameController {
                     isMoving = false;
                 });
                 transition.play();
-                System.out.println("Moving cart from step " + currentStep + " to step " + (currentStep + 1));
             } else {
                 System.out.println("Cart reached the end of the path or next position is invalid. Current step: " + currentStep);
+                gamePane.getChildren().remove(cartToken);
+                iterator.remove();
+                cartSteps.remove(cart);
                 isMoving = false;
+                System.out.println("Cart removed from the game.");
             }
         }
     }
+
 
     private void updateGame() {
         moveCarts();

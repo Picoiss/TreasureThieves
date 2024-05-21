@@ -7,14 +7,24 @@ public class Cart {
     private int x;
     private int y;
     private int direction;
+    private int currentAmount;
+    private boolean isFilled = false;
 
     public Cart(int size, String resourceType, double speed) {
         this.size = size;
+        this.currentAmount = 0;
         this.resourceType = resourceType;
         this.speed = speed;
         this.x = -1;
         this.y = -1;
         this.direction = 0;
+    }
+    public void fillCart(int fillAmount) {
+        currentAmount += fillAmount;
+    }
+    public boolean isCartFilled() {
+        isFilled = currentAmount >= this.size;
+        return isFilled;
     }
 
     public int getSize() {

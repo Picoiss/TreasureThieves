@@ -3,8 +3,11 @@ package seng201.team35;
 import seng201.team35.models.Tower;
 import seng201.team35.models.Upgrade;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class GameManager {
@@ -14,6 +17,7 @@ public class GameManager {
     private String gameDifficulty;
     private int lives;
     private int currentRound = 1;
+    private Map<Point, Tower> towerPositionMap = new HashMap<>();
     private List<Tower> mainTowerList = new ArrayList<>();
     private List<Tower> reserveTowerList= new ArrayList<>();
     private List<Upgrade> upgradesList= new ArrayList<>();
@@ -74,7 +78,34 @@ public class GameManager {
                 new Upgrade(10, 10, "Ruby", 700, "Active")));
         launchSetupScreen();
     }
+    public void placeTowerAt(Point position, Tower tower) {
+        towerPositionMap.put(position, tower);
+    }
 
+    public void removeTowerAt(Point position) {
+        towerPositionMap.remove(position);
+    }
+
+    public Tower getTowerAt(Point position) {
+        return towerPositionMap.get(position);
+    }
+    public Tower getTowerByName(String towerName) {
+        // Searching in mainTowerList as an example; adjust based on where towers are stored
+        for (Tower tower : mainTowerList) {
+            if (tower.getName().equals(towerName)) {
+                return tower;
+            }
+        }
+        // Optionally handle default towers or other lists if needed
+        for (Tower tower : defaultTowers) {
+            if (tower.getName().equals(towerName)) {
+                return tower;
+            }
+        }
+        // Return null or throw an exception if the tower is not found
+        System.out.println("Tower with name '" + towerName + "' not found.");
+        return null;
+    }
     public void setPlayerName(String name) { this.playerName = name; }
     public String getPlayerName() { return playerName; }
 

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Projectile {
-    private static final String SPRITE_PATH = "/images/";
+    private static final String SPRITE_PATH = "/images/Projectiles/";
     private static final String DEFAULT_SPRITE = "Arrow Long.png";
     private static Map<String, Image> projectileSprites = new HashMap<>();
 
@@ -15,6 +15,7 @@ public class Projectile {
     }
 
     private static void initializeSprites() {
+        // this function is probably unneeded now.
         // Load the default sprite for projectiles
         String imagePath = SPRITE_PATH + DEFAULT_SPRITE;
         try {

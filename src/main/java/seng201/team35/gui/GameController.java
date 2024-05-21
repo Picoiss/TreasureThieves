@@ -36,6 +36,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+//questions for tutorial
+//Can we include comments in Final Code
+//How do we cite sources such as youtube Videos, Github (other games' source code), et c.
+//Are we allowed this much user interactivity in the game?
+//Does our game context still fit the requirements of the game in terms of the guidelines shown in the project specs?
+//We lack services, will this impact our Codes design score?
+
+
 import static seng201.team35.services.ProjectileSwitch.getProjectileSprite;
 
 public class GameController {
@@ -90,6 +98,7 @@ public class GameController {
     private int cartNumDecrease;
     private double cartFillIncrease = 1;
     private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
+    private Map<Point, Boolean> towerActive = new HashMap<>();
 
     public GameController(GameManager x) {
         gameManager = x;

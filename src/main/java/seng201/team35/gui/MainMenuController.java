@@ -68,6 +68,7 @@ public class MainMenuController {
         if (modifierSelected) {
             if (gameManager.getMainTowerList().size() >= 3) {
                 System.out.println("ModifierBeenSelected");
+                gameManager.setModifier(modifierName);
                 gameManager.mainMenuToGameScreen();
             }
             else {

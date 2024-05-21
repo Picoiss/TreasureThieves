@@ -16,14 +16,14 @@ public class CartSprite {
     }
 
     private void initializeSprites() {
-        String[] carts = {"Bronze Cart", "Silver Cart", "Gold Cart", "Diamond Cart", "Emerald Cart", "Ruby Cart"};
+        String[] carts = {"Bronze", "Silver", "Gold", "Diamond", "Emerald", "Ruby"};
         for (String cart : carts) {
             String imagePath = SPRITE_PATH + cart + ".png";
             Image image;
             try {
                 image = new Image(getClass().getResourceAsStream(imagePath));
             } catch (Exception e) {
-                image = new Image(getClass().getResourceAsStream(SPRITE_PATH + "Bronze Cart.png"));
+                image = new Image(getClass().getResourceAsStream(SPRITE_PATH + "Bronze.png"));
             }
             spriteMap.put(cart, image);
         }

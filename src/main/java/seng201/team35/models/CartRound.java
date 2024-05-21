@@ -19,9 +19,9 @@ public class CartRound {
         List<CartSpawn> carts = new ArrayList<>();
         switch (roundNumber) {
             case 1:
-                carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), Duration.ofSeconds(1).toNanos()));
-                //carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), Duration.ofSeconds(3).toNanos()));
-                //carts.add(new CartSpawn(new Cart(100, "Bronze Cart", 1), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(1).toNanos()));
+                //carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(3).toNanos()));
+                //carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(5).toNanos()));
                 break;
         }
         return carts;

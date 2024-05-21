@@ -67,6 +67,11 @@ public class GameController {
     private Map<Cart, ImageView> cartTokens = new HashMap<>();
     private Map<Cart, Integer> cartSteps = new HashMap<>();
     private boolean isMoving = false;
+    private String currentModifier;
+    private double speedIncrease;
+    private int cartNumIncrease;
+    private int cartNumDecrease;
+    private double cartFillIncrease = 1;
     private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
 
     public GameController(GameManager x) {
@@ -83,7 +88,7 @@ public class GameController {
         setupGameLoop();
         loadGroundAssets(); // load the ground (path and grass etc).
         drawPathForRound(1); // Example for round 1
-
+        checkModifiers();
         // Populate the ComboBox with tower names from the GameManager
         towerSelectionComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
 
@@ -103,7 +108,53 @@ public class GameController {
             }
         }
     }
-
+    private void checkUpgrades() {
+        gameManager.getUpgradesList();
+    }
+    private void checkModifiers() {
+        currentModifier = gameManager.getModifier();  // Get the current modifier from the GameManager
+        switch (currentModifier) {
+            case "Tower Speed Increase 10%":
+                speedIncrease = 1.1;
+                break;
+            case "Tower Speed Increase 5%":
+                speedIncrease = 1.05;
+                break;
+            case "Tower Speed Decrease 5%":
+                speedIncrease = 0.95;
+                break;
+            case "Tower Speed Decrease 10%":
+                speedIncrease = 0.9;
+                break;
+            case "Cart Number Decrease by 2":
+                cartNumDecrease = 2;
+                break;
+            case "Cart Number Decrease by 1":
+                cartNumDecrease = 1;
+                break;
+            case "Cart Number Increase by 1":
+                cartNumIncrease = 1;
+                break;
+            case "Cart Number Increase by 2":
+                cartNumIncrease = 2;
+                break;
+            case "Cart Fill Amount Decrease 10%":
+                cartFillIncrease -= 0.1;
+                break;
+            case "Cart Fill Amount Increase 5%":
+                cartFillIncrease += 0.05;
+                break;
+            case "Cart Fill Amount Increase 10%":
+                cartFillIncrease += 0.1;
+                break;
+            case "Cart Fill Amount Decrease 5%":
+                cartFillIncrease -= 0.05;
+                break;
+            default:
+                System.out.println("No modifier or unknown modifier");
+                break;
+        }
+    }
     private void drawPathForRound(int roundNumber) {
         Path path = Path.getPathForRound(roundNumber);
         currentIndexGraph = path.getIndexGraph(); // Store the current index graph
@@ -151,7 +202,6 @@ public class GameController {
         }
     }
     private void setWarning(String warningText) {
-        System.out.println("aa");
         warningLabel.setText(warningText);
         warningLabel.setOpacity(0.7);
         warningLabel.toFront();
@@ -246,7 +296,7 @@ public class GameController {
                     }
                     if (currentCartIndex < carts.size() && now - startTime >= carts.get(currentCartIndex).spawnTime) {
                         if (now - startTime >= carts.get(currentCartIndex).spawnTime) {
-                            System.out.println((now - startTime) + "," + carts.get(currentCartIndex).spawnTime);
+                            //System.out.println((now - startTime) + "," + carts.get(currentCartIndex).spawnTime);
                         }
                         // check if currentCartIndex is less than carts.size
                         // and if the time between now and last-update and if now - lastUpdate is greater than carts.get(spawnTime..)
@@ -358,12 +408,12 @@ public class GameController {
 
             // Calculate the center of the tower's grid cell in pixel coordinates
             double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
-            System.out.println("towerCenterx = " + towerCenterX);
+            //System.out.println("towerCenterx = " + towerCenterX);
 
             // this calculates the tower Center (X co-ordinate). This is done by taking the gridposition of the tower
             // adding 0.5 (to get the center), then multiplying by the cellWidth (which could have been set at 50, but oh well)
             double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
-            System.out.println("towerCentery = " + towerCenterY);
+            //System.out.println("towerCentery = " + towerCenterY);
             //same for the y co-ordinate of the tower.
 
             for (Map.Entry<Cart, ImageView> cartEntry : cartTokens.entrySet()) {
@@ -385,9 +435,9 @@ public class GameController {
                 // Calculate the distance in pixel coordinates
                 double distance = Math.sqrt(Math.pow(towerCenterX - cartCenterX, 2) + Math.pow(towerCenterY - cartCenterY, 2));
                 // pythag.
-                System.out.println(distance);
+                //System.out.println(distance);
                 if (distance <= 2 * Math.min(cellWidth, cellHeight)) {
-                    System.out.println("Within Range " + distance);
+                    //System.out.println("Within Range " + distance);
                     rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
                     // rotates the tower towards the cart
                     shootProjectile(towerGridPos, cart);
@@ -439,7 +489,7 @@ public class GameController {
             }
         }
 
-        System.out.println("Shooting projectile from: (" + towerCenter.getX() + ", " + towerCenter.getY() + ") to: (" + targetX + ", " + targetY + ")");
+        //System.out.println("Shooting projectile from: (" + towerCenter.getX() + ", " + towerCenter.getY() + ") to: (" + targetX + ", " + targetY + ")");
         launchProjectile(towerCenter.getX(), towerCenter.getY(), targetX, targetY, targetCart, shootingTower);
     }
 
@@ -474,21 +524,32 @@ public class GameController {
         Bounds cartBounds = cartToken.getBoundsInParent();
 
         if (projectileBounds.intersects(cartBounds)) {
-            int damage = shootingTower.getMaxAmount() / 10; // Calculate damage
-            targetCart.fillCart(damage); // Fill the cart with the damage value
-            targetCart.isCartFilled();  // Check if the cart is now full
+            // Check if the resource types match
+            System.out.println(targetCart.getResourceType() + ", " + shootingTower.getResourceType());
+            boolean isResourceMatch = targetCart.getResourceType().equals(shootingTower.getResourceType());
 
-            if (targetCart.isCartFilled()) {
+            // Calculate damage based on resource type match
+            int damage;
+            if (isResourceMatch) {
+                damage = (int) (cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
+                System.out.println("Damage Full");
+            } else {
+                damage = (int) (cartFillIncrease * shootingTower.getMaxAmount() / 50); // Reduced damage (20% of full damage)
+                System.out.println("Damage 20%");
+            }
+
+            targetCart.fillCart(damage); // Fill the cart with the calculated damage value
+            if (targetCart.isCartFilled()) { // Check if the cart is now full
                 System.out.println("Cart destroyed");
                 gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
                 cartTokens.remove(targetCart); // Remove the cart from active carts
                 Rectangle healthBar = cartHealthBars.get(targetCart);
                 if (healthBar != null) {
-                    gamePane.getChildren().remove(healthBar);
+                    gamePane.getChildren().remove(healthBar); // Remove health bar associated with the cart
                 }
             } else {
                 System.out.println("Projectile hit the cart! Damage: " + damage);
-                updateHealthBar(targetCart);
+                updateHealthBar(targetCart); // Update health bar based on current health
             }
         }
     }

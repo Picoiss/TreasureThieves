@@ -31,6 +31,7 @@ public class GameManager {
     private final Consumer<GameManager> failMenuLauncher;
     private final Consumer<GameManager> winMenuLauncher;
     private final Runnable clearScreen;
+    private String currentModifier;
     private Tower BronzeArcher = new Tower("Bronze Archer", 100,75, "Bronze", 100);
     private Tower BronzeDwarf = new Tower("Bronze Dwarf", 75,100, "Bronze", 150);
     private Tower BronzeVillager = new Tower("Bronze Villager", 120,100, "Bronze", 200);
@@ -108,7 +109,12 @@ public class GameManager {
     }
     public void setPlayerName(String name) { this.playerName = name; }
     public String getPlayerName() { return playerName; }
-
+    public void setModifier(String modifier) {
+        currentModifier = modifier;
+    }
+    public String getModifier() {
+        return currentModifier;
+    }
     public void setNumOfRounds(int rounds) {
         this.numOfRounds = rounds;
     }

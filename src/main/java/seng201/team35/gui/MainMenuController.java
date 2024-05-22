@@ -32,7 +32,7 @@ public class MainMenuController {
     private Label roundsLabel;
     @FXML
     private Label roundsLeftLabel;
-    private final String[] MODIFIERS = {"Tower Speed Increase 10%", "Tower Speed Increase 5%", "Tower Speed Decrease 5%", "Tower Speed Decrease 10%",
+    private final String[] MODIFIERS = {"Cart Speed Increase 10%", "Cart Speed Increase 5%", "Cart Speed Decrease 5%", "Cart Speed Decrease 10%",
             "Cart Number Decrease by 2", "Cart Number Decrease by 1", "Cart Number Increase by 1", "Cart Number Increase by 2", "Cart Fill Amount Decrease 10%",
             "Cart Fill Amount Increase 5%", "Cart Fill Amount Increase 10%", "Cart Fill Amount Decrease 5%"};
     private final List<String> MODIFIERSLIST = Arrays.asList(MODIFIERS);

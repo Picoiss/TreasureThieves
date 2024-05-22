@@ -82,9 +82,9 @@ public class GameController {
     private boolean gameStartState = false;
     private String currentModifier;
     private double difficultyScaling;
-    private double speedIncrease;
-    private int cartNumIncrease;
-    private int cartNumDecrease;
+    private double speedIncrease = 1;
+    private int cartNumIncrease = 0;
+    private int cartNumDecrease= 0;
     private double cartFillIncrease = 1;
     private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
     //private Map<Point, Boolean> towerActive = new HashMap<>();
@@ -209,16 +209,16 @@ public class GameController {
     private void checkModifiers() {
         currentModifier = gameManager.getModifier();  // Get the current modifier from the GameManager
         switch (currentModifier) {
-            case "Tower Speed Increase 10%":
+            case "Cart Speed Increase 10%":
                 speedIncrease = 1.1;
                 break;
-            case "Tower Speed Increase 5%":
+            case "Cart Speed Increase 5%":
                 speedIncrease = 1.05;
                 break;
-            case "Tower Speed Decrease 5%":
+            case "Cart Speed Decrease 5%":
                 speedIncrease = 0.95;
                 break;
-            case "Tower Speed Decrease 10%":
+            case "Cart Speed Decrease 10%":
                 speedIncrease = 0.9;
                 break;
             case "Cart Number Decrease by 2":
@@ -524,6 +524,7 @@ public class GameController {
         }
         // debugging
     }
+
     private void updateHealthBar(Cart cart) {
         Rectangle healthBar = cartHealthBars.get(cart);
         // obtains a rectangle healthBar from the map cartHEALTHBARS.
@@ -788,7 +789,7 @@ public class GameController {
                 double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
                 double targetX = nextPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 8;
                 double targetY = nextPosition.y * cellHeight + cellHeight / 2 - cartToken.getFitHeight() / 2;
-                TranslateTransition transition = new TranslateTransition(Duration.seconds(cart.getSpeed()), cartToken);
+                TranslateTransition transition = new TranslateTransition(Duration.seconds(cart.getSpeed()*speedIncrease), cartToken);
                 transition.setToX(targetX - cartToken.getLayoutX());
                 transition.setToY(targetY - cartToken.getLayoutY());
 

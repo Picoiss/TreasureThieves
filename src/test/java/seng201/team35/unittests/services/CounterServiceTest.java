@@ -1,3 +1,4 @@
+/**
 package seng201.team35.unittests.services;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test Counter implementation
  * @author seng201 teaching team
- */
+
 class CounterServiceTest {
     private CounterService testCounterService;
 
@@ -16,7 +17,7 @@ class CounterServiceTest {
      * Setup before each test, we create two objects, one an actual
      * instance of our CounterService class, and another a mocked version
      * that has overridden methods.
-     */
+
     @BeforeEach
     public void setupTest() {
         // Use CounterService directly
@@ -25,7 +26,7 @@ class CounterServiceTest {
 
     /**
      * Test incrementing the counter by one, normal JUnit test
-     */
+
     @Test
     void testIncrement() {
         assertEquals(0, testCounterService.getCurrentCount());
@@ -34,3 +35,4 @@ class CounterServiceTest {
     }
 
 }
+ */

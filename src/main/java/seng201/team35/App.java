@@ -9,8 +9,7 @@ import seng201.team35.gui.FXWindow;
 public class App {
     /**
      * Entry point which runs the javaFX application
-     * Due to how JavaFX works we must call MainWindow.launchWrapper() from here,
-     * trying to run MainWindow itself will cause an error
+     * Due to how JavaFX works we must call FXWindow.launchWrapper() from here
      * @param args program arguments from command line
      */
     public static void main(String[] args) {

@@ -52,6 +52,51 @@ public class GameManager {
     private Tower RubyDragon = new Tower("Ruby Dragon",25, 700, "Ruby", 1250);
     private Tower RubyOrcMage = new Tower("Ruby OrcMage",25, 850, "Ruby", 1400);
     private Tower RubyGolem = new Tower("Ruby Golem",10, 1500, "Ruby", 3000);
+    private Boolean modifiersInitialised = false;
+    private String globalModifier1;
+    private String globalModifier2;
+    private String globalModifier3;
+    private Boolean modifierSelected = false;
+    public Boolean getModifierSelected() {
+        return modifierSelected;
+    }
+    public void setModifierSelectedTrue() {
+        modifierSelected = true;
+    }
+    public void setModifiersSelectedFalse() {
+        modifierSelected = false;
+    }
+
+    public boolean getModifiersInitialised() {
+        return modifiersInitialised;
+    }
+    public void setModifiersInitialisedTrue() {
+        modifiersInitialised = true;
+    }
+    public void setModifiersInitialisedFalse() {
+        modifiersInitialised = false;
+    }
+    public void setGlobalModifier1(String modifier1) {
+        globalModifier1 = modifier1;
+    }
+
+    public void setGlobalModifier2(String modifier2) {
+        globalModifier2 = modifier2;
+    }
+
+    public void setGlobalModifier3(String modifier3) {
+        globalModifier3 = modifier3;
+    }
+
+    public String getGlobalModifier1() {
+        return globalModifier1;
+    }
+    public String getGlobalModifier2() {
+        return globalModifier2;
+    }
+    public String getGlobalModifier3() {
+        return globalModifier3;
+    }
 
     public GameManager(Consumer<GameManager> setupScreenLauncher,
                        Consumer<GameManager> mainMenuLauncher,

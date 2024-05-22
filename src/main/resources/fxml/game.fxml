@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team35.gui.GameController">
@@ -91,6 +92,9 @@
                            </GridPane.margin>
                         </Label>
                      </children>
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
                   </GridPane>
                   <Label fx:id="winOrLoseLabel" alignment="CENTER" prefHeight="31.0" prefWidth="602.0" textFill="#111111" GridPane.rowIndex="2">
                      <font>
@@ -102,6 +106,13 @@
                         <Font size="22.0" />
                      </font>
                   </Button>
+                  <Label fx:id="warningLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="102.0" prefWidth="373.0" textFill="RED" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Line endX="-100.0" endY="805.0" startX="-100.0" startY="150.0" strokeWidth="2.0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                  <Line endX="-100.0" endY="1200.0" startX="-100.0" startY="680.0" strokeWidth="2.0" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
             </children>
@@ -150,15 +161,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-               <children>
-                  <Label fx:id="warningLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="600.0" text="test" textFill="RED" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="12">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children>
                 </GridPane>
             </children>
         </AnchorPane>

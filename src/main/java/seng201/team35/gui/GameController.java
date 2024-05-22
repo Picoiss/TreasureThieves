@@ -178,7 +178,9 @@ public class GameController {
 
                 switch (buildingAndNatureGraph[row][col]) {
                     case 1:
-                        int treeIndex = (int) (Math.random() * 3) + 1; // Generates 1, 2, or 3
+                        Random rng = new Random();
+                        int treeIndex = rng.nextInt(1,4);
+                        System.out.println(treeIndex);
                         imageView.setImage(new Image("/images/Buildings/Tree" + treeIndex + ".png"));
                         break;
                     case 2:
@@ -442,6 +444,7 @@ public class GameController {
         // acutally no. then the games over.
         //nevermind.
         // Clear all tiles and elements from the game grid
+        gameManager.setModifiersSelectedFalse();
         gameGrid.getChildren().clear();
         gamePane.getChildren().clear();
         // Optionally, clear specific game-related collections if not already done
@@ -454,6 +457,7 @@ public class GameController {
         gameStartState = false;
         currentCartIndex = 0;
         carts.clear();
+        gameManager.setModifiersInitialisedFalse();
         // Transition to main menu or change the round
         if (winOrLoseLabel.getTextFill() == Color.GREEN) {
             if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {

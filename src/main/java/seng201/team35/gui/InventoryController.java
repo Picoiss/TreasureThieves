@@ -3,13 +3,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.stage.Stage;
 import seng201.team35.GameManager;
 import seng201.team35.models.Tower;
 import seng201.team35.models.Upgrade;
-import seng201.team35.services.CounterService;
-import javafx.scene.control.TextArea;
 
 /**
  * Controller for the Inventory.fxml window

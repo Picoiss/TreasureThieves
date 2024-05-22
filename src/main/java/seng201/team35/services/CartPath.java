@@ -1,4 +1,4 @@
-package seng201.team35.models;
+package seng201.team35.services;
 
 public class CartPath {
     private int[][] indexGraph;

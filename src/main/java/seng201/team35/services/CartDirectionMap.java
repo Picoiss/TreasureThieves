@@ -1,4 +1,4 @@
-package seng201.team35.models;
+package seng201.team35.services;
 
 public class CartDirectionMap {
     private int[][] directionGraph;

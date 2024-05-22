@@ -106,17 +106,17 @@ public class SetupScreenController {
             gameManager.setMainTowerList(startingTowers);
             if (gameDifficulty == "Easy") {
                 gameManager.setLives(15);
-                gameManager.changeMoneyAmount(200000);
+                gameManager.changeMoneyAmount(250);
                 System.out.println("Money set to easy");
             }
             if (gameDifficulty == "Medium") {
                 gameManager.setLives(10);
-                gameManager.changeMoneyAmount(150000);
+                gameManager.changeMoneyAmount(150);
                 System.out.println("Money set to medium");
             }
             if (gameDifficulty == "Hard") {
                 gameManager.setLives(5);
-                gameManager.changeMoneyAmount(100000);
+                gameManager.changeMoneyAmount(0);
                 System.out.println("Money set to hard");
             }
             gameManager.closeSetupScreen();

@@ -148,29 +148,37 @@ public class ShopController {
     private void buy() {
         errorLabel.setText("");
         if (shopTowersComboBox.getValue() != "") {
-            if (gameManager.getMainTowerList().size() >= 5) {
-                if (gameManager.getReserveTowerList().size() >= 5) {
-                    errorLabel.setText("Max 5 Reserve Towers (Tower cannot be bought)");
-                } else {
-                    errorLabel.setText("Max 5 Main Towers (Tower has been placed in reserve)");
-                    gameManager.addReserveTower(currentTower);
-                    gameManager.changeMoneyAmount(-1 * currentTower.getCost());
-                    updateComboBox();
-                }
+            if (gameManager.getMoneyAmount() - currentTower.getCost() < 0) {
+                errorLabel.setText("You do not have enough money to buy this");
             } else {
-                if (shopTowersComboBox.getValue() != "") {
-                    System.out.println("currentTower has been Bought");
-                    gameManager.addMainTower(currentTower);
-                    gameManager.changeMoneyAmount(-1 * currentTower.getCost());
-                    updateComboBox();
+                if (gameManager.getMainTowerList().size() >= 5) {
+                    if (gameManager.getReserveTowerList().size() >= 5) {
+                        errorLabel.setText("Max 5 Reserve Towers (Tower cannot be bought)");
+                    } else {
+                        errorLabel.setText("Max 5 Main Towers (Tower has been placed in reserve)");
+                        gameManager.addReserveTower(currentTower);
+                        gameManager.changeMoneyAmount(-1 * currentTower.getCost());
+                        updateComboBox();
+                    }
+                } else {
+                    if (shopTowersComboBox.getValue() != "") {
+                        System.out.println("currentTower has been Bought");
+                        gameManager.addMainTower(currentTower);
+                        gameManager.changeMoneyAmount(-1 * currentTower.getCost());
+                        updateComboBox();
+                    }
                 }
             }
         }
         else if (shopUpgradesComboBox.getValue() != "") {
-            System.out.println("currentUpgrade has been Bought");
-            gameManager.addUpgrade(currentUpgrade);
-            gameManager.changeMoneyAmount(-1 * currentUpgrade.getCost());
-            updateComboBox();
+            if (gameManager.getMoneyAmount() - currentUpgrade.getCost() < 0) {
+                errorLabel.setText("You do not have enough money to buy this");
+            } else {
+                System.out.println("currentUpgrade has been Bought");
+                gameManager.addUpgrade(currentUpgrade);
+                gameManager.changeMoneyAmount(-1 * currentUpgrade.getCost());
+                updateComboBox();
+            }
         }
         else {
             errorLabel.setText("No Tower or Upgrade is selected to buy");

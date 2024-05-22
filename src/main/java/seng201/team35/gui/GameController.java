@@ -2,9 +2,7 @@ package seng201.team35.gui;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
+import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,14 +16,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import seng201.team35.GameManager;
 import seng201.team35.models.Cart;
-import seng201.team35.models.Path;
+import seng201.team35.services.*;
 import seng201.team35.models.Tower;
-import seng201.team35.models.SpriteSheet;
-import seng201.team35.models.CartRound;
-import seng201.team35.models.CartRound.CartSpawn;
-import seng201.team35.models.CartPath;
-import seng201.team35.models.CartDirectionMap;
-import seng201.team35.models.CartSprite;
+import seng201.team35.services.CartRound.CartSpawn;
 import seng201.team35.models.Projectile;
 
 import java.awt.Point;
@@ -82,6 +75,7 @@ public class GameController {
     private int currentCartIndex = 0;
     private CartPath cartPath;
     private CartDirectionMap cartDirectionMap;
+    private BuildingAndNatureMap buildingAndNatureMap;
     private Map<Cart, ImageView> cartTokens = new HashMap<>();
     private Map<Cart, Integer> cartSteps = new HashMap<>();
     private boolean isMoving = false;
@@ -119,7 +113,9 @@ public class GameController {
         // set the mainMenu button to be not visisble.
         loadGroundAssets(); // load the ground (path and grass etc).
         drawPathForRound(gameManager.getCurrentRound()); // Example for round 1
+        buildingAndNatureMap = BuildingAndNatureMap.getBuildingAndNatureMapForRound(gameManager.getCurrentRound());
         checkModifiers();
+        loadBuildingAssets();
         getDifficultyScaling();
         // Populate the ComboBox with tower names from the GameManager
         towerSelectionComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
@@ -158,6 +154,57 @@ public class GameController {
     private void checkUpgrades() {
         // THIS needs to be implemented
         gameManager.getUpgradesList();
+    }
+    public void loadBuildingAssets() {
+        // Get the BuildingAndNatureGraph from the current BuildingAndNatureMap
+        int[][] buildingAndNatureGraph = buildingAndNatureMap.getBuildingAndNatureGraph();
+        // Retrieve the Path graph for the current round
+        Path path = Path.getPathForRound(gameManager.getCurrentRound());
+        int[][] pathGraph = path.getIndexGraph();
+
+        // Iterating over each cell in the buildingAndNatureGraph
+        for (int row = 0; row < buildingAndNatureGraph.length; row++) {
+            for (int col = 0; col < buildingAndNatureGraph[row].length; col++) {
+                // Check if the current cell is a path tile; skip if it is
+                if (pathGraph[row][col] != 0) {
+                    continue;
+                }
+
+                // Depending on the value at buildingAndNatureGraph[row][col], load the corresponding image
+                ImageView imageView = new ImageView();
+                imageView.setFitWidth(26);
+                imageView.setFitHeight(32);
+                imageView.setPreserveRatio(false);
+
+                switch (buildingAndNatureGraph[row][col]) {
+                    case 1:
+                        int treeIndex = (int) (Math.random() * 3) + 1; // Generates 1, 2, or 3
+                        imageView.setImage(new Image("/images/Buildings/Tree" + treeIndex + ".png"));
+                        break;
+                    case 2:
+                        imageView.setImage(new Image("/images/Buildings/Rocks.png"));
+                        break;
+                    case 3:
+                        imageView.setImage(new Image("/images/Buildings/Houses.png"));
+                        break;
+                    case 4:
+                        imageView.setImage(new Image("/images/Buildings/Chapels.png"));
+                        break;
+                    case 5:
+                        imageView.setImage(new Image("/images/Buildings/Taverns.png"));
+                        break;
+                    case 6:
+                        imageView.setImage(new Image("/images/Buildings/Well.png"));
+                        break;
+                    default:
+                        // No image for this cell
+                        continue;
+                }
+                gameGrid.add(imageView, col, row); // Add to the GridPane at specified column and row
+                GridPane.setHalignment(imageView, HPos.CENTER); // Center the image in its grid cell
+                GridPane.setValignment(imageView, VPos.CENTER);
+            }
+        }
     }
     private void checkModifiers() {
         currentModifier = gameManager.getModifier();  // Get the current modifier from the GameManager
@@ -273,6 +320,10 @@ public class GameController {
             setWarning("A tower already exists at this location");
             // sets a warning if the tower is already at the locatiomn
             return; // Exit the method if a tower already exists at this position
+        }
+        if (buildingAndNatureMap.getBuildingAndNatureGraph()[rowIndex][colIndex] != 0) {
+            setWarning("Can't place a tower on an object");
+            return; // Exit the method if there's an object at this location
         }
         Tower tower = retrieveSelectedTower();
         //gets the tower from the hashMap retrieveSelectedTower -> which holds tower information per grid basis.
@@ -632,8 +683,8 @@ public class GameController {
         transition.setByX(targetX - startX);
         transition.setByY(targetY - startY);
         transition.setOnFinished(event -> {
-            checkProjectileCollision(projectile, targetCart, shootingTower);
             shootingTower.toggleShooting();
+            checkProjectileCollision(projectile, targetCart, shootingTower);
             // when the transition
             gamePane.getChildren().remove(projectile);
         });

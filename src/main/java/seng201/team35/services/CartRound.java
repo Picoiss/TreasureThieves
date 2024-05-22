@@ -1,4 +1,6 @@
-package seng201.team35.models;
+package seng201.team35.services;
+
+import seng201.team35.models.Cart;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -30,11 +32,23 @@ public class CartRound {
                 carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(1).toNanos()));
                 carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(2).toNanos()));
                 carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(3).toNanos()));
-                carts.add(new CartSpawn(new Cart(50, "Silver", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(100 , "Silver", 1), Duration.ofSeconds(4).toNanos()));
                 carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(3).toNanos()));
                 carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(4).toNanos()));
                 carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(100 , "Silver", 1), Duration.ofSeconds(7).toNanos()));
                 break;
+            case 3:
+                carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(1).toNanos()));
+                carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(2).toNanos()));
+                carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(3).toNanos()));
+                carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(100 , "Silver", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(100, "Gold", 1), Duration.ofSeconds(3).toNanos()));
+                carts.add(new CartSpawn(new Cart(100, "Gold", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(100 , "Silver", 1), Duration.ofSeconds(7).toNanos()));
+                carts.add(new CartSpawn(new Cart(100 , "Silver", 1), Duration.ofSeconds(9).toNanos()));
         }
         return carts;
     }

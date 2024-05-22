@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import seng201.team35.GameManager;
-import seng201.team35.services.MainMenuService;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

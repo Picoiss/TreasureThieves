@@ -35,7 +35,12 @@ public class Tower {
         return isShooting;
     }
 
-
+    public void setShootingTrue() {
+        isShooting = true;
+    }
+    public void setShootingFalse() {
+        isShooting = false;
+    }
     public void toggleShooting() {
         if (isShooting) {
             isShooting = false;

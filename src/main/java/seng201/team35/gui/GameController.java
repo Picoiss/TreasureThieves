@@ -628,13 +628,15 @@ public class GameController {
             return;
         }
         else {
-            shootingTower.toggleShooting();
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             Point2D towerCenter = new Point2D((towerGridPos.x + 0.5) * cellWidth, (towerGridPos.y + 0.5) * cellHeight);
 
             ImageView cartToken = cartTokens.get(targetCart);
-            if (cartToken == null) return;
+            if (cartToken == null) {
+                shootingTower.setShootingFalse();
+                return;
+            }
 
             Bounds cartBounds = cartToken.getBoundsInParent();
             Point2D cartCenter = new Point2D(cartBounds.getMinX() + cartBounds.getWidth() / 2, cartBounds.getMinY() + cartBounds.getHeight() / 2);
@@ -683,12 +685,12 @@ public class GameController {
         gamePane.getChildren().add(projectile);
         double angle = Math.atan2(targetY - startY, targetX - startX) * 180 / Math.PI;
         projectile.setRotate(angle - 90);  // Adjust by -90 degrees because the projectile points down by default
-
+        shootingTower.setShootingTrue();
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
         transition.setByX(targetX - startX);
         transition.setByY(targetY - startY);
         transition.setOnFinished(event -> {
-            shootingTower.toggleShooting();
+            shootingTower.setShootingFalse();
             checkProjectileCollision(projectile, targetCart, shootingTower);
             // when the transition
             gamePane.getChildren().remove(projectile);

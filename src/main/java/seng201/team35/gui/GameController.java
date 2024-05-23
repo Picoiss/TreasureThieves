@@ -105,17 +105,6 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        cartsLeft = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size();
-        livesLabel.setText("Lives: " + gameManager.getLives());
-        moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
-        roundLabel.setText("Round: " + gameManager.getCurrentRound());
-        cartsLeftLabel.setText("Carts Left: " + cartsLeft);
-        cartRewards.put("Bronze", 300);
-        cartRewards.put("Silver", 400);
-        cartRewards.put("Gold", 550);
-        cartRewards.put("Diamond", 800);
-        cartRewards.put("Emerald", 950);
-        cartRewards.put("Ruby", 1200);
         grassImage = new Image(getClass().getResourceAsStream("/images/Grass.png"));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
         // load images of grass, and textured grass (loading grassImage may be redundant)
@@ -133,6 +122,18 @@ public class GameController {
 
         // Add click handler to the grid maybe we can jst add a fxml code instead?
         gameGrid.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleGridClick);
+
+        cartsLeft = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size();
+        livesLabel.setText("Lives: " + gameManager.getLives());
+        moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
+        roundLabel.setText("Round: " + gameManager.getCurrentRound());
+        cartsLeftLabel.setText("Carts Left: " + cartsLeft);
+        cartRewards.put("Bronze", 300);
+        cartRewards.put("Silver", 400);
+        cartRewards.put("Gold", 550);
+        cartRewards.put("Diamond", 800);
+        cartRewards.put("Emerald", 950);
+        cartRewards.put("Ruby", 1200);
 
         updateComboBox();
     }

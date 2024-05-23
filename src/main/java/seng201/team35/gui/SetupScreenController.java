@@ -37,9 +37,9 @@ public class SetupScreenController {
     private String playerName;
     private int numRounds; // maximum rounds
     private String gameDifficulty;
-    private static final int EASY_STARTING_LIVES = 15;
-    private static final int MEDIUM_STARTING_LIVES = 10;
-    private static final int HARD_STARTING_LIVES = 5;
+    private static final int EASY_STARTING_LIVES = 10;
+    private static final int MEDIUM_STARTING_LIVES = 5;
+    private static final int HARD_STARTING_LIVES = 3;
     private static final int EASY_STARTING_MONEY = 250;
     private static final int MEDIUM_STARTING_MONEY = 150;
     private static final int HARD_STARTING_MONEY = 0;

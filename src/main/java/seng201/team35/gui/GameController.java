@@ -482,6 +482,10 @@ public class GameController {
                 gameManager.gameToMainMenuScreen(); // If non-final round was won, change round and go to main menu
             }
         }
+        else if (winOrLoseLabel.getTextFill() == Color.ORANGE) {
+            gameManager.gameToMainMenuScreen(); // If round failed, remain on same round and go to main menu
+        }
+
         else {
             gameManager.gameToFailMenuScreen(); // If all lives lost, transition to fail menu
         }
@@ -851,6 +855,17 @@ public class GameController {
                 iterator.remove();
                 cartSteps.remove(cart);
                 gameManager.changeLives(1);
+                gameRunning = false;
+                winOrLoseLabel.toFront();
+                mainMenuButton.toFront();
+                winOrLoseLabel.setText("You failed Round " + gameManager.getCurrentRound() + "!");
+                winOrLoseLabel.setTextFill(Color.ORANGE);  // Set text color to orange
+                mainMenuButton.setVisible(true);  // Show the main menu button
+                if (initialCarts.size() - cartsLeft != 0) {
+                    moneyEarned = (moneyEarned/(initialCarts.size() - cartsLeft))/2; // You get half the normal reward for failing a round
+                }
+                moneyEarnedLabel.setText("You earned $" + moneyEarned);
+                updateLabels();
             }
         }
     }
@@ -891,7 +906,7 @@ public class GameController {
             gameRunning = false;
             winOrLoseLabel.toFront();
             mainMenuButton.toFront();
-            winOrLoseLabel.setText("You Lost");
+            winOrLoseLabel.setText("You lost all your lives!");
             winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
             mainMenuButton.setVisible(true);  // Show the main menu button
             if (initialCarts.size() - cartsLeft != 0) {

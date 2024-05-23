@@ -558,8 +558,6 @@ public class GameController {
         System.out.println(startPosition);
         cart.setDirection(getInitialCartDirection(startPosition));
         if (startPosition != null) {
-            cart.setX(startPosition.x);
-            cart.setY(startPosition.y);
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             double startX = startPosition.x * cellWidth + cellWidth / 2;
@@ -874,8 +872,6 @@ public class GameController {
             }
             Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1);
             if (nextPosition != null) {
-                cart.setX(nextPosition.x);
-                cart.setY(nextPosition.y);
                 double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
                 double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
                 double targetX = nextPosition.x * cellWidth + cellWidth / 2 - cartToken.getFitWidth() / 8;

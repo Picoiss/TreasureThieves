@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * Tower class to create unique towers to add to the player's inventory
  * Upgrades can change a Tower's parameters
- * @author nsr36
+ * @author nsr36, msh254
  */
 public class Tower {
     private final String name;
@@ -19,6 +19,7 @@ public class Tower {
     private int level;
     private boolean isShooting;
     private long lastShotTime;
+
     /**
      * Tower Constructor
      */
@@ -31,22 +32,6 @@ public class Tower {
         level = 1;
     }
 
-    public boolean getShooting() {
-        return isShooting;
-    }
-
-    public void setShootingTrue() {
-        isShooting = true;
-    }
-    public void setShootingFalse() {
-        isShooting = false;
-    }
-    public long getLastShotTime() {
-        return lastShotTime;
-    }
-    public void setLastShotTime(long time) {
-        lastShotTime = time;
-    }
     /**
      * Get the tower's name
      * @return name
@@ -85,21 +70,6 @@ public class Tower {
     public int getCost() { return cost; }
 
     /**
-     * Reduce the current tower resource amount
-     * Call the reloadResourceAmount method if the current resource amount goes to 0 or below
-     * @param deplete Value to reduce the resource amount by
-     */
-    public void depleteResourceAmount(int deplete) {
-        if (deplete >= resourceAmount) {
-            resourceAmount = 0;
-            reloadResourceAmount();
-        }
-        else {
-            resourceAmount -= deplete;
-        }
-    }
-
-    /**
      * Wait for reload speed time
      * Then reset the current tower resource amount to the max amount
      */
@@ -133,6 +103,14 @@ public class Tower {
             //throw exception
         }
         else { reloadSpeed -= decrement; }
+    }
+
+    /**
+     * Set tower last shot time
+     * @param time new time of last shot
+     */
+    public void setLastShotTime(long time) {
+        lastShotTime = time;
     }
 
     /**

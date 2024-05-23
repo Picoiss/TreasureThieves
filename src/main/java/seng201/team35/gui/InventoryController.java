@@ -177,6 +177,7 @@ public class InventoryController {
         }
         else {
             if (mainTowersComboBox.getValue() != "") {
+                errorLabel.setText("");
                 gameManager.removeMainTower(currentTower);
                 gameManager.addReserveTower(currentTower);
                 updateComboBox();
@@ -190,6 +191,7 @@ public class InventoryController {
         }
         else {
             if (reserveTowersComboBox.getValue() != "") {
+                errorLabel.setText("");
                 gameManager.removeReserveTower(currentTower);
                 gameManager.addMainTower(currentTower);
                 updateComboBox();

@@ -728,22 +728,6 @@ public class GameController {
         transition.play();
     }
 
-    private void updateShootingStatus() {
-        long currentTime = System.nanoTime();
-        long twoSecondsInNanos = 1_000_000_000;
-
-        for (Tower tower : gameManager.getMainTowerList()) {
-            try {
-                if (tower.getShooting() && (currentTime - tower.getLastShotTime() > twoSecondsInNanos)) {
-                    tower.setShootingFalse();
-                }
-            } catch (Exception e) {
-                System.out.println("Error updating shooting status for tower: " + e.getMessage());
-            }
-        }
-    }
-
-
     private void checkProjectileCollision(ImageView projectile, Cart targetCart, Tower shootingTower, Point towerGridPos) {
         isGridShooting.replace(towerGridPos, false);
         ImageView cartToken = cartTokens.get(targetCart);
@@ -877,7 +861,6 @@ public class GameController {
         moveCarts();
         checkTowersTargeting();
         checkWinOrLose();
-        updateShootingStatus();
     }
 
     // Update the lives, money, and carts left labels

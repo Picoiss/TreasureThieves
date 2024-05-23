@@ -164,6 +164,7 @@ public class CartRound {
         if (cartNumIncrease != 0) {
             int delay = lastCartDelay;
             for (int i = 0; i < cartNumIncrease; i++) {
+                delay++;
                 if (roundNumber <= 3) {
                     carts.add(new CartSpawn(new Cart(100, "Bronze", 1), Duration.ofSeconds(delay).toNanos()));
                 }
@@ -182,7 +183,6 @@ public class CartRound {
                 else {
                     carts.add(new CartSpawn(new Cart(525, "Ruby", 1), Duration.ofSeconds(delay).toNanos()));
                 }
-                delay++;
             }
         }
         return carts;

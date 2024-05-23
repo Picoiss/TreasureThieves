@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seng201.team35.models.Tower;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -18,14 +17,13 @@ public class TowerTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialize a Tower object before each test
         bronzeArcher = new Tower("Bronze Archer", 100,100, "Bronze", 100);
         silverKnight = new Tower("Silver Knight",80,150, "Silver", 150);
         goldGiant = new Tower("Gold Giant", 70,200, "Gold", 200);
     }
 
     @Test
-    public void testConstructorsGetters() {
+    public void constructorsGettersTest() {
         assertEquals("Bronze Archer", bronzeArcher.getName());
         assertEquals(100, bronzeArcher.getReloadSpeed());
         assertEquals(100, bronzeArcher.getMaxAmount());
@@ -35,23 +33,21 @@ public class TowerTest {
     }
 
     @Test
-    public void testIncreaseLevel() {
+    public void increaseLevelTest() {
         bronzeArcher.increaseLevel();
         bronzeArcher.increaseLevel();
         assertEquals(3, bronzeArcher.getLevel());
     }
 
     @Test
-    public void testIncreaseMaxAmount() {
+    public void increaseMaxAmountTest() {
         bronzeArcher.increaseMaxAmount(10);
         assertEquals(110, bronzeArcher.getMaxAmount());
     }
 
     @Test
-    public void testGetTowerNames() {
-
+    public void getTowerNamesTest() {
         Collection<Tower> towers = Arrays.asList(bronzeArcher, silverKnight, goldGiant);
-
         List<String> names = Tower.getTowerNames(towers);
         assertEquals(Arrays.asList("Bronze Archer", "Silver Knight", "Gold Giant"), names);
     }

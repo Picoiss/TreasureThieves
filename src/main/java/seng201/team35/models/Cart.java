@@ -17,9 +17,9 @@ public class Cart {
      *
      * @author msh254, nsr36
      *
-     * @param size
-     * @param resourceType
-     * @param speed
+     * @param size amount the cart needs for it to be filled
+     * @param resourceType resource type of cart
+     * @param speed how fast the cart moves on the track
      */
     public Cart(int size, String resourceType, double speed) {
         this.size = size;
@@ -32,7 +32,7 @@ public class Cart {
     /** A function which fills the Cart via altering the currentAmount
      * *can take negative amounts
      * @author msh254
-     * @param fillAmount
+     * @param fillAmount amount to fill cart
      */
     public void fillCart(int fillAmount) {
         currentAmount += fillAmount;
@@ -40,7 +40,6 @@ public class Cart {
 
     /**A function which checks if the cart is filled or not.
      * @author msh254
-     *
      * @return boolean isFilled
      */
     public boolean isCartFilled() {
@@ -48,18 +47,15 @@ public class Cart {
         return isFilled;
     }
 
-    /**gets the current amount the cart is at (how fill the cart is)
-     *
+    /**gets the current amount the cart is at (how full the cart is)
      * @author msh254
-     *
-     * @return
+     * @return int currentAmount
      */
     public int getCurrentAmount() {
         return currentAmount;
     }
 
-    /**Gets the resource type of a Cart
-     *
+    /**Gets the resource type of the Cart
      * @author msh254
      * @return String resourceType
      */
@@ -68,7 +64,6 @@ public class Cart {
     }
 
     /**returns the speed of the Cart
-     *
      * @author msh254
      * @return double speed
      */
@@ -78,8 +73,7 @@ public class Cart {
 
     /**gets the direction of the Cart
      * (direction is set to 0 as a default)
-     * @author msh254
-     *
+     * @author nsr36
      * @return int direction
      */
     public int getDirection() {
@@ -87,7 +81,7 @@ public class Cart {
     }
 
     /**sets the direction of the Cart
-     *
+     * @author nsr36
      * @param direction (int)
      */
     public void setDirection(int direction) {
@@ -96,7 +90,7 @@ public class Cart {
 
     /** returns the size of the Cart
      * (the Max amount the Cart can have)
-     *
+     * @author msh254
      * @return int size
      */
     public int getSize() {

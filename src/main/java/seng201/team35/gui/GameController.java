@@ -79,8 +79,10 @@ public class GameController {
     private CartPath cartPath;
     private CartDirectionMap cartDirectionMap;
     private BuildingAndNatureMap buildingAndNatureMap;
+    private Map<ImageView, Tower> towerImageViewToTower = new HashMap<>();
     private Map<Cart, ImageView> cartTokens = new HashMap<>();
     private Map<Cart, Integer> cartSteps = new HashMap<>();
+    private Map<Point, Boolean> isGridShooting = new HashMap<>();
     private boolean isMoving = false;
     private boolean gameStartState = false;
     private String currentModifier;
@@ -91,6 +93,7 @@ public class GameController {
     private double cartFillIncrease = 1;
     private int moneyEarned = 0;
     Map<String, Integer> cartRewards = new HashMap<>();
+
 
     private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
     //private Map<Point, Boolean> towerActive = new HashMap<>();
@@ -342,7 +345,9 @@ public class GameController {
         //gets the tower from the hashMap retrieveSelectedTower -> which holds tower information per grid basis.
         // Place the tower in GameManager
         gameManager.placeTowerAt(newTowerPosition, tower);
+
         ImageView towerSprite = new ImageView();
+        towerImageViewToTower.put(towerSprite, tower);
         // create an image of the towerSprite.
         towerSprite.setFitWidth(35); // Adjust as needed
         towerSprite.setFitHeight(35); // Adjust as needed
@@ -350,6 +355,7 @@ public class GameController {
         towerSprite.setSmooth(true);
         towerPositions.put(newTowerPosition, towerSprite);
         gameGrid.add(towerSprite, colIndex, rowIndex);
+        isGridShooting.put(new Point(colIndex,rowIndex), false);
         animateTower(towerSprite, tower.getName());
         towerSelectionComboBox.getItems().remove(tower.getName());
         currentTower = null; // set currentTower -> null afterplacing.
@@ -595,8 +601,10 @@ public class GameController {
             double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
             //System.out.println("towerCentery = " + towerCenterY);
             //same for the y co-ordinate of the tower.
+            Map<Cart, Double> cartsInRange = new HashMap<>();
 
             for (Map.Entry<Cart, ImageView> cartEntry : cartTokens.entrySet()) {
+
                 //iterates over the carts which are in the game.
                 // for (position of cart, cartSprite) in the cartTokens hashMap;
                 Cart cart = cartEntry.getKey();
@@ -617,14 +625,47 @@ public class GameController {
                 // pythag.
                 //System.out.println(distance);
                 if (distance <= 2 * Math.min(cellWidth, cellHeight)) {
+                    cartsInRange.put(cart, distance);
                     //System.out.println(towerSprite.toString());
                     //if (cart.getResourceType() == gameManager.getTowerByName(towerSprite.getId()).getResourceType());
                     //System.out.println("Within Range " + distance);
+                    /**
                     rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
+                    System.out.println(cart);
                     // rotates the tower towards the cart
                     shootProjectile(towerGridPos, cart);
                     // shoots a projectile at the cart.
+                     */
                 }
+            }
+            if (cartsInRange.size() != 0) {
+                Cart closestCart = null;
+                Double closestDistance = 99999999.9;
+                for (Map.Entry<Cart, Double> cartInfo : cartsInRange.entrySet()) {
+                    Cart cart = cartInfo.getKey();
+                    if (towerImageViewToTower.get(towerSprite).getResourceType() == cart.getResourceType()) {
+                        closestCart = cart;
+                    }
+                }
+                if (closestCart == null) {
+                    for (Map.Entry<Cart, Double> cartInfo : cartsInRange.entrySet()) {
+                        Cart cart = cartInfo.getKey();
+                        Double distance = cartInfo.getValue();
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            closestCart = cart;
+                        }
+                    }
+                }
+                ImageView cartImage = cartTokens.get(closestCart);
+                Bounds cartBounds = cartImage.getBoundsInParent();
+                double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
+                double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
+                rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
+                System.out.println(closestCart);
+                // rotates the tower towards the cart
+                shootProjectile(towerGridPos, closestCart);
+                // shoots a projectile at the cart.
             }
         }
     }
@@ -636,14 +677,14 @@ public class GameController {
 
         Tower shootingTower = gameManager.getTowerAt(towerGridPos);
 
-        if (!shootingTower.getShooting()){
+        if (!isGridShooting.get(towerGridPos)){
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             Point2D towerCenter = new Point2D((towerGridPos.x + 0.5) * cellWidth, (towerGridPos.y + 0.5) * cellHeight);
 
             ImageView cartToken = cartTokens.get(targetCart);
             if (cartToken == null) {
-                shootingTower.setShootingFalse();
+                isGridShooting.replace(towerGridPos, false);
                 return;
             }
 
@@ -677,13 +718,13 @@ public class GameController {
             }
 
             //System.out.println("Shooting projectile from: (" + towerCenter.getX() + ", " + towerCenter.getY() + ") to: (" + targetX + ", " + targetY + ")");
-            launchProjectile(towerCenter.getX(), towerCenter.getY(), targetX, targetY, targetCart, shootingTower);
+            launchProjectile(towerCenter.getX(), towerCenter.getY(), targetX, targetY, targetCart, shootingTower, towerGridPos);
         }
     }
 
 
 
-    private void launchProjectile(double startX, double startY, double targetX, double targetY, Cart targetCart, Tower shootingTower) {
+    private void launchProjectile(double startX, double startY, double targetX, double targetY, Cart targetCart, Tower shootingTower, Point towerGridPos) {
         ImageView projectile = new ImageView(Projectile.getProjectileSprite(getProjectileSprite(shootingTower.getName())));
         // will need to add a function where the Projectile sprite depends on the tower. Luckily, not very hard to implement as the logic is already
         // here.
@@ -696,11 +737,11 @@ public class GameController {
         projectile.setRotate(angle - 90);  // Adjust by -90 degrees because the projectile points down by default
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
         shootingTower.setLastShotTime(System.nanoTime());
-        shootingTower.setShootingTrue();
+        isGridShooting.replace(towerGridPos, true);
         transition.setByX(targetX - startX);
         transition.setByY(targetY - startY);
         transition.setOnFinished(event -> {
-            checkProjectileCollision(projectile, targetCart, shootingTower);
+            checkProjectileCollision(projectile, targetCart, shootingTower, towerGridPos);
             // when the transition
             gamePane.getChildren().remove(projectile);
         });
@@ -709,7 +750,7 @@ public class GameController {
 
     private void updateShootingStatus() {
         long currentTime = System.nanoTime();
-        long twoSecondsInNanos = 2_000_000_000;
+        long twoSecondsInNanos = 1_000_000_000;
 
         for (Tower tower : gameManager.getMainTowerList()) {
             try {
@@ -723,8 +764,8 @@ public class GameController {
     }
 
 
-    private void checkProjectileCollision(ImageView projectile, Cart targetCart, Tower shootingTower) {
-        shootingTower.setShootingFalse();
+    private void checkProjectileCollision(ImageView projectile, Cart targetCart, Tower shootingTower, Point towerGridPos) {
+        isGridShooting.replace(towerGridPos, false);
         ImageView cartToken = cartTokens.get(targetCart);
         if (cartToken == null) return;
 

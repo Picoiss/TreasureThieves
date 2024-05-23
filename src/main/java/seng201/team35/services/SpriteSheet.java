@@ -21,7 +21,7 @@ public class SpriteSheet {
     private void initializeSprites() {
         String[] towers = {
                 "Bronze Archer", "Bronze Dwarf", "Bronze Villager",
-                "Silver Knight", "Silver Priest", "Silver Assassin",
+                "Silver Knight", "Silver Priest", "Silver Alchemist",
                 "Gold Giant", "Gold Goblin", "Gold Pirate",
                 "Diamond Mage", "Diamond Necromancer", "Diamond Minotaur",
                 "Emerald Elf", "Emerald Phoenix", "Emerald Pegasus",

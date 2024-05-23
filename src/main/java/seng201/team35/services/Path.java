@@ -1,5 +1,9 @@
 package seng201.team35.services;
 
+/**
+ * A class which handles the Path (what parts of the map is a canal) for every round.
+ * @author msh254. nsr36
+ */
 public class Path {
     private int[][] indexGraph;
 
@@ -7,10 +11,20 @@ public class Path {
         this.indexGraph = indexGraph;
     }
 
+    /**
+     * gets the IndexGraph
+     * @return
+     */
     public int[][] getIndexGraph() {
         return indexGraph;
     }
 
+    /**
+     * returns the indexGraph of the Path for every round.
+     * @author msh254, nsr36
+     * @param roundNumber roundNum (int)
+     * @return indexGraph int[][]
+     */
     public static Path getPathForRound(int roundNumber) {
         int[][] indexGraph = switch (roundNumber) {
             case 1 -> new int[][]{

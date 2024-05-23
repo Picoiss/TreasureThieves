@@ -7,8 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A Class which stores information of what Carts are in every round
+ * @author msh254
+ */
 public class CartRound {
-
+    /**
+     * Helper Class CartSpawn
+     * This class is here as the function getCartsForRound takes a list of CartSpawn
+     * @author msh254
+     */
     public static class CartSpawn {
         public Cart cart;
         public long spawnTime;
@@ -19,6 +27,13 @@ public class CartRound {
         }
     }
 
+    /** A function which gets what carts are in a round.
+     * @author msh254, nsr36
+     * @param roundNumber roundNumber
+     * @param cartNumDecrease CartNumDecrease
+     * @param cartNumIncrease CartNumIncrease
+     * @return a list of CartSpawn which holds information of Carts to be spawned.
+     */
     public static List<CartSpawn> getCartsForRound(int roundNumber, int cartNumDecrease, int cartNumIncrease) {
         List<CartSpawn> carts = new ArrayList<>();
         int lastCartDelay = 0;

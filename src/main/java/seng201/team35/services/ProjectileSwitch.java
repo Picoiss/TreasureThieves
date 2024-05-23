@@ -1,5 +1,15 @@
 package seng201.team35.services;
+
+/**
+ * A Class which holds a switch statement, which stores projectiles for each tower in the game
+ * @author msh254
+ */
 public class ProjectileSwitch {
+    /** returns a projectile image based on what tower is parsed through.
+     * @author msh254
+     * @param towerName (tower Name)
+     * @return String ImagePath
+     */
     public static String getProjectileSprite(String towerName) {
         switch (towerName) {
             case "Bronze Archer":

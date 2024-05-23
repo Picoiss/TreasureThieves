@@ -41,9 +41,6 @@ public class MainMenuController {
     private GameManager gameManager;
     public MainMenuController(GameManager x) { gameManager = x; }
     public void initialize() {
-        modifierText1.setStyle("-fx-text-fill: black;");
-        modifierText3.setStyle("-fx-text-fill: black;");
-        modifierText3.setStyle("-fx-text-fill: black;");
         if (gameManager.getModifiersInitialised() == false) {
             Random rng = new Random();
             int randomModifier1 = rng.nextInt(0,4);
@@ -60,7 +57,7 @@ public class MainMenuController {
             modifierText3.setText(MODIFIERSLIST.get(randomModifier3));
             gameManager.setModifiersInitialisedTrue();
         }
-        if (gameManager.getModifiersInitialised() == true) {
+        else {
             modifierText1.setText(gameManager.getGlobalModifier1());
             modifierText2.setText(gameManager.getGlobalModifier2());
             modifierText3.setText(gameManager.getGlobalModifier3());

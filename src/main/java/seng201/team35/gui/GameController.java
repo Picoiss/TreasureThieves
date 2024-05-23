@@ -487,7 +487,7 @@ public class GameController {
         cartToken.setFitHeight(50); // and the height
         cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1)); // Initial direction 0 probably wrong but ok
         int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
-        Point startPosition = getCartPosition(pathGraph, gameManager.getCurrentRound(), -1, -1); // Initialize at position 1
+        Point startPosition = getCartPosition(pathGraph, 1, -1, -1); // Initialize at position 1
         cart.setDirection(getInitialCartDirection(pathGraph));
         if (startPosition != null) { // if the startPosition exists;
             cart.setX(startPosition.x);
@@ -738,10 +738,12 @@ public class GameController {
         for (int i = 0; i < pathGraph.length; i++) {
             for (int j = 0; j < pathGraph[i].length; j++) {
                 if (pathGraph[i][j] == step) {
+                    System.out.println(new Point(j, i));
                     return new Point(j, i);
                 }
             }
         }
+        System.out.println("null");
         return null;
     }
 
@@ -802,6 +804,8 @@ public class GameController {
 
 
                 transition.setOnFinished(event -> {
+                    cartSteps.remove(cart);
+                    //cartSteps.replace(cart, currentStep + 1);
                     cartSteps.put(cart, currentStep + 1);
                     isMoving = false;
                 });

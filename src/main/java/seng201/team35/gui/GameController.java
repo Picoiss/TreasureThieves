@@ -74,6 +74,7 @@ public class GameController {
     private SpriteSheet spriteSheet;
     private CartSprite cartSprite;
     private List<CartSpawn> carts;
+    private List<CartSpawn> initialCarts;
     private Map<Cart, Rectangle> cartHealthBars = new HashMap<>();
     private int currentCartIndex = 0;
     private CartPath cartPath;
@@ -126,7 +127,8 @@ public class GameController {
         // Add click handler to the grid maybe we can jst add a fxml code instead?
         gameGrid.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleGridClick);
 
-        cartsLeft = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size();
+        initialCarts = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease);
+        cartsLeft = initialCarts.size();
         livesLabel.setText("Lives: " + gameManager.getLives());
         moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
         roundLabel.setText("Round: " + gameManager.getCurrentRound());
@@ -435,10 +437,10 @@ public class GameController {
 
     @FXML
     private void gameStarted() {
-        if (gameStartState == false) {
+        if (!gameStartState) {
             gameStartState = true;
             // this is called upon the button being pressed
-            carts = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease);
+            carts = initialCarts;
             cartPath = CartPath.getCartPathForRound(gameManager.getCurrentRound());
             cartDirectionMap = CartDirectionMap.getDirectionMapForRound(gameManager.getCurrentRound());
             currentCartIndex = 0;
@@ -925,11 +927,11 @@ public class GameController {
             winOrLoseLabel.setText("You cleared Round " + gameManager.getCurrentRound() + "!");
             winOrLoseLabel.setTextFill(Color.GREEN);  // Set text color to green
             mainMenuButton.setVisible(true);  // Show the main menu button
-            if (CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size() - cartsLeft != 0) {
-                moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size() - cartsLeft);
+            if (initialCarts.size() - cartsLeft != 0) {
+                moneyEarned = moneyEarned/(initialCarts.size() - cartsLeft);
             }
             moneyEarnedLabel.setText("You earned $" + moneyEarned);
-
+            updateLabels();
         }
 
         // Check lose condition
@@ -940,11 +942,11 @@ public class GameController {
             winOrLoseLabel.setText("You Lost");
             winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
             mainMenuButton.setVisible(true);  // Show the main menu button
-            if (CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size() - cartsLeft != 0) {
-                moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size() - cartsLeft);
+            if (initialCarts.size() - cartsLeft != 0) {
+                moneyEarned = moneyEarned/(initialCarts.size() - cartsLeft);
             }
             moneyEarnedLabel.setText("You earned $" + moneyEarned);
-
+            updateLabels();
         }
     }
 

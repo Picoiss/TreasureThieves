@@ -86,6 +86,7 @@ public class InventoryController {
     private void goToMainMenu() {
         gameManager.closeInventoryScreen();
     }
+
     public void updateComboBox() {
         mainTowersComboBox.setValue("");
         reserveTowersComboBox.setValue("");
@@ -101,107 +102,105 @@ public class InventoryController {
         resourceTypeLabel.setText("");
         currentCombobox = null;
     }
+
     private void clearComboBoxes() {
         if (!Objects.equals(currentCombobox, "MainTower")) { mainTowersComboBox.setValue(""); }
         if (!Objects.equals(currentCombobox, "ReserveTower")) { reserveTowersComboBox.setValue(""); }
         if (!Objects.equals(currentCombobox, "MyUpgrade")) { upgradesComboBox.setValue(""); }
     }
+    private void setDetailLabels(String towerNameLabelText, String speedLabelText, String levelLabelText,
+                                 String costLabelText, String resourceAmountLabelText, String resourceTypeLabelText) {
+        towerNamelabel.setText(towerNameLabelText);
+        speedLabel.setText(speedLabelText);
+        levelLabel.setText(levelLabelText);
+        costLabel.setText(costLabelText);
+        resourceAmountLabel.setText(resourceAmountLabelText);
+        resourceTypeLabel.setText(resourceTypeLabelText);
+    }
+    private void displaySelectedTower() {
+        towerName.setText("Tower name");
+        speed.setText("Speed");
+        level.setText("Level");
+        resourceAmount.setText("Resource Amount");
+        resourceType.setText("Resource Type");
+        if (currentTower != null) {
+            setDetailLabels(currentTower.getName(), String.valueOf(currentTower.getReloadSpeed()), String.valueOf(currentTower.getLevel()),
+                    String.valueOf(currentTower.getCost()), String.valueOf(currentTower.getMaxAmount()), String.valueOf(currentTower.getResourceType()));
+            clearComboBoxes();
+            currentCombobox = null;
+        }
+    }
+
+    private void displaySelectedUpgrade() {
+        towerName.setText("Upgrade type");
+        speed.setText("Resource Boost");
+        level.setText("Reload Speed Boost");
+        resourceAmount.setText("Status");
+        resourceType.setText("");
+        if (currentUpgrade != null) {
+            setDetailLabels(currentUpgrade.getResourceType(), String.valueOf(currentUpgrade.getBoostResourceAmount()),
+                    String.valueOf(currentUpgrade.getReduceReloadSpeed()), String.valueOf(currentUpgrade.getCost()), currentUpgrade.getStatus(), "");
+            clearComboBoxes();
+            currentCombobox = null;
+        }
+    }
 
     @FXML
     private void selectedMainTower() {
         if (currentCombobox == null) {
-            isUpgrade = false;
-            isMainTower = true;
-            towerName.setText("Tower name");
-            speed.setText("Speed");
-            level.setText("Level");
-            resourceAmount.setText("Resource Amount");
-            resourceType.setText("Resource Type");
+            currentCombobox = "MainTower";
             currentTower = gameManager.getTowerClass(mainTowersComboBox.getValue().toString());
-            towerNamelabel.setText(currentTower.getName());
-            speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
-            levelLabel.setText(String.valueOf(currentTower.getLevel()));
-            costLabel.setText(String.valueOf(currentTower.getCost()));
-            resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
-            resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+            displaySelectedTower();
         }
     }
 
     @FXML
     private void selectedReserveTower() {
         if (currentCombobox == null) {
-            isUpgrade = false;
-            isMainTower = false;
-            towerName.setText("Tower name");
-            speed.setText("Speed");
-            level.setText("Level");
-            resourceAmount.setText("Resource Amount");
-            resourceType.setText("Resource Type");
+            currentCombobox = "ReserveTower";
             currentTower = gameManager.getTowerClass(reserveTowersComboBox.getValue().toString());
-            towerNamelabel.setText(currentTower.getName());
-            speedLabel.setText(String.valueOf(currentTower.getReloadSpeed()));
-            levelLabel.setText(String.valueOf(currentTower.getLevel()));
-            costLabel.setText(String.valueOf(currentTower.getCost()));
-            resourceAmountLabel.setText(String.valueOf(currentTower.getMaxAmount()));
-            resourceTypeLabel.setText(String.valueOf(currentTower.getResourceType()));
+            displaySelectedTower();
         }
     }
     @FXML
     private void selectedMyUpgrade() {
         if (currentCombobox == null) {
-            isUpgrade = true;
-            isMainTower = false;
-            towerName.setText("Upgrade type");
-            speed.setText("Resource Boost");
-            level.setText("Reload Speed Boost");
-            resourceAmount.setText("Status");
-            resourceAmountLabel.setText("");
-            resourceTypeLabel.setText("");
-            resourceType.setText("");
+            currentCombobox = "MyUpgrade";
             currentUpgrade = gameManager.getUpgradeClass(upgradesComboBox.getValue().toString());
-            towerNamelabel.setText(currentUpgrade.getResourceType());
-            speedLabel.setText(String.valueOf(currentUpgrade.getBoostResourceAmount()));
-            levelLabel.setText(String.valueOf(currentUpgrade.getReduceReloadSpeed()));
-            resourceAmountLabel.setText(currentUpgrade.getStatus());
-            costLabel.setText(String.valueOf(currentUpgrade.getCost()));
+            displaySelectedUpgrade();
         }
     }
     @FXML
     private void swapReserve() {
-        if (isUpgrade == false) {
-            if (isMainTower == true) {
-                if (mainTowersComboBox.getValue() != "") {
-                    gameManager.removeMainTower(currentTower);
-                    gameManager.addReserveTower(currentTower);
-                    updateComboBox();
-                }
+        if(gameManager.getReserveTowerList().size() >= 5) {
+            errorLabel.setText("You can only have 5 reserve towers!");
+        }
+        else {
+            if (mainTowersComboBox.getValue() != "") {
+                gameManager.removeMainTower(currentTower);
+                gameManager.addReserveTower(currentTower);
+                updateComboBox();
             }
         }
     }
     @FXML
     private void swapMain() {
-        if (isUpgrade == false) {
-            if (isMainTower == false) {
-                if(gameManager.getMainTowerList().size() >= 5) {
-                    errorLabel.setText("You can only have 5 main towers!");
-                }
-                if(gameManager.getMainTowerList().size() < 5) {
-                    if (reserveTowersComboBox.getValue() != "") {
-                        gameManager.removeReserveTower(currentTower);
-                        gameManager.addMainTower(currentTower);
-                        updateComboBox();
-                    }
-                }
+        if(gameManager.getMainTowerList().size() >= 5) {
+            errorLabel.setText("You can only have 5 main towers!");
+        }
+        else {
+            if (reserveTowersComboBox.getValue() != "") {
+                gameManager.removeReserveTower(currentTower);
+                gameManager.addMainTower(currentTower);
+                updateComboBox();
             }
         }
     }
     @FXML
     private void toggleUpgrade() {
-        if (isUpgrade == true) {
-            if (upgradesComboBox.getValue() != "") {
-                currentUpgrade.toggleStatus();
-                updateComboBox();
-            }
+        if (upgradesComboBox.getValue() != "") {
+            currentUpgrade.toggleStatus();
+            updateComboBox();
         }
     }
 }

@@ -60,6 +60,7 @@ public class MainMenuController {
             modifierText2.setStyle("-fx-text-fill: black;");
             modifierText3.setStyle("-fx-text-fill: black;");
             gameManager.setModifiersInitialisedTrue();
+            gameManager.setModifier("If you see this... uh");
         }
         else {
             System.out.println("Modifiers True");

@@ -140,8 +140,14 @@ public class ShopController {
         resourceAmount.setText("Resource Amount");
         resourceType.setText("Resource Type");
         if (currentTower != null) {
+            int cost;
+            if (currentCombobox == "ShopTower")
+                cost = currentTower.getCost();
+            else {
+                cost = (int) (0.9*currentTower.getCost());
+            }
             setDetailLabels(currentTower.getName(), String.valueOf(currentTower.getReloadSpeed()), String.valueOf(currentTower.getLevel()),
-                    String.valueOf(currentTower.getCost()), String.valueOf(currentTower.getMaxAmount()), String.valueOf(currentTower.getResourceType()));
+                    String.valueOf(cost), String.valueOf(currentTower.getMaxAmount()), String.valueOf(currentTower.getResourceType()));
             clearComboBoxes();
             currentCombobox = null;
         }
@@ -154,8 +160,14 @@ public class ShopController {
         resourceAmount.setText("");
         resourceType.setText("");
         if (currentUpgrade != null) {
+            int cost;
+            if (currentCombobox == "ShopUpgrade")
+                cost = currentUpgrade.getCost();
+            else {
+                cost = (int) (0.9*currentUpgrade.getCost());
+            }
             setDetailLabels(currentUpgrade.getResourceType(), String.valueOf(currentUpgrade.getBoostResourceAmount()),
-                    String.valueOf(currentUpgrade.getReduceReloadSpeed()), String.valueOf(currentUpgrade.getCost()), "", "");
+                    String.valueOf(currentUpgrade.getReduceReloadSpeed()), String.valueOf(cost), "", "");
             clearComboBoxes();
             currentCombobox = null;
         }

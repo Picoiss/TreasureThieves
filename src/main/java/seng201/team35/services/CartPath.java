@@ -1,5 +1,5 @@
 package seng201.team35.services;
-/**A class which handles the Path of the Cart
+/**A class which handles the Path of the Cart.
  *
  * @author msh254, nsr36
  */
@@ -14,7 +14,9 @@ public class CartPath {
         return indexGraph;
     }
 
-    /**
+    /** returns an indexGraph of the Path of the Cart for the specific Round
+     *
+     * @author msh254
      *
      * @param roundNumber
      * @return CartPathForRound

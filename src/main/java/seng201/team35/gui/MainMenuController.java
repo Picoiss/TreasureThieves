@@ -1,14 +1,17 @@
 package seng201.team35.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.util.Duration;
 import seng201.team35.GameManager;
+import seng201.team35.models.Tower;
+import seng201.team35.models.Upgrade;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Controller for the Main Menu.fxml window
@@ -33,6 +36,8 @@ public class MainMenuController {
     private Label roundsLabel;
     @FXML
     private Label roundsLeftLabel;
+    @FXML
+    private Label levelUpLabel;
     private final String[] MODIFIERS = {"Cart Speed Increase 10%", "Cart Speed Increase 5%", "Cart Speed Decrease 5%", "Cart Speed Decrease 10%",
             "Cart Number Decrease by 2", "Cart Number Decrease by 1", "Cart Number Increase by 1", "Cart Number Increase by 2", "Cart Fill Amount Decrease 10%",
             "Cart Fill Amount Increase 5%", "Cart Fill Amount Increase 10%", "Cart Fill Amount Decrease 5%"};
@@ -83,6 +88,7 @@ public class MainMenuController {
         moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
         roundsLabel.setText(String.valueOf(gameManager.getCurrentRound()));
         roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
+        checkTowerLevelUps();
     }
     @FXML
     public void shopClicked() {
@@ -145,5 +151,51 @@ public class MainMenuController {
         modifierText2.setStyle("-fx-text-fill: black;");
         System.out.println(modifierName);
         System.out.println("Modifier 3 has been selected");
+    }
+
+    public void checkTowerLevelUps() {
+        Map<String, Integer> numOfUpgrades = new HashMap<>();
+        String[] keys = {"Bronze", "Silver", "Gold", "Diamond", "Emerald", "Ruby"};
+        for (String key : keys) {
+            numOfUpgrades.put(key, 0);
+        }
+        for (int i = 0; i < gameManager.getUpgradesList().size(); i++) {
+            if (gameManager.getUpgradesList().get(i).getStatus() == "Active") {
+                numOfUpgrades.replace(gameManager.getUpgradesList().get(i).getResourceType(), numOfUpgrades.get(gameManager.getUpgradesList().get(i).getResourceType()) + 1);
+            }
+        }
+        for (Map.Entry<String, Integer> type : numOfUpgrades.entrySet()) {
+            if (type.getValue() >= 3) {
+                levelUpLabel.setText("All your " + type.getKey() + " towers have leveled up!");
+                levelUpLabel.setOpacity(1);
+                Timeline timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(3), new KeyValue(levelUpLabel.opacityProperty(), 0.7)),
+                        new KeyFrame(Duration.seconds(4), new KeyValue(levelUpLabel.opacityProperty(), 0))
+                );
+                timeline.setOnFinished(event -> levelUpLabel.setText(""));
+                timeline.play();
+                for (int i = 0; i < gameManager.getMainTowerList().size(); i++) {
+                    if (type.getKey() == gameManager.getMainTowerList().get(i).getResourceType()) {
+                        gameManager.getMainTowerList().get(i).increaseLevel();
+                        gameManager.getMainTowerList().get(i).increaseMaxAmount(gameManager.getMainTowerList().get(i).getMaxAmount()/10);
+                    }
+                }
+                for (int i = 0; i < gameManager.getReserveTowerList().size(); i++) {
+                    if (type.getKey() == gameManager.getReserveTowerList().get(i).getResourceType()) {
+                        gameManager.getReserveTowerList().get(i).increaseLevel();
+                        gameManager.getReserveTowerList().get(i).increaseMaxAmount(gameManager.getReserveTowerList().get(i).getMaxAmount()/10);
+                    }
+                }
+                int i = 0;
+                while (i < gameManager.getUpgradesList().size()) {
+                    if (type.getKey() == gameManager.getUpgradesList().get(i).getResourceType()) {
+                        gameManager.removeUpgrade(gameManager.getUpgradesList().get(i));
+                    }
+                    else {
+                        i++;
+                    }
+                }
+            }
+        }
     }
 }

@@ -40,8 +40,8 @@ public class SetupScreenController {
     private static final int EASY_STARTING_LIVES = 10;
     private static final int MEDIUM_STARTING_LIVES = 5;
     private static final int HARD_STARTING_LIVES = 3;
-    private static final int EASY_STARTING_MONEY = 250;
-    private static final int MEDIUM_STARTING_MONEY = 150;
+    private static final int EASY_STARTING_MONEY = 200;
+    private static final int MEDIUM_STARTING_MONEY = 100;
     private static final int HARD_STARTING_MONEY = 0;
     private GameManager gameManager;
 

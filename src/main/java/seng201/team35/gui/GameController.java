@@ -720,7 +720,6 @@ public class GameController {
         double angle = Math.atan2(targetY - startY, targetX - startX) * 180 / Math.PI;
         projectile.setRotate(angle - 90);  // Adjust by -90 degrees because the projectile points down by default
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
-        shootingTower.setLastShotTime(System.nanoTime());
         isGridShooting.replace(towerGridPos, true);
         transition.setByX(targetX - startX);
         transition.setByY(targetY - startY);

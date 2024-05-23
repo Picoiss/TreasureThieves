@@ -228,8 +228,6 @@ public class GameManager {
     public void removeReserveTower(Tower tower) {
         reserveTowerList.remove(tower);
     }
-
-    public void setUpgradesList(List<Upgrade> upgradeList) { this.upgradesList = upgradeList; }
     public List<Upgrade> getUpgradesList() { return upgradesList; }
     public void addUpgrade(Upgrade upgrade) {
         upgradesList.add(upgrade);

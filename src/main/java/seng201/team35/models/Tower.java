@@ -14,11 +14,8 @@ public class Tower {
     private final String resourceType;
     private final int cost;
     private int maxAmount;
-    private int resourceAmount;
     private int reloadSpeed;
     private int level;
-    private boolean isShooting;
-    private long lastShotTime;
 
     /**
      * Tower Constructor
@@ -43,7 +40,6 @@ public class Tower {
      * @return Current resource amount
      */
     public int getMaxAmount() {return maxAmount;}
-    public int getResourceAmount() { return resourceAmount; }
 
     /**
      * Get current tower reload speed
@@ -70,20 +66,6 @@ public class Tower {
     public int getCost() { return cost; }
 
     /**
-     * Wait for reload speed time
-     * Then reset the current tower resource amount to the max amount
-     */
-    public void reloadResourceAmount() {
-        try {
-            Thread.sleep(1000L *reloadSpeed);
-            resourceAmount = maxAmount;
-        }
-        catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
-    /**
      * Increase the current tower max amount
      * @param increment Value to increase the max amount by
      */
@@ -103,14 +85,6 @@ public class Tower {
             //throw exception
         }
         else { reloadSpeed -= decrement; }
-    }
-
-    /**
-     * Set tower last shot time
-     * @param time new time of last shot
-     */
-    public void setLastShotTime(long time) {
-        lastShotTime = time;
     }
 
     /**

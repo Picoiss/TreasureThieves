@@ -3,22 +3,57 @@ Welcome to the template project for SENG201 which you will transform into your o
 This README file includes some useful information to help you get started.
 However, we expect that this README becomes your own
 
-## Notes
+## (game name) Game Overview
 Remember you are required to commit your code to the **main** branch of your repository before the deadline.
 
-This project contains default naming of `team35` throughout.
-If you are interested you can update this to reflect your team number, however it is **not required**.
-This can be done by renaming any instance of `team35` with `team<x>` (where x is your number).
-IntelliJ can help with this using `ctrl+shift+f` to find all instances of a string, and `ctrl+shift+r` to replace them, though make sure to change the package names as well.
+Contents
+1.1 : (game name) Overview
+1.2 Introduction
+1.3 Tutorial
+1.4 Discussion
+1.5 Intricate Details / Mechanics
+1.6 Credits + Disclaimer
+1.7 Features which could have been added 
 
 ## Authors
 - msh254
 - nsr36
-- SENG201 Teaching team
 
 ## Prerequisites
 - JDK >= 17 [click here to get the latest stable OpenJDK release (as of writing this README)](https://jdk.java.net/18/)
 - *(optional)* Gradle [Download](https://gradle.org/releases/) and [Install](https://gradle.org/install/)
+
+## Introduction
+
+This project is a demonstation of skills gained throughout the last few months. This game is being developed as a part of the SENG201 (Software Engineering 201) Course at UC (University of Canterbury).
+This game, designed off specifications and guidelines outlined in the project specifications is heavily inspired of traditional 'Tower Defense' Games such as 'Bloons Tower Defense 6', 'Kingdom Rush' and other titles. However, this game offers a speciality in where the player will aim for a balance of strategy and efficiency in order to complete the game.
+
+# Tutorial
+
+Upon opening the game, the player will be have to complete the 'Game Setup' screen, which consists of entering a player name, a specified round number and a difficulty. In addition, the player will also be given a choice of three starting towers.
+
+After the game setup, the player will have an opportunity to buy towers from the starting cash they recieve (depends on difficulty), and will also be given an opportunity to rearrange their inventory.
+
+After selecting a modifier, the player will commence the first round.
+
+The 'game' is a culmination of a set of rules, which are;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## What's Included

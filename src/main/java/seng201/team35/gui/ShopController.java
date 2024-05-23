@@ -220,7 +220,7 @@ public class ShopController {
 
     private Set<Tower> getShopTowerSet(int currentRound) {
         Set<Tower> shopTowerSet = new HashSet<>();
-        shopTowerSet.addAll(gameManager.getDefaultTowers()); // this line is for testing purposes (to delete later)
+        //shopTowerSet.addAll(gameManager.getDefaultTowers()); // this line is for testing purposes (to delete later)
         switch (currentRound) {
             case 1:
                 shopTowerSet.add(gameManager.getTowerClass("Bronze Archer"));

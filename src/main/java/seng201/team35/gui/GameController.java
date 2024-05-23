@@ -44,13 +44,11 @@ public class GameController {
     @FXML
     private ComboBox<String> towerSelectionComboBox;
     @FXML
+    private Label warningLabel;
+    @FXML
     private Label winOrLoseLabel;
     @FXML
     private Button mainMenuButton;
-    @FXML
-    private Label moneyEarnedLabel;
-    @FXML
-    private Label warningLabel;
     @FXML
     private Label livesLabel;
     @FXML
@@ -59,9 +57,10 @@ public class GameController {
     private Label roundLabel;
     @FXML
     private Label cartsLeftLabel;
+    @FXML
+    private Label moneyEarnedLabel;
+
     private int cartsLeft;
-    private int moneyEarned = 0;
-    Map<String, Integer> cartRewards = new HashMap<>();
     private long startTime;
     private boolean gameRunning = false;
     private long lastUpdate = 0;
@@ -90,6 +89,9 @@ public class GameController {
     private int cartNumIncrease = 0;
     private int cartNumDecrease= 0;
     private double cartFillIncrease = 1;
+    private int moneyEarned = 0;
+    Map<String, Integer> cartRewards = new HashMap<>();
+
     private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
     //private Map<Point, Boolean> towerActive = new HashMap<>();
 
@@ -103,6 +105,17 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        cartsLeft = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size();
+        livesLabel.setText("Lives: " + gameManager.getLives());
+        moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
+        roundLabel.setText("Round: " + gameManager.getCurrentRound());
+        cartsLeftLabel.setText("Carts Left: " + cartsLeft);
+        cartRewards.put("Bronze", 300);
+        cartRewards.put("Silver", 400);
+        cartRewards.put("Gold", 550);
+        cartRewards.put("Diamond", 800);
+        cartRewards.put("Emerald", 950);
+        cartRewards.put("Ruby", 1200);
         grassImage = new Image(getClass().getResourceAsStream("/images/Grass.png"));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
         // load images of grass, and textured grass (loading grassImage may be redundant)
@@ -120,19 +133,6 @@ public class GameController {
 
         // Add click handler to the grid maybe we can jst add a fxml code instead?
         gameGrid.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleGridClick);
-
-        cartsLeft = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size();
-        livesLabel.setText("Lives: " + gameManager.getLives());
-        moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
-        roundLabel.setText("Round: " + gameManager.getCurrentRound());
-        cartsLeftLabel.setText("Carts Left: " + cartsLeft);
-
-        cartRewards.put("Bronze", 300);
-        cartRewards.put("Silver", 400);
-        cartRewards.put("Gold", 550);
-        cartRewards.put("Diamond", 800);
-        cartRewards.put("Emerald", 950);
-        cartRewards.put("Ruby", 1200);
 
         updateComboBox();
     }
@@ -191,7 +191,6 @@ public class GameController {
                     case 1:
                         Random rng = new Random();
                         int treeIndex = rng.nextInt(1,4);
-                        System.out.println(treeIndex);
                         imageView.setImage(new Image("/images/Buildings/Tree" + treeIndex + ".png"));
                         break;
                     case 2:
@@ -261,7 +260,7 @@ public class GameController {
             default:
                 System.out.println("No modifier or unknown modifier");
                 break;
-                // note, most of these have to be implemented still.
+            // note, most of these have to be implemented still.
         }
     }
     private void drawPathForRound(int roundNumber) {
@@ -448,11 +447,30 @@ public class GameController {
     }
     @FXML
     private void mainMenu() {
+        // this is the LAST THING that is done on the game scene
+        // therefore all clearing and resetting occurs here.
+        //side note -> if you want to make a diff. func which goes from game to fail
+        // you will need to use the same methods of clearing before...
+        // acutally no. then the games over.
+        //nevermind.
+        // Clear all tiles and elements from the game grid
         gameManager.setModifiersSelectedFalse();
+        gameGrid.getChildren().clear();
+        gamePane.getChildren().clear();
+        // Optionally, clear specific game-related collections if not already done
+        cartTokens.clear();
+        towerPositions.clear();
+        cartHealthBars.clear();
+        activeProjectiles.clear();
+        // Reset game state variables
+        gameRunning = false;
+        gameStartState = false;
+        currentCartIndex = 0;
+        carts.clear();
         gameManager.setModifiersInitialisedFalse();
-        // Deposit money earned from the round
         gameManager.changeMoneyAmount(moneyEarned);
         gameManager.incrementTotalMoney(moneyEarned);
+
         // Transition to main menu or change the round
         if (winOrLoseLabel.getTextFill() == Color.GREEN) {
             if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {
@@ -488,13 +506,14 @@ public class GameController {
         cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1)); // Initial direction 0 probably wrong but ok
         int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
         Point startPosition = getCartPosition(pathGraph, 1, -1, -1); // Initialize at position 1
+        System.out.println(startPosition);
         cart.setDirection(getInitialCartDirection(pathGraph));
         if (startPosition != null) { // if the startPosition exists;
             cart.setX(startPosition.x);
             cart.setY(startPosition.y);
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
-            double startX = startPosition.x * cellWidth + cellWidth / 2 + cartToken.getFitWidth() / 6;
+            double startX = startPosition.x * cellWidth + cellWidth / 2;
             double startY = startPosition.y * cellHeight + cellHeight / 2 - cartToken.getFitHeight() / 2;
             //calculate cell Sizing and also the start co - ordinates
             cartToken.setLayoutX(startX);
@@ -616,10 +635,7 @@ public class GameController {
 
         Tower shootingTower = gameManager.getTowerAt(towerGridPos);
 
-        if (shootingTower.getShooting() == true) {
-            return;
-        }
-        else {
+        if (!shootingTower.getShooting()){
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             Point2D towerCenter = new Point2D((towerGridPos.x + 0.5) * cellWidth, (towerGridPos.y + 0.5) * cellHeight);
@@ -677,12 +693,12 @@ public class GameController {
         gamePane.getChildren().add(projectile);
         double angle = Math.atan2(targetY - startY, targetX - startX) * 180 / Math.PI;
         projectile.setRotate(angle - 90);  // Adjust by -90 degrees because the projectile points down by default
-        shootingTower.setShootingTrue();
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
+        shootingTower.setLastShotTime(System.nanoTime());
+        shootingTower.setShootingTrue();
         transition.setByX(targetX - startX);
         transition.setByY(targetY - startY);
         transition.setOnFinished(event -> {
-            shootingTower.setShootingFalse();
             checkProjectileCollision(projectile, targetCart, shootingTower);
             // when the transition
             gamePane.getChildren().remove(projectile);
@@ -690,8 +706,24 @@ public class GameController {
         transition.play();
     }
 
+    private void updateShootingStatus() {
+        long currentTime = System.nanoTime();
+        long twoSecondsInNanos = 2_000_000_000;
+
+        for (Tower tower : gameManager.getMainTowerList()) {
+            try {
+                if (tower.getShooting() && (currentTime - tower.getLastShotTime() > twoSecondsInNanos)) {
+                    tower.setShootingFalse();
+                }
+            } catch (Exception e) {
+                System.out.println("Error updating shooting status for tower: " + e.getMessage());
+            }
+        }
+    }
+
 
     private void checkProjectileCollision(ImageView projectile, Cart targetCart, Tower shootingTower) {
+        shootingTower.setShootingFalse();
         ImageView cartToken = cartTokens.get(targetCart);
         if (cartToken == null) return;
 
@@ -738,12 +770,10 @@ public class GameController {
         for (int i = 0; i < pathGraph.length; i++) {
             for (int j = 0; j < pathGraph[i].length; j++) {
                 if (pathGraph[i][j] == step) {
-                    System.out.println(new Point(j, i));
                     return new Point(j, i);
                 }
             }
         }
-        System.out.println("null");
         return null;
     }
 
@@ -793,7 +823,6 @@ public class GameController {
                 TranslateTransition transition = new TranslateTransition(Duration.seconds(cart.getSpeed()*speedIncrease), cartToken);
                 transition.setToX(targetX - cartToken.getLayoutX());
                 transition.setToY(targetY - cartToken.getLayoutY());
-
                 //direction 5 signifies where two paths merge on the map
 
                 if (cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x] != 5) {
@@ -804,8 +833,6 @@ public class GameController {
 
 
                 transition.setOnFinished(event -> {
-                    cartSteps.remove(cart);
-                    //cartSteps.replace(cart, currentStep + 1);
                     cartSteps.put(cart, currentStep + 1);
                     isMoving = false;
                 });
@@ -837,6 +864,7 @@ public class GameController {
         moveCarts();
         checkTowersTargeting();
         checkWinOrLose();
+        updateShootingStatus();
     }
 
     // Update the lives, money, and carts left labels
@@ -859,6 +887,7 @@ public class GameController {
                 moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size() - cartsLeft);
             }
             moneyEarnedLabel.setText("You earned $" + moneyEarned);
+
         }
 
         // Check lose condition
@@ -873,6 +902,7 @@ public class GameController {
                 moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease).size() - cartsLeft);
             }
             moneyEarnedLabel.setText("You earned $" + moneyEarned);
+
         }
     }
 

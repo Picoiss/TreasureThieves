@@ -1,5 +1,8 @@
 package seng201.team35.services;
-
+/**A class which handles the Path of the Cart
+ *
+ * @author msh254, nsr36
+ */
 public class CartPath {
     private int[][] indexGraph;
 
@@ -11,6 +14,11 @@ public class CartPath {
         return indexGraph;
     }
 
+    /**
+     *
+     * @param roundNumber
+     * @return CartPathForRound
+     */
     public static CartPath getCartPathForRound(int roundNumber) {
         int[][] indexGraph = switch (roundNumber) {
             case 1 -> new int[][]{

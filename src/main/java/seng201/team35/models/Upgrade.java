@@ -45,7 +45,6 @@ public class Upgrade {
 
     /**
      * Return the names of an upgrade collection as a string list
-     * @param upgrades stream using a map function converted to a list
      */
     public int getCost() { return cost;}
     public String getStatus() {

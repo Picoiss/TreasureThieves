@@ -1,5 +1,8 @@
 package seng201.team35.services;
-
+/**A class which handles what direction the cart is to be facing at any given index in the gridPane.
+ *
+ * @author msh254, nsr36
+ */
 public class CartDirectionMap {
     private int[][] directionGraph;
 
@@ -10,7 +13,14 @@ public class CartDirectionMap {
     public int[][] getDirectionGraph() {
         return directionGraph;
     }
-
+    /**A function which returns an indexGraph which has directions a cart is facing for every grid
+     * in the game.
+     *
+     * @author msh254, nsr36
+     *
+     * @param roundNumber
+     * @return int[][] DirectionMapForRound
+     */
     public static CartDirectionMap getDirectionMapForRound(int roundNumber) {
         // 0 - Left, 1 - Up, 2 - Down, 3 - Right
         int[][] directionGraph = switch (roundNumber) {

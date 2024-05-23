@@ -1,19 +1,29 @@
 package seng201.team35.services;
 
+/**A class which handles the which tiles on the gridPane have an object.
+ *
+ * @author msh254, nsr36
+ */
 public class BuildingAndNatureMap {
     private int[][] BuildingAndNatureGraph;
-
     public BuildingAndNatureMap(int[][] BuildingAndNatureGraph) {
         this.BuildingAndNatureGraph = BuildingAndNatureGraph;
     }
-
     public int[][] getBuildingAndNatureGraph() {
         return BuildingAndNatureGraph;
     }
 
+    /**A function which returns an indexGraph oh what tiles have trees, rocks or buildings,
+     * (round dependent)
+     *
+     * @author msh254, nsr36
+     *
+     * @param roundNumber
+     * @return int[][] BuildingAndNatureMapForRound
+     */
     public static BuildingAndNatureMap getBuildingAndNatureMapForRound(int roundNumber) {
         // 1 -> Tree, 2 -> rocks, 3 = building 4 = building, 5 = building, 6 = well.
-        int[][] directionGraph = switch (roundNumber) {
+        int[][] indexGraph = switch (roundNumber) {
             case 1 -> {
                 int[][] ints = {
                         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -349,6 +359,6 @@ public class BuildingAndNatureMap {
             };
             default -> new int[20][18];
         };
-        return new BuildingAndNatureMap(directionGraph);
+        return new BuildingAndNatureMap(indexGraph);
     }
 }

@@ -18,7 +18,7 @@ public class Tower {
     private int reloadSpeed;
     private int level;
     private boolean isShooting;
-
+    private long lastShotTime;
     /**
      * Tower Constructor
      */
@@ -41,13 +41,11 @@ public class Tower {
     public void setShootingFalse() {
         isShooting = false;
     }
-    public void toggleShooting() {
-        if (isShooting) {
-            isShooting = false;
-        }
-        else if (!isShooting) {
-            isShooting = true;
-        }
+    public long getLastShotTime() {
+        return lastShotTime;
+    }
+    public void setLastShotTime(long time) {
+        lastShotTime = time;
     }
     /**
      * Get the tower's name

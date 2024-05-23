@@ -34,6 +34,10 @@ import java.util.*;
 
 import static seng201.team35.services.ProjectileSwitch.getProjectileSprite;
 
+/**Manages the Logic of the 'game'. This class loads, updates and renders certain game aspects.
+ *
+ * @author msh254, nsr36
+ */
 public class GameController {
     @FXML
     private GridPane gameGrid;
@@ -92,6 +96,10 @@ public class GameController {
     private int moneyEarned = 0;
     Map<String, Integer> cartRewards = new HashMap<>();
 
+    /**  ?
+     *
+     * @param x
+     */
     public GameController(GameManager x) {
         gameManager = x;
         towerPositions = new HashMap<>();
@@ -100,26 +108,25 @@ public class GameController {
         // initalise all of these GameController stuff..
     }
 
+    /**
+     * Initialises the GameController.
+     * Specifically, sets up the GameLoop, loads Ground Assets, Sets Labels, and
+     * gets certain parameters such as difficulty, and maps which are used further in the GameController class.
+     * @author msh254, nsr36
+     */
     @FXML
     public void initialize() {
-        grassImage = new Image(getClass().getResourceAsStream("/images/Grass.png"));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
-        // load images of grass, and textured grass (loading grassImage may be redundant)
         setupGameLoop();
         mainMenuButton.setVisible(false);
-        // set the mainMenu button to be not visisble.
-        loadGroundAssets(); // load the ground (path and grass etc).
-        drawPathForRound(gameManager.getCurrentRound()); // Example for round 1
+        loadGroundAssets();
+        drawPathForRound(gameManager.getCurrentRound());
         buildingAndNatureMap = BuildingAndNatureMap.getBuildingAndNatureMapForRound(gameManager.getCurrentRound());
         checkModifiers();
         loadBuildingAssets();
         getDifficultyScaling();
-        // Populate the ComboBox with tower names from the GameManager
         towerSelectionComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
-
-        // Add click handler to the grid maybe we can jst add a fxml code instead?
         gameGrid.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleGridClick);
-
         initialCarts = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease);
         cartsLeft = initialCarts.size();
         livesLabel.setText("Lives: " + gameManager.getLives());
@@ -132,9 +139,13 @@ public class GameController {
         cartRewards.put("Diamond", 800);
         cartRewards.put("Emerald", 950);
         cartRewards.put("Ruby", 1200);
-
         updateComboBox();
     }
+
+    /**Gets the difficulty scaling which is applied to certain logics such as projectile collision calculations, damage
+     * calculations and money calculations.
+     * @author msh254
+     */
     private void getDifficultyScaling() {
         String difficulty =gameManager.getGameDifficulty();
         switch(difficulty) {
@@ -150,6 +161,11 @@ public class GameController {
                 break;
         }
     }
+
+    /**Loads the base 'grass' assets over the entire gridPane (every tile in gridPane), further assets which are loaded
+     * are simply put over these grass images.
+     * @author msh254 (image credits see readME)
+     */
     private void loadGroundAssets() {
         // load the ground (just grass)
         int rows = 20;
@@ -165,27 +181,25 @@ public class GameController {
         // THIS needs to be implemented
         gameManager.getUpgradesList();
     }
+
+    /**Loads the trees, rocks and buildings for the game. Puts certain images at certain locations, specified
+     * by the 'buildingAndNatureGraph' which dictates which asset (if any) should be loaded at any given position
+     * in the gridPane
+     * @author msh254 , ' Bro Code ' (youtube -> see readMe (1)) (image credits see readME)
+     */
     public void loadBuildingAssets() {
-        // Get the BuildingAndNatureGraph from the current BuildingAndNatureMap
         int[][] buildingAndNatureGraph = buildingAndNatureMap.getBuildingAndNatureGraph();
-        // Retrieve the Path graph for the current round
         Path path = Path.getPathForRound(gameManager.getCurrentRound());
         int[][] pathGraph = path.getIndexGraph();
-
-        // Iterating over each cell in the buildingAndNatureGraph
         for (int row = 0; row < buildingAndNatureGraph.length; row++) {
             for (int col = 0; col < buildingAndNatureGraph[row].length; col++) {
-                // Check if the current cell is a path tile; skip if it is
                 if (pathGraph[row][col] != 0) {
                     continue;
                 }
-
-                // Depending on the value at buildingAndNatureGraph[row][col], load the corresponding image
                 ImageView imageView = new ImageView();
                 imageView.setFitWidth(26);
                 imageView.setFitHeight(32);
                 imageView.setPreserveRatio(false);
-
                 switch (buildingAndNatureGraph[row][col]) {
                     case 1:
                         Random rng = new Random();
@@ -208,17 +222,22 @@ public class GameController {
                         imageView.setImage(new Image("/images/Buildings/Well.png"));
                         break;
                     default:
-                        // No image for this cell
                         continue;
                 }
-                gameGrid.add(imageView, col, row); // Add to the GridPane at specified column and row
-                GridPane.setHalignment(imageView, HPos.CENTER); // Center the image in its grid cell
+                gameGrid.add(imageView, col, row);
+                GridPane.setHalignment(imageView, HPos.CENTER);
                 GridPane.setValignment(imageView, VPos.CENTER);
             }
         }
     }
+
+    /**A function which is called at the beginning of the round which determines what modifiers are active on the
+     * certain round. Once obtained, the modifers will alter certain aspects of the round
+     *
+     * @author msh254
+     */
     private void checkModifiers() {
-        currentModifier = gameManager.getModifier();  // Get the current modifier from the GameManager
+        currentModifier = gameManager.getModifier();
         switch (currentModifier) {
             case "Cart Speed Increase 10%":
                 speedIncrease = 1.1;
@@ -262,61 +281,82 @@ public class GameController {
             // note, most of these have to be implemented still.
         }
     }
+
+    /**A function which draws the 'path' (canal) for the certain round. This is done by obtaining which grids in the grid
+     * Pane have 'paths' on them via the Path class.
+     * The function iterates over every grid in the gridpane, and if the indexGraph in Path.java contains a '1' at that location.
+     * a path is generated there
+     * @author msh254
+     * @param roundNumber
+     */
     private void drawPathForRound(int roundNumber) {
-        // draw the path for the round
         Path path = Path.getPathForRound(roundNumber);
-        currentIndexGraph = path.getIndexGraph(); // Store the current index graph
+        currentIndexGraph = path.getIndexGraph();
         for (int row = 0; row < currentIndexGraph.length; row++) {
             for (int col = 0; col < currentIndexGraph[row].length; col++) {
                 if (currentIndexGraph[row][col] == 1) {
-                    addTileToGrid(grassImage, 0, 0, 15, 16, col, row); // Using the canal part (boats)
+                    addTileToGrid(grassImage, 0, 0, 15, 16, col, row);
                 }
             }
         }
     }
 
+    /**Adds a tile to the Grid, specified by the 'image' (imageview), size (width and height of image),
+     * location(x,y ) and the gridPane location (colIndex, rowIndex).
+     * The function then creates a ImageView object at the location specified, fitting the whole of the
+     * tile (50x50 px)
+     *
+     * @author msh254
+     * @param image
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param colIndex
+     * @param rowIndex
+     */
     private void addTileToGrid(Image image, int x, int y, int width, int height, int colIndex, int rowIndex) {
-        // adds a tile to the grid
         ImageView tile = new ImageView(image);
         tile.setViewport(new Rectangle2D(x, y, width, height));
-        tile.setFitWidth(50); // Set the width to 50 pixels
-        tile.setFitHeight(50); // Set the height to 50 pixels
-        tile.setSmooth(false); // Disable image smoothing (need to do with sprites)
+        tile.setFitWidth(50);
+        tile.setFitHeight(50);
+        tile.setSmooth(false);
         gameGrid.add(tile, colIndex, rowIndex);
     }
 
+    /**Function which handles mouse inputs (mouse clicks).
+     * Specifically, dictates where the tower is to be placed on the gridPane.
+     * Click (x,y) co-ordinates and transformed into grids in the GridPane.
+     *
+     * @author msh254
+     * @param event
+     */
     @FXML
     private void handleGridClick(MouseEvent event) {
-        // Check if a tower is selected
         if (currentTower == null || currentTower.isEmpty()) {
             return;
         }
-
-        // Calculate the clicked cell
         Point2D localPoint = gameGrid.sceneToLocal(event.getSceneX(), event.getSceneY());
-        // this one gets the point clicked then divides by gameGrid width (1000) and the column count to get the specific
-        //column
         int colIndex = (int) (localPoint.getX() / (gameGrid.getWidth() / gameGrid.getColumnCount()));
-        //same logic with the row index
         int rowIndex = (int) (localPoint.getY() / (gameGrid.getHeight() / gameGrid.getRowCount()));
-
-        // Ensure the click is within the grid bounds
-        //check if the clicked grid is indeed within boundaries
         if (colIndex >= 0 && colIndex < 18 && rowIndex >= 0 && rowIndex < 20) {
-            // Check if the selected cell is not a path
             if (currentIndexGraph[rowIndex][colIndex] == 0) {
                 addTower(colIndex, rowIndex);
                 updateComboBox();
             }
         }
     }
+
+    /**Gives a warning message to the player if an execption is called.
+     * Sets a warningLabel Label to turn into the warningText parameter.
+     * Fades after 3 seconds
+     * @author msh254
+     * @param warningText
+     */
     private void setWarning(String warningText) {
-        // sets a warning if a tower is already at the same location
-        // or if you tried to click start game again
         warningLabel.setText(warningText);
         warningLabel.setOpacity(0.7);
         warningLabel.toFront();
-
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(3), new KeyValue(warningLabel.opacityProperty(), 0.7)),
                 new KeyFrame(Duration.seconds(4), new KeyValue(warningLabel.opacityProperty(), 0))
@@ -324,28 +364,30 @@ public class GameController {
         timeline.setOnFinished(event -> warningLabel.setText(""));
         timeline.play();
     }
+
+    /**Adds a tower to the game based on it's row and column index.
+     *
+     * @author msh254,nsr36
+     * @param colIndex
+     * @param rowIndex
+     */
     private void addTower(int colIndex, int rowIndex) {
         Point newTowerPosition = new Point(colIndex, rowIndex);
         if (towerPositions.containsKey(newTowerPosition)) {
             System.out.println("A tower already exists at this position!");
             setWarning("A tower already exists at this location");
-            // sets a warning if the tower is already at the locatiomn
-            return; // Exit the method if a tower already exists at this position
+            return;
         }
         if (buildingAndNatureMap.getBuildingAndNatureGraph()[rowIndex][colIndex] != 0) {
             setWarning("Can't place a tower on an object");
-            return; // Exit the method if there's an object at this location
+            return;
         }
         Tower tower = retrieveSelectedTower();
-        //gets the tower from the hashMap retrieveSelectedTower -> which holds tower information per grid basis.
-        // Place the tower in GameManager
         gameManager.placeTowerAt(newTowerPosition, tower);
-
         ImageView towerSprite = new ImageView();
         towerImageViewToTower.put(towerSprite, tower);
-        // create an image of the towerSprite.
-        towerSprite.setFitWidth(35); // Adjust as needed
-        towerSprite.setFitHeight(35); // Adjust as needed
+        towerSprite.setFitWidth(35);
+        towerSprite.setFitHeight(35);
         towerSprite.setPreserveRatio(true);
         towerSprite.setSmooth(true);
         towerPositions.put(newTowerPosition, towerSprite);
@@ -353,73 +395,69 @@ public class GameController {
         isGridShooting.put(new Point(colIndex,rowIndex), false);
         animateTower(towerSprite, tower.getName());
         towerSelectionComboBox.getItems().remove(tower.getName());
-        currentTower = null; // set currentTower -> null afterplacing.
+        currentTower = null;
     }
+
+    /**retrieves the currently selected tower in the comboBox.
+     * As the comboBox can only store Strings, this String is converted
+     * to a Tower using the gameManager.getTowerByName(towerName) function
+     *
+     * @author msh254
+     * @return Tower
+     */
     private Tower retrieveSelectedTower() {
-        //uh.. actually what?
         String towerName = towerSelectionComboBox.getValue();
         return gameManager.getTowerByName(towerName);
     }
 
-
-
+    /** Animates the towerSprite.
+     * creates an animationTimer instance of AnimationTimer.
+     * overrides the handle for animationTimer to parse specific information / functions.
+     *
+     *
+     * @author msh254, ' Soumyashree Sahoo ' (youtube -> see readME (2))
+     * @param towerSprite
+     * @param towerName
+     */
     private void animateTower(ImageView towerSprite, String towerName) {
-        // ImageView object displays the towerSprite.
-        // a towername
-        // these are the parameters for animateTower
         final int frameCount = spriteSheet.getFrameCount();
-        // total number of frames for the given tower. gotten from spriteSheet.
-
         AnimationTimer animationTimer = new AnimationTimer() {
-            // Animation timer created to handle the animation
-            //similar to the one calling the update, this one allows an update every handle
             private int frameIndex = 0;
             private long lastUpdatesprite = 0;
-            // stores the current frame.
-
             @Override
             public void handle(long now) {
                 if (now - lastUpdatesprite >= updateInterval / frameCount) {
-                    // if the time between now and last update is greater than the specified update interval (for 1 frame)
                     Image frame = spriteSheet.getSpriteFrame(towerName, frameIndex);
-                    // gets the frame from the spriteSheet (stored as frame (Image object))
                     towerSprite.setImage(frame);
                     towerSprite.setPreserveRatio(true);
                     towerSprite.setSmooth(true);
-                    //set the image of towerSprite
-                    // updates the ImageView of the towerSprite to BE the frame
                     frameIndex = (frameIndex + 1) % frameCount;
-                    // update the frame index (modular arithmetic to keep it within frameCount always)
                     lastUpdatesprite = now;
-                    // last update = now.
                 }
             }
         };
         animationTimer.start();
     }
 
+    /**Similar to animateTower(), this function sets the GameLoop up, using the AnimationTimer function.
+     * checks if the difference between now and lastUpdate is >= our set updateInterval, this decides how often the game
+     * updated via updateGame()
+     *
+     * @author msh254, ' Soumyashree Sahoo ' (youtube -> see readME (3))
+     */
     private void setupGameLoop() {
         AnimationTimer gameLoop = new AnimationTimer() {
-            // AnimationTime created, which calls handle() method every frame
-            // name = gameLoop.
             @Override
             public void handle(long now) {
-                // now parameter is the current time in nanoSeconds
-                if (gameRunning) { // check to see if the game is running
-                    if (now - lastUpdate >= updateInterval) { // is the time between (now - lastupdate) (time between NOW and
-                        //the last tick) greater than the updateInterval (which we specified)?
-                        updateGame(); // if so, call updateGame()
-                        lastUpdate = now; // reset lastupdate to now.
+                if (gameRunning) {
+                    if (now - lastUpdate >= updateInterval) {
+                        updateGame();
+                        lastUpdate = now;
                     }
                     if (currentCartIndex < carts.size() && now - startTime >= carts.get(currentCartIndex).spawnTime) {
                         if (now - startTime >= carts.get(currentCartIndex).spawnTime) {
-                            //System.out.println((now - startTime) + "," + carts.get(currentCartIndex).spawnTime);
                         }
-                        // check if currentCartIndex is less than carts.size
-                        // and if the time between now and last-update and if now - lastUpdate is greater than carts.get(spawnTime..)
-                        // wait i think there is an error here. (FIXED)
                         spawnCart(carts.get(currentCartIndex).cart);
-                        //spawn the cart
                         currentCartIndex++;
                     }
                 }
@@ -428,42 +466,43 @@ public class GameController {
         gameLoop.start();
     }
 
+    /** Function when 'Start' Button is clicked.
+     * If so, the cart path and directionMap is loaded.
+     * startTime is initialised and cart Index is set to 0
+     *
+     * @author msh254, nsr36
+     */
     @FXML
     private void gameStarted() {
         if (!gameStartState) {
             gameStartState = true;
-            // this is called upon the button being pressed
             carts = initialCarts;
             cartPath = CartPath.getCartPathForRound(gameManager.getCurrentRound());
             cartDirectionMap = CartDirectionMap.getDirectionMapForRound(gameManager.getCurrentRound());
             currentCartIndex = 0;
-            startTime = System.nanoTime(); // Set start time to current time
-            gameRunning = true; // game is now running
-            lastUpdate = System.nanoTime(); // set lastUpdate to now
-            System.out.println("Game started, carts to spawn: " + carts.size());
-            // little debugging
+            startTime = System.nanoTime();
+            gameRunning = true;
+            lastUpdate = System.nanoTime();
         }
         else {
             setWarning("You already Started the Game");
         }
     }
+
+    /**This occurs when the main menu button is pressed, transitioning to the main menu screen
+     * As this is the last 'update' for the round, most of the clearing, resetting and updating is done here.
+     * Additionally, a Label is set depending on wether you won or lost the round.
+     *
+     * @author msh254, nsr36
+     */
     @FXML
     private void mainMenu() {
-        // this is the LAST THING that is done on the game scene
-        // therefore all clearing and resetting occurs here.
-        //side note -> if you want to make a diff. func which goes from game to fail
-        // you will need to use the same methods of clearing before...
-        // acutally no. then the games over.
-        //nevermind.
-        // Clear all tiles and elements from the game grid
         gameManager.setModifiersSelectedFalse();
         gameGrid.getChildren().clear();
         gamePane.getChildren().clear();
-        // Optionally, clear specific game-related collections if not already done
         cartTokens.clear();
         towerPositions.clear();
         cartHealthBars.clear();
-        // Reset game state variables
         gameRunning = false;
         gameStartState = false;
         currentCartIndex = 0;
@@ -471,15 +510,13 @@ public class GameController {
         gameManager.setModifiersInitialisedFalse();
         gameManager.changeMoneyAmount(moneyEarned);
         gameManager.incrementTotalMoney(moneyEarned);
-
-        // Transition to main menu or change the round
         if (winOrLoseLabel.getTextFill() == Color.GREEN) {
             if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {
-                gameManager.gameToWinMenuScreen(); // If final round was won, transition to win menu
+                gameManager.gameToWinMenuScreen();
             }
             else {
                 gameManager.changeCurrentRound();
-                gameManager.gameToMainMenuScreen(); // If non-final round was won, change round and go to main menu
+                gameManager.gameToMainMenuScreen();
             }
         }
         else if (winOrLoseLabel.getTextFill() == Color.ORANGE) {
@@ -487,10 +524,16 @@ public class GameController {
         }
 
         else {
-            gameManager.gameToFailMenuScreen(); // If all lives lost, transition to fail menu
+            gameManager.gameToFailMenuScreen();
         }
     }
 
+    /**Gets the initial cart direction from the indexGraph cartDirectionMap.
+     *
+     * @author msh254, nsr36
+     * @param startPosition
+     * @return Integer (start 'direction') -> 0 = left, 1 = up, 2 = down, 3 = right
+     */
     private int getInitialCartDirection(Point startPosition) {
         if (startPosition != null) {
             return cartDirectionMap.getDirectionGraph()[startPosition.y][startPosition.x];
@@ -498,39 +541,38 @@ public class GameController {
         return 0;
     }
 
-
+    /** Spawns a Cart into the Gridpane. Fits the Cart to the gridLength and Width (50x50px)
+     *  Sets the ImageView of the Cart onto the GridPane. Additionally, also creates a HealthBar to go underneath
+     *  the Cart.
+     *
+     * @author msh254, nsr36, 'Bro Code , Random Code' (youtube -> see readME (4))
+     * @param cart
+     */
     private void spawnCart(Cart cart) {
         ImageView cartToken = new ImageView();
-        // create s anew ImageView called cartToken
-        cartToken.setFitWidth(50); // set the width
-        cartToken.setFitHeight(50); // and the height
-        cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1)); // Initial direction 0 probably wrong but ok
-        int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
-        Point startPosition = getCartPosition(pathGraph, 1, -1, -1); // Initialize at position 1
+        cartToken.setFitWidth(50);
+        cartToken.setFitHeight(50);
+        cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1));
+        int[][] pathGraph = cartPath.getIndexGraph();
+        Point startPosition = getCartPosition(pathGraph, 1);
         System.out.println(startPosition);
         cart.setDirection(getInitialCartDirection(startPosition));
-        if (startPosition != null) { // if the startPosition exists;
+        if (startPosition != null) {
             cart.setX(startPosition.x);
             cart.setY(startPosition.y);
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             double startX = startPosition.x * cellWidth + cellWidth / 2;
             double startY = startPosition.y * cellHeight + cellHeight / 2 - cartToken.getFitHeight() / 2;
-            //calculate cell Sizing and also the start co - ordinates
             cartToken.setLayoutX(startX);
             cartToken.setLayoutY(startY);
-            //initialise the cart
             gamePane.getChildren().add(cartToken);
-            //add the cart to the gamePane
             cartTokens.put(cart, cartToken);
             cartSteps.put(cart, 1);
-            // stores information about the Carts in two dictionaries, cartTokens, and cartSteps
-            // cartTokens is a dict which maps the cart to the cartToken ( which was created from the cart )
-            // cartSteps matches the cart to the .. ''current step''?
-            Rectangle healthBar = new Rectangle(50, 5);  // Health bar width matches the cart width
+            Rectangle healthBar = new Rectangle(50, 5);
             healthBar.setLayoutX(startX);
-            healthBar.setLayoutY(startY + 55);  // Offset slightly below the cart
-            healthBar.setFill(Color.GREEN);  // Green health bar
+            healthBar.setLayoutY(startY + 55); // this is the offset for the healthbar
+            healthBar.setFill(Color.GREEN);
             gamePane.getChildren().add(healthBar);
             cartHealthBars.put(cart, healthBar);
             updateHealthBar(cart);
@@ -538,86 +580,73 @@ public class GameController {
         } else {
             System.out.println("Start position not found in pathGraph.");
         }
-        // debugging
     }
 
+    /** A function which updates the Health Bar of a Cart depending on the damage inflicted
+     * (how fill the cart is)
+     *
+     * @author msh254
+     * @param cart
+     */
     private void updateHealthBar(Cart cart) {
         Rectangle healthBar = cartHealthBars.get(cart);
-        // obtains a rectangle healthBar from the map cartHEALTHBARS.
         if (healthBar != null) {
             double fillPercentage = (double) (cart.getSize() - cart.getCurrentAmount()) / cart.getSize();
             healthBar.setWidth(50 * fillPercentage);
             if (fillPercentage < 0.3) {
-                healthBar.setFill(Color.RED);  // Red when health is low
+                healthBar.setFill(Color.RED);
             } else if (fillPercentage < 0.6) {
-                healthBar.setFill(Color.YELLOW);  // Yellow when health is medium
+                healthBar.setFill(Color.YELLOW);
             } else {
-                healthBar.setFill(Color.GREEN);  // Green when health is high
+                healthBar.setFill(Color.GREEN);
             }
         }
     }
 
+    /** Rotates a tower towards the 'target' (Cart). Takes a tower and target, the tower x and y co-ordinates are
+     * obtained via the tower.getLayoutX() and tower.getLayoutY() function, with offsetting to obtain the center
+     * of the tower (hence to tower.getFitWidth() / 2) ...
+     * Once the co-ordinate of the tower is obtained, an angle is calculated between the tower and the target.
+     * As all the Towers are facing UP in the 'Tower'.png, an offset of 90 degrees is necessary to orientate the tower.
+     *
+     * @author msh254 (5 -> see readME)
+     *
+     * @param tower
+     * @param target
+     */
     private void rotateTowerTowardsTarget(ImageView tower, Point2D target) {
-        // this function calculates the rotation of the Tower towards the (nearest?) Cart.
         Point2D towerPosition = new Point2D(tower.getLayoutX() + tower.getFitWidth() / 2, tower.getLayoutY() + tower.getFitHeight() / 2);
-        // this calculates the Towers' Position using a Point2D Variable (a x and a y co-ordinate)
         double angle = Math.atan2(target.getY() - towerPosition.getY(), target.getX() - towerPosition.getX()) * 180 / Math.PI;
-        // Then calculates an ANGLE for the tower to the target by taking the difference in distance from the tower and the target,
-        // and applies trig rules to find the angle
-        // using the atan2 function via Math, (which takes two co-ordinates and changes the rect. co-ordinates to polar co-ordinates in terms of r and theta)
-        // however, as this function is in radians, will need to convert to degrees in order to use setRotate
-        // (which is a javafx NODE function.
-        // However, as all the images are upright (facing up), we will need to correct the angle by adding 90degrees to our angle calculation. ( this is assuming
-        // that 0 degrees is facing RIGHT.
-        tower.setRotate(angle + 90); // Rotate the tower to face the target
+        tower.setRotate(angle + 90);
     }
 
+
+    /** A function which checks the targeting of Towers. Loops through every Tower and then through every Cart.
+     * For every tower, a co-ordinate is obtained, and for every cart (for the Tower), if the Cart is in range of
+     * the tower, it is added to the cartsInRange HashMap.
+     *
+     * Furthermore, once all the carts in distance of the Tower have been calculated, the carts are then sorted into
+     * distance (From tower), and wether the carts share the same resourceType as the Tower.
+     * This is done to specify targeting for the Tower.
+     *
+     * @author msh254, nsr36 (6 -> see readME)
+     */
     private void checkTowersTargeting() {
         double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
         double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
-        // calculates the Width and Height, of each gameGrid cell
-        // in theory, this can both be set to GLOBAL variables of GAME_HEIGHT
-        // and GAME_WIDTH as both are set to 50 px, but keeping this function here
-        // allows for future modular/dynamic game grids. (gridpanes)
-
         for (Map.Entry<Point, ImageView> entry : towerPositions.entrySet()) {
-            // note, towerPositions is a hashMap containing the towers' (Position, Sprite)
             Point towerGridPos = entry.getKey();
             ImageView towerSprite = entry.getValue();
-            // as follows.
-
-            // Calculate the center of the tower's grid cell in pixel coordinates
             double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
-            //System.out.println("towerCenterx = " + towerCenterX);
-
-            // this calculates the tower Center (X co-ordinate). This is done by taking the gridposition of the tower
-            // adding 0.5 (to get the center), then multiplying by the cellWidth (which could have been set at 50, but oh well)
             double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
-            //System.out.println("towerCentery = " + towerCenterY);
-            //same for the y co-ordinate of the tower.
             Map<Cart, Double> cartsInRange = new HashMap<>();
-
             for (Map.Entry<Cart, ImageView> cartEntry : cartTokens.entrySet()) {
-
-                //iterates over the carts which are in the game.
-                // for (position of cart, cartSprite) in the cartTokens hashMap;
                 Cart cart = cartEntry.getKey();
                 ImageView cartToken = cartEntry.getValue();
-
-                // Get the bounds of the cart token in the parent's coordinate system
                 Bounds cartBounds = cartToken.getBoundsInParent();
-                // using the .getBoundsInParent() is very important, as otherwise, the cart's position is calculated
-                // incorrectly. (for some reason the gridpane becomes like -850, 850)..
-                // Calculate the center of the cart's image using bounds
                 double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
                 double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
-                // unsure if the cartBounds.getMinX() is even required... but..
-                // calculates the center of the Cart by getting the Min of the boundaries of the cart (e.g most left point of cart)
-                // + the width of the Cart divided by 2, in order to get the middle of the Cart (done with both X and Y)
-                // Calculate the distance in pixel coordinates
                 double distance = Math.sqrt(Math.pow(towerCenterX - cartCenterX, 2) + Math.pow(towerCenterY - cartCenterY, 2));
-                // pythag.
-                //System.out.println(distance);
                 if (distance <= 2 * Math.min(cellWidth, cellHeight)) {
                     cartsInRange.put(cart, distance);
                 }
@@ -647,43 +676,43 @@ public class GameController {
                 double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
                 rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
                 System.out.println(closestCart);
-                // rotates the tower towards the cart
                 shootProjectile(towerGridPos, closestCart);
-                // shoots a projectile at the cart.
             }
         }
     }
 
+    /** The first function out of 3 which handles projectile calculation.
+     *  This first step 'shoots' a projectile (calculates the start and finish position for a projectile)
+     *  Depending on the distance from the tower to the cart, certain aspects of the finish position
+     *  of the projectile are altered.
+     *  e.g If the cart is 0.5 > distance > 1.25 of the Tower, then there is a slight offset to compensate
+     *  for the natural movement of the cart.
+     *
+     * @author msh254, nsr36
+     *
+     * @param towerGridPos
+     * @param targetCart
+     */
     private void shootProjectile(Point towerGridPos, Cart targetCart) {
-
         ImageView towerSprite = towerPositions.get(towerGridPos);
         if (towerSprite == null) return;
-
         Tower shootingTower = gameManager.getTowerAt(towerGridPos);
-
         if (!isGridShooting.get(towerGridPos)){
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
             double cellHeight = gameGrid.getHeight() / gameGrid.getRowCount();
             Point2D towerCenter = new Point2D((towerGridPos.x + 0.5) * cellWidth, (towerGridPos.y + 0.5) * cellHeight);
-
             ImageView cartToken = cartTokens.get(targetCart);
             if (cartToken == null) {
                 isGridShooting.replace(towerGridPos, false);
                 return;
             }
-
             Bounds cartBounds = cartToken.getBoundsInParent();
             Point2D cartCenter = new Point2D(cartBounds.getMinX() + cartBounds.getWidth() / 2, cartBounds.getMinY() + cartBounds.getHeight() / 2);
-
-            // Calculate the distance in tiles
             double distance = towerCenter.distance(cartCenter) / cellWidth;
-
             double targetX = cartCenter.getX();
             double targetY = cartCenter.getY();
-
             if (distance > 0.8 && distance <= 1.25) {
-                // Shoot between current and next position
-                Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1, targetCart.getX(), targetCart.getY());
+                Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
                 if (nextPosition != null) {
                     double nextPosX = nextPosition.x * cellWidth + cellWidth / 2;
                     double nextPosY = nextPosition.y * cellHeight + cellHeight / 2;
@@ -691,8 +720,7 @@ public class GameController {
                     targetY += (nextPosY - targetY) / 2;
                 }
             } else if (distance > 1.25 && distance <= 2) {
-                // Shoot netween next position and current, but more so to the next position
-                Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1, targetCart.getX(), targetCart.getY());
+                Point nextPosition = getCartPosition(cartPath.getIndexGraph(), cartSteps.get(targetCart) + 1);
                 if (nextPosition != null) {
                     double nextPosX = nextPosition.x * cellWidth + cellWidth / 2;
                     double nextPosY = nextPosition.y * cellHeight + cellHeight / 2;
@@ -700,51 +728,68 @@ public class GameController {
                     targetY += (nextPosY - targetY) / 1.6;
                 }
             }
-
-            //System.out.println("Shooting projectile from: (" + towerCenter.getX() + ", " + towerCenter.getY() + ") to: (" + targetX + ", " + targetY + ")");
             launchProjectile(towerCenter.getX(), towerCenter.getY(), targetX, targetY, targetCart, shootingTower, towerGridPos);
         }
     }
 
 
-
+    /**The Second Function in projectile calculations.
+     * This function handles the animation of the projectile.
+     * Sets the projectile width and height at (10x18), and also sets the projectile angle (so the projectile is directed
+     * towards the Cart). This is done similarly for the angle calculation of towers (taking the angle from the projectile start
+     * position to the projectile finish position)
+     *
+     * @author msh254, 'Random Code , Genuine Coder, Bro Code' (youtube -> see readME) (7)
+     *
+     * @param startX
+     * @param startY
+     * @param targetX
+     * @param targetY
+     * @param targetCart
+     * @param shootingTower
+     * @param towerGridPos
+     */
     private void launchProjectile(double startX, double startY, double targetX, double targetY, Cart targetCart, Tower shootingTower, Point towerGridPos) {
         ImageView projectile = new ImageView(Projectile.getProjectileSprite(getProjectileSprite(shootingTower.getName())));
-        // will need to add a function where the Projectile sprite depends on the tower. Luckily, not very hard to implement as the logic is already
-        // here.
         projectile.setFitWidth(10);
         projectile.setFitHeight(18);
         projectile.setLayoutX(startX);
         projectile.setLayoutY(startY);
         gamePane.getChildren().add(projectile);
         double angle = Math.atan2(targetY - startY, targetX - startX) * 180 / Math.PI;
-        projectile.setRotate(angle - 90);  // Adjust by -90 degrees because the projectile points down by default
+        projectile.setRotate(angle - 90);
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), projectile);
         isGridShooting.replace(towerGridPos, true);
         transition.setByX(targetX - startX);
         transition.setByY(targetY - startY);
         transition.setOnFinished(event -> {
             checkProjectileCollision(projectile, targetCart, shootingTower, towerGridPos);
-            // when the transition
             gamePane.getChildren().remove(projectile);
         });
         transition.play();
     }
 
+    /**The last function in projectile calculation.
+     * This function handles the collision checking for projectiles. Also handles damage calculations for the Cart
+     * (including Cart sinking scenario)
+     * Checks for resource type match in order to calculate damage % for the projectile.
+     *
+     * @author msh254, nsr36
+     *
+     * @param projectile
+     * @param targetCart
+     * @param shootingTower
+     * @param towerGridPos
+     */
     private void checkProjectileCollision(ImageView projectile, Cart targetCart, Tower shootingTower, Point towerGridPos) {
         isGridShooting.replace(towerGridPos, false);
         ImageView cartToken = cartTokens.get(targetCart);
         if (cartToken == null) return;
-
         Bounds projectileBounds = projectile.getBoundsInParent();
         Bounds cartBounds = cartToken.getBoundsInParent();
 
         if (projectileBounds.intersects(cartBounds)) {
-            // Check if the resource types match
-            System.out.println(targetCart.getResourceType() + ", " + shootingTower.getResourceType());
             boolean isResourceMatch = targetCart.getResourceType().equals(shootingTower.getResourceType());
-
-            // Calculate damage based on resource type match
             int damage;
             if (isResourceMatch) {
                 damage = (int) (difficultyScaling * cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
@@ -753,18 +798,17 @@ public class GameController {
                 damage = (int) (difficultyScaling * cartFillIncrease * shootingTower.getMaxAmount() / 25); // Reduced damage (40% of full damage)
                 System.out.println("Damage 40%");
             }
-
-            targetCart.fillCart(damage); // Fill the cart with the calculated damage value
-            if (targetCart.isCartFilled()) { // Check if the cart is now full
+            targetCart.fillCart(damage);
+            if (targetCart.isCartFilled()) {
                 System.out.println("Cart destroyed");
-                gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
-                cartTokens.remove(targetCart); // Remove the cart from active carts
-                cartsLeft -= 1; // Update remaining carts to fill
+                gamePane.getChildren().remove(cartToken);
+                cartTokens.remove(targetCart);
+                cartsLeft -= 1;
                 moneyEarned += cartRewards.get(targetCart.getResourceType());
                 gameManager.incrementTotalCartsDestroyed();
                 Rectangle healthBar = cartHealthBars.get(targetCart);
                 if (healthBar != null) {
-                    gamePane.getChildren().remove(healthBar); // Remove health bar associated with the cart
+                    gamePane.getChildren().remove(healthBar);
                 }
             } else {
                 System.out.println("Projectile hit the cart! Damage: " + damage);
@@ -773,9 +817,15 @@ public class GameController {
         }
     }
 
-    private Point getCartPosition(int[][] pathGraph, int step, int prevX, int prevY) {
-        //essentially, this function iterates through pathGraph indexMap and finds matches the step to
-        // a  grid in the pathGraph.
+    /**A function which iterates through pathGraph given the previous step.
+     * iterates through the whole of pathGraph until it finds the index after the prev step.
+     *
+     * @author msh254
+     * @param pathGraph
+     * @param step
+     * @return Point (of next step)
+     */
+    private Point getCartPosition(int[][] pathGraph, int step) {
         for (int i = 0; i < pathGraph.length; i++) {
             for (int j = 0; j < pathGraph[i].length; j++) {
                 if (pathGraph[i][j] == step) {
@@ -786,25 +836,33 @@ public class GameController {
         return null;
     }
 
-
+    /**Updates the direction of the Cart Sprite (what direction the ImageView is facing)
+     * depending on the direction parsed through.
+     *
+     * @author msh254
+     * @param cart
+     * @param cartToken
+     * @param direction
+     */
     private void updateCartSprite(Cart cart, ImageView cartToken, int direction) {
-        //updates direction, req, direct as a parameter though.
         cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), direction));
     }
 
+    /** A function which controls how the carts are moved through the gridPane. Checks for the next
+     * index for the cart (through CartPath indexGraph), and moves the cart accordingly.
+     * Iterates through all the Carts in the game. If a cart reaches the end of the Path, a 'life' is lost.
+     *
+     * @author msh254, nsr36, ' Bro Code, Genuine Coder, Random Code ' (youtube -> see readME) (8)
+     *
+     */
     private void moveCarts() {
         Iterator<Map.Entry<Cart, ImageView>> iterator = cartTokens.entrySet().iterator();
         while (iterator.hasNext()) {
-            // while there are entries in iterator -> cartTokens.entrySet()
-            // while there are carts
             Map.Entry<Cart, ImageView> entry = iterator.next();
-            // gets a Cart;
             Cart cart = entry.getKey();
-            // cart info gets cart from entry.getKey()
             Rectangle healthBar = cartHealthBars.get(cart);
             ImageView cartToken = entry.getValue();
-            Integer currentStep = cartSteps.get(cart); // Get the current step
-
+            Integer currentStep = cartSteps.get(cart);
             if (currentStep == null) {
                 System.out.println("Error: No tracking info for cart. Removing cart.");
                 gamePane.getChildren().remove(cartToken);
@@ -812,11 +870,9 @@ public class GameController {
                 if (healthBar != null) {
                     gamePane.getChildren().remove(healthBar);
                 }
-                continue;  // Skip further processing for this cart
+                continue;
             }
-
-            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1, cart.getX(), cart.getY());
-
+            Point nextPosition = getCartPosition(cartPath.getIndexGraph(), currentStep + 1);
             if (nextPosition != null) {
                 cart.setX(nextPosition.x);
                 cart.setY(nextPosition.y);
@@ -827,13 +883,8 @@ public class GameController {
                 TranslateTransition transition = new TranslateTransition(Duration.seconds(cart.getSpeed()*speedIncrease), cartToken);
                 transition.setToX(targetX - cartToken.getLayoutX());
                 transition.setToY(targetY - cartToken.getLayoutY());
-                //direction 5 signifies where two paths merge on the map
-
                 cart.setDirection(cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x]);
                 updateCartSprite(cart, cartToken, cart.getDirection());
-
-
-
                 transition.setOnFinished(event -> {
                     cartSteps.put(cart, currentStep + 1);
                 });
@@ -869,7 +920,11 @@ public class GameController {
         }
     }
 
-
+    /** A function which updates the game. This is called every game Tick, specified by the Interval updateInterval
+     * updatesLabels, moveCarts, checkTowerTargeting, checkWinOrLose
+     *
+     * @author msh254, nsr36
+     */
     private void updateGame() {
         updateLabels();
         moveCarts();
@@ -877,37 +932,44 @@ public class GameController {
         checkWinOrLose();
     }
 
-    // Update the lives, money, and carts left labels
+    /**Updates the labels in the game (necessary for displaying the lives lost in the round)
+     *
+     * @author nsr36
+     */
     private void updateLabels() {
         livesLabel.setText("Lives: " + gameManager.getLives());
         moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
         cartsLeftLabel.setText("Carts Left: " + cartsLeft);
     }
 
+    /**Check wether you have won or lost the game.
+     * The game is 'Won' when all carts have been sunk
+     * The game is 'Lost' if any cart reaches the end.
+     *
+     * @author msh254, nsr36
+     */
     private void checkWinOrLose() {
-        boolean allCartsSpawned = currentCartIndex >= carts.size();  // Check if all carts have been spawned
-        if (allCartsSpawned && cartTokens.isEmpty()) {  // No active carts left
+        boolean allCartsSpawned = currentCartIndex >= carts.size();
+        if (allCartsSpawned && cartTokens.isEmpty()) {
             gameRunning = false;
             winOrLoseLabel.toFront();
             mainMenuButton.toFront();
             winOrLoseLabel.setText("You cleared Round " + gameManager.getCurrentRound() + "!");
-            winOrLoseLabel.setTextFill(Color.GREEN);  // Set text color to green
-            mainMenuButton.setVisible(true);  // Show the main menu button
+            winOrLoseLabel.setTextFill(Color.GREEN);
+            mainMenuButton.setVisible(true);
             if (initialCarts.size() - cartsLeft != 0) {
                 moneyEarned = moneyEarned/(initialCarts.size() - cartsLeft);
             }
             moneyEarnedLabel.setText("You earned $" + moneyEarned);
             updateLabels();
         }
-
-        // Check lose condition
-        if (gameManager.getLives() <= 0) {  // This will be implemented based on your game health logic
+        if (gameManager.getLives() <= 0) {
             gameRunning = false;
             winOrLoseLabel.toFront();
             mainMenuButton.toFront();
             winOrLoseLabel.setText("You lost all your lives!");
-            winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
-            mainMenuButton.setVisible(true);  // Show the main menu button
+            winOrLoseLabel.setTextFill(Color.RED);
+            mainMenuButton.setVisible(true);
             if (initialCarts.size() - cartsLeft != 0) {
                 moneyEarned = moneyEarned/(initialCarts.size() - cartsLeft);
             }
@@ -916,11 +978,19 @@ public class GameController {
         }
     }
 
+    /** when the player selects a tower form the comboBox towerSelectionComboBox
+     *
+     * @author msh254
+     */
     @FXML
     private void towerSelected() {
         currentTower = towerSelectionComboBox.getValue();
     }
 
+    /** Updates the comboBox to display "" (nothing).
+     *
+     * @author msh254
+     */
     private void updateComboBox() {
         towerSelectionComboBox.setValue("");
     }

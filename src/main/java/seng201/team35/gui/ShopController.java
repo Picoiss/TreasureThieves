@@ -325,7 +325,7 @@ public class ShopController {
         }
         else if (reserveTowersComboBox.getValue() != "") {
             System.out.println("Reserve Tower has been Sold");
-            gameManager.removeMainTower(currentTower);
+            gameManager.removeReserveTower(currentTower);
             gameManager.changeMoneyAmount(currentTower.getCost());
             updateComboBox();
         }

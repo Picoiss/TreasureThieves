@@ -8,17 +8,10 @@ public class ProjectileSwitch {
                 return "Spear.png";
             case "Silver Knight", "Diamond Minotaur":
                 return "Sword.png";
-            case "Silver Priest", "Gold Goblin", "Diamond Necromancer", "Emerald Pegasus", "Ruby Dragon", "Emerald Elf":
+            case "Silver Priest", "Gold Goblin", "Diamond Necromancer", "Emerald Pegasus", "Ruby Dragon", "Emerald Elf", "Diamond Mage", "Emerald Phoenix", "Ruby OrcMage", "Silver Alchemist":
                 return "Fireball.png";
-            case "Silver Alchemist":
-                return "Fireball Purple.png";
             case "Gold Pirate", "Ruby Golem":
                 return "Bullet.png";
-            case "Diamond Mage":
-                return "Fireball Blue.png";
-            case "Emerald Phoenix":
-            case "Ruby OrcMage":
-                return "Fireball RedGreen.png";
             default:
                 return "Arrow Long.png";
         }

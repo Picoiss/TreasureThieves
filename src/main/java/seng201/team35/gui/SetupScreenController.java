@@ -23,8 +23,6 @@ public class SetupScreenController {
     @FXML
     private TextField playerNameTextField;
     @FXML
-    private Button continueButton;
-    @FXML
     private Slider numRoundsSlider;
     @FXML
     private ComboBox difficultyComboBox;
@@ -37,8 +35,14 @@ public class SetupScreenController {
     @FXML
     private Label warningLabel;
     private String playerName;
-    private int numRounds; // maxrounds
+    private int numRounds; // maximum rounds
     private String gameDifficulty;
+    private static final int EASY_STARTING_LIVES = 15;
+    private static final int MEDIUM_STARTING_LIVES = 10;
+    private static final int HARD_STARTING_LIVES = 5;
+    private static final int EASY_STARTING_MONEY = 250;
+    private static final int MEDIUM_STARTING_MONEY = 150;
+    private static final int HARD_STARTING_MONEY = 0;
     private GameManager gameManager;
 
     public SetupScreenController(GameManager x) { gameManager = x; }
@@ -93,30 +97,27 @@ public class SetupScreenController {
             System.out.println(playerName);
             System.out.println(numRounds);
             System.out.println(gameDifficulty);
-            //is this where we switch screens? IN FUTURE add a call to the next window (Main Menu)
             gameManager.setPlayerName(playerName);
             gameManager.setNumOfRounds(numRounds);
             gameManager.setGameDifficulty(gameDifficulty);
-            //Need to be able to select towers in setup
-            //gameManager.setTowerList();
             List<Tower> startingTowers = new ArrayList<>();
             startingTowers.add(gameManager.getTowerClass((String) startingTower1Combo.getValue()));
             startingTowers.add(gameManager.getTowerClass((String) startingTower2Combo.getValue()));
             startingTowers.add(gameManager.getTowerClass((String) startingTower3Combo.getValue()));
             gameManager.setMainTowerList(startingTowers);
             if (gameDifficulty == "Easy") {
-                gameManager.setLives(15);
-                gameManager.changeMoneyAmount(250);
+                gameManager.setLives(EASY_STARTING_LIVES);
+                gameManager.changeMoneyAmount(EASY_STARTING_MONEY);
                 System.out.println("Money set to easy");
             }
             if (gameDifficulty == "Medium") {
-                gameManager.setLives(10);
-                gameManager.changeMoneyAmount(150);
+                gameManager.setLives(MEDIUM_STARTING_LIVES);
+                gameManager.changeMoneyAmount(MEDIUM_STARTING_MONEY);
                 System.out.println("Money set to medium");
             }
             if (gameDifficulty == "Hard") {
-                gameManager.setLives(5);
-                gameManager.changeMoneyAmount(0);
+                gameManager.setLives(HARD_STARTING_LIVES);
+                gameManager.changeMoneyAmount(HARD_STARTING_MONEY);
                 System.out.println("Money set to hard");
             }
             gameManager.closeSetupScreen();

@@ -44,11 +44,13 @@ public class GameController {
     @FXML
     private ComboBox<String> towerSelectionComboBox;
     @FXML
-    private Label warningLabel;
-    @FXML
     private Label winOrLoseLabel;
     @FXML
     private Button mainMenuButton;
+    @FXML
+    private Label moneyEarnedLabel;
+    @FXML
+    private Label warningLabel;
     @FXML
     private Label livesLabel;
     @FXML
@@ -58,6 +60,8 @@ public class GameController {
     @FXML
     private Label cartsLeftLabel;
     private int cartsLeft;
+    private int moneyEarned = 0;
+    Map<String, Integer> cartRewards = new HashMap<>();
     private long startTime;
     private boolean gameRunning = false;
     private long lastUpdate = 0;
@@ -104,6 +108,13 @@ public class GameController {
         moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
         roundLabel.setText("Round: " + gameManager.getCurrentRound());
         cartsLeftLabel.setText("Carts Left: " + cartsLeft);
+
+        cartRewards.put("Bronze", 300);
+        cartRewards.put("Silver", 400);
+        cartRewards.put("Gold", 550);
+        cartRewards.put("Diamond", 800);
+        cartRewards.put("Emerald", 950);
+        cartRewards.put("Ruby", 1200);
 
         grassImage = new Image(getClass().getResourceAsStream("/images/Grass.png"));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
@@ -437,27 +448,13 @@ public class GameController {
     }
     @FXML
     private void mainMenu() {
-        // this is the LAST THING that is done on the game scene
-        // therefore all clearing and resetting occurs here.
-        //side note -> if you want to make a diff. func which goes from game to fail
-        // you will need to use the same methods of clearing before...
-        // acutally no. then the games over.
-        //nevermind.
-        // Clear all tiles and elements from the game grid
-        gameManager.setModifiersSelectedFalse();
-        gameGrid.getChildren().clear();
-        gamePane.getChildren().clear();
-        // Optionally, clear specific game-related collections if not already done
-        cartTokens.clear();
-        towerPositions.clear();
-        cartHealthBars.clear();
-        activeProjectiles.clear();
-        // Reset game state variables
-        gameRunning = false;
-        gameStartState = false;
-        currentCartIndex = 0;
-        carts.clear();
+        //Don't worry about clearing class variables
+        //Because each round creates new instance automatically reset
+
         gameManager.setModifiersInitialisedFalse();
+        // Deposit money earned from the round
+        gameManager.changeMoneyAmount(moneyEarned);
+        gameManager.incrementTotalMoney(moneyEarned);
         // Transition to main menu or change the round
         if (winOrLoseLabel.getTextFill() == Color.GREEN) {
             if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {
@@ -724,6 +721,7 @@ public class GameController {
                 gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
                 cartTokens.remove(targetCart); // Remove the cart from active carts
                 cartsLeft -= 1; // Update remaining carts to fill
+                moneyEarned += cartRewards.get(targetCart.getResourceType());
                 gameManager.incrementTotalCartsDestroyed();
                 Rectangle healthBar = cartHealthBars.get(targetCart);
                 if (healthBar != null) {
@@ -855,6 +853,10 @@ public class GameController {
             winOrLoseLabel.setText("You cleared Round " + gameManager.getCurrentRound() + "!");
             winOrLoseLabel.setTextFill(Color.GREEN);  // Set text color to green
             mainMenuButton.setVisible(true);  // Show the main menu button
+            if (CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft != 0) {
+                moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft);
+            }
+            moneyEarnedLabel.setText("You earned $" + moneyEarned);
         }
 
         // Check lose condition
@@ -865,6 +867,10 @@ public class GameController {
             winOrLoseLabel.setText("You Lost");
             winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
             mainMenuButton.setVisible(true);  // Show the main menu button
+            if (CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft != 0) {
+                moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft);
+            }
+            moneyEarnedLabel.setText("You earned $" + moneyEarned);
         }
     }
 

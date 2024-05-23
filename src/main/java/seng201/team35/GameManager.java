@@ -34,24 +34,36 @@ public class GameManager {
     private final Consumer<GameManager> winMenuLauncher;
     private final Runnable clearScreen;
     private String currentModifier;
-    private Tower BronzeArcher = new Tower("Bronze Archer", 100,100, "Bronze", 100);
-    private Tower BronzeDwarf = new Tower("Bronze Dwarf", 75,125, "Bronze", 150);
-    private Tower BronzeVillager = new Tower("Bronze Villager", 120,150, "Bronze", 200);
-    private Tower SilverKnight = new Tower("Silver Knight",80,150, "Silver", 300);
-    private Tower SilverPriest = new Tower("Silver Priest",100,170, "Silver", 325);
-    private Tower SilverAlchemist = new Tower("Silver Alchemist",150,190, "Silver", 350);
-    private Tower GoldGiant = new Tower("Gold Giant", 70,200, "Gold", 400);
-    private Tower GoldGoblin = new Tower("Gold Goblin", 100,240, "Gold", 425);
-    private Tower GoldPirate = new Tower("Gold Pirate", 40,275, "Gold", 425);
-    private Tower DiamondMage = new Tower("Diamond Mage",20, 400, "Diamond", 500);
-    private Tower DiamondNecromancer = new Tower("Diamond Necromancer",20, 425, "Diamond", 575);
-    private Tower DiamondMinotaur = new Tower("Diamond Minotaur",45, 460, "Diamond", 600);
-    private Tower EmeraldElf = new Tower("Emerald Elf", 45,575, "Emerald", 800);
-    private Tower EmeraldPhoenix = new Tower("Emerald Phoenix", 25,625, "Emerald", 875);
-    private Tower EmeraldPegasus = new Tower("Emerald Pegasus", 50,700, "Emerald", 900);
-    private Tower RubyDragon = new Tower("Ruby Dragon",25, 700, "Ruby", 1250);
-    private Tower RubyOrcMage = new Tower("Ruby OrcMage",25, 850, "Ruby", 1400);
-    private Tower RubyGolem = new Tower("Ruby Golem",10, 1500, "Ruby", 3000);
+    /**
+     * Initialise all available towers
+     */
+    private static final Tower BronzeArcher = new Tower("Bronze Archer", 100,100, "Bronze", 100);
+    private static final Tower BronzeDwarf = new Tower("Bronze Dwarf", 75,125, "Bronze", 125);
+    private static final Tower BronzeVillager = new Tower("Bronze Villager", 120,150, "Bronze", 150);
+    private static final Tower SilverKnight = new Tower("Silver Knight",80,150, "Silver", 150);
+    private static final Tower SilverPriest = new Tower("Silver Priest",100,170, "Silver", 170);
+    private static final Tower SilverAlchemist = new Tower("Silver Alchemist",150,190, "Silver", 190);
+    private static final Tower GoldGiant = new Tower("Gold Giant", 70,200, "Gold", 200);
+    private static final Tower GoldGoblin = new Tower("Gold Goblin", 100,240, "Gold", 240);
+    private static final Tower GoldPirate = new Tower("Gold Pirate", 40,275, "Gold", 275);
+    private static final Tower DiamondMage = new Tower("Diamond Mage",20, 400, "Diamond", 400);
+    private static final Tower DiamondNecromancer = new Tower("Diamond Necromancer",20, 425, "Diamond", 425);
+    private static final Tower DiamondMinotaur = new Tower("Diamond Minotaur",45, 460, "Diamond", 460);
+    private static final Tower EmeraldElf = new Tower("Emerald Elf", 45,575, "Emerald", 575);
+    private static final Tower EmeraldPhoenix = new Tower("Emerald Phoenix", 25,625, "Emerald", 625);
+    private static final Tower EmeraldPegasus = new Tower("Emerald Pegasus", 50,700, "Emerald", 700);
+    private static final Tower RubyDragon = new Tower("Ruby Dragon",25, 700, "Ruby", 700);
+    private static final Tower RubyOrcMage = new Tower("Ruby OrcMage",25, 850, "Ruby", 850);
+    private static final Tower RubyGolem = new Tower("Ruby Golem",10, 1000, "Ruby", 1000);
+    /**
+     * Initialise all available upgrades
+     */
+    private static final Upgrade BronzeUpgrade = new Upgrade(10, 10, "Bronze", 100, "Active");
+    private static final Upgrade SilverUpgrade = new Upgrade(10, 10, "Silver", 150, "Active");
+    private static final Upgrade GoldUpgrade = new Upgrade(10, 10, "Gold", 200, "Active");
+    private static final Upgrade DiamondUpgrade = new Upgrade(10, 10, "Diamond", 350, "Active");
+    private static final Upgrade EmeraldUpgrade = new Upgrade(10, 10, "Emerald", 500, "Active");
+    private static final Upgrade RubyUpgrade = new Upgrade(10, 10, "Ruby", 700, "Active");
     private Boolean modifiersInitialised = false;
     private String globalModifier1;
     private String globalModifier2;
@@ -118,12 +130,8 @@ public class GameManager {
                 SilverKnight, SilverPriest, SilverAlchemist, GoldGiant, GoldGoblin,
                 GoldPirate, DiamondMage, DiamondNecromancer, DiamondMinotaur, EmeraldElf,
                 EmeraldPhoenix, EmeraldPegasus, RubyDragon, RubyOrcMage, RubyGolem));
-        defaultUpgrades.addAll(List.of(new Upgrade(10, 10, "Bronze", 100, "Active"),
-                new Upgrade(10, 10, "Silver", 150, "Active"),
-                new Upgrade(10, 10, "Gold", 200, "Active"),
-                new Upgrade(10, 10, "Diamond", 350, "Active"),
-                new Upgrade(10, 10, "Emerald", 500, "Active"),
-                new Upgrade(10, 10, "Ruby", 700, "Active")));
+        defaultUpgrades.addAll(List.of(BronzeUpgrade, SilverUpgrade, GoldUpgrade,
+                DiamondUpgrade, EmeraldUpgrade, RubyUpgrade));
         launchSetupScreen();
     }
     public void placeTowerAt(Point position, Tower tower) {

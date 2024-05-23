@@ -7,108 +7,77 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="423.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team35.gui.FailMenuController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng201.team35.gui.FailMenuController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="720.0" minWidth="10.0" prefWidth="720.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="720.0" minWidth="10.0" prefWidth="720.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="93.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="56.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label text="Player Name:" GridPane.rowIndex="1">
+      <Label text="Player Name:" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <font>
-            <Font size="15.0" />
+            <Font size="43.0" />
          </font>
-         <padding>
-            <Insets left="80.0" />
-         </padding>
       </Label>
-      <Label text="Total Rounds:" GridPane.rowIndex="2">
+      <Label text="Total Rounds:" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>
-            <Font size="15.0" />
+            <Font size="43.0" />
          </font>
-         <padding>
-            <Insets left="80.0" />
-         </padding>
       </Label>
-      <Label text="Completed Rounds:" GridPane.rowIndex="3">
+      <Label text="Completed Rounds:" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
-            <Font size="15.0" />
+            <Font size="43.0" />
          </font>
-         <padding>
-            <Insets left="80.0" />
-         </padding>
       </Label>
-      <Label text="You lost!" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+      <Label text="You lost!" textFill="#d70000" GridPane.columnSpan="2" GridPane.halignment="CENTER">
          <font>
-            <Font name="Berlin Sans FB" size="31.0" />
+            <Font name="Berlin Sans FB" size="66.0" />
          </font>
          <GridPane.margin>
             <Insets top="16.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Total Money Earned:" GridPane.rowIndex="4">
+      <Label text="Total Money Earned:" GridPane.halignment="CENTER" GridPane.rowIndex="4">
          <font>
-            <Font size="15.0" />
+            <Font size="43.0" />
          </font>
-         <padding>
-            <Insets left="80.0" />
-         </padding>
       </Label>
-      <Label text="Total Carts Destroyed:" GridPane.rowIndex="5">
+      <Label text="Total Carts Destroyed:" GridPane.halignment="CENTER" GridPane.rowIndex="5">
          <font>
-            <Font size="15.0" />
+            <Font size="43.0" />
          </font>
-         <padding>
-            <Insets left="80.0" />
-         </padding>
       </Label>
-      <Label fx:id="playerNameLabel" text="playerName" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Label fx:id="playerNameLabel" text="playerName" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="43.0" />
          </font>
-         <padding>
-            <Insets left="16.0" />
-         </padding>
       </Label>
-      <Label fx:id="numRoundsLabel" text="numRounds" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Label fx:id="numRoundsLabel" text="numRounds" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="43.0" />
          </font>
-         <padding>
-            <Insets left="16.0" />
-         </padding>
       </Label>
-      <Label fx:id="currentRoundLabel" text="currentRound" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <Label fx:id="currentRoundLabel" text="currentRound" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="43.0" />
          </font>
-         <padding>
-            <Insets left="16.0" />
-         </padding>
       </Label>
-      <Label fx:id="totalMoneyLabel" text="totalMoney" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <Label fx:id="totalMoneyLabel" text="totalMoney" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="43.0" />
          </font>
-         <padding>
-            <Insets left="16.0" />
-         </padding>
       </Label>
-      <Label fx:id="totalCartsDestroyedLabel" text="totalCartsDestroyed" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <Label fx:id="totalCartsDestroyedLabel" text="totalCartsDestroyed" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="43.0" />
          </font>
-         <padding>
-            <Insets left="16.0" />
-         </padding>
       </Label>
    </children>
 </GridPane>

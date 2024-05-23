@@ -448,9 +448,7 @@ public class GameController {
     }
     @FXML
     private void mainMenu() {
-        //Don't worry about clearing class variables
-        //Because each round creates new instance automatically reset
-
+        gameManager.setModifiersSelectedFalse();
         gameManager.setModifiersInitialisedFalse();
         // Deposit money earned from the round
         gameManager.changeMoneyAmount(moneyEarned);

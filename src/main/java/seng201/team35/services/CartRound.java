@@ -1,6 +1,5 @@
 package seng201.team35.services;
 
-import seng201.team35.GameManager;
 import seng201.team35.models.Cart;
 
 import java.time.Duration;
@@ -17,14 +16,6 @@ public class CartRound {
         public CartSpawn(Cart cart, long spawnTime) {
             this.cart = cart;
             this.spawnTime = spawnTime;
-        }
-
-        public Cart getCart() {
-            return cart;
-        }
-
-        public long getSpawnTime() {
-            return spawnTime;
         }
     }
 

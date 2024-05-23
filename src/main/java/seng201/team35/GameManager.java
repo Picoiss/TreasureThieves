@@ -4,10 +4,8 @@ import seng201.team35.models.Tower;
 import seng201.team35.models.Upgrade;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class GameManager {
@@ -34,36 +32,6 @@ public class GameManager {
     private final Consumer<GameManager> winMenuLauncher;
     private final Runnable clearScreen;
     private String currentModifier;
-    /**
-     * Initialise all available towers
-     */
-    private static final Tower BronzeArcher = new Tower("Bronze Archer", 100,100, "Bronze", 100);
-    private static final Tower BronzeDwarf = new Tower("Bronze Dwarf", 75,125, "Bronze", 125);
-    private static final Tower BronzeVillager = new Tower("Bronze Villager", 120,150, "Bronze", 150);
-    private static final Tower SilverKnight = new Tower("Silver Knight",80,150, "Silver", 150);
-    private static final Tower SilverPriest = new Tower("Silver Priest",100,170, "Silver", 170);
-    private static final Tower SilverAlchemist = new Tower("Silver Alchemist",150,190, "Silver", 190);
-    private static final Tower GoldGiant = new Tower("Gold Giant", 70,200, "Gold", 200);
-    private static final Tower GoldGoblin = new Tower("Gold Goblin", 100,240, "Gold", 240);
-    private static final Tower GoldPirate = new Tower("Gold Pirate", 40,275, "Gold", 275);
-    private static final Tower DiamondMage = new Tower("Diamond Mage",20, 400, "Diamond", 400);
-    private static final Tower DiamondNecromancer = new Tower("Diamond Necromancer",20, 425, "Diamond", 425);
-    private static final Tower DiamondMinotaur = new Tower("Diamond Minotaur",45, 460, "Diamond", 460);
-    private static final Tower EmeraldElf = new Tower("Emerald Elf", 45,575, "Emerald", 575);
-    private static final Tower EmeraldPhoenix = new Tower("Emerald Phoenix", 25,625, "Emerald", 625);
-    private static final Tower EmeraldPegasus = new Tower("Emerald Pegasus", 50,700, "Emerald", 700);
-    private static final Tower RubyDragon = new Tower("Ruby Dragon",25, 700, "Ruby", 700);
-    private static final Tower RubyOrcMage = new Tower("Ruby OrcMage",25, 850, "Ruby", 850);
-    private static final Tower RubyGolem = new Tower("Ruby Golem",10, 1000, "Ruby", 1000);
-    /**
-     * Initialise all available upgrades
-     */
-    private static final Upgrade BronzeUpgrade = new Upgrade(10, 10, "Bronze", 100, "Active");
-    private static final Upgrade SilverUpgrade = new Upgrade(10, 10, "Silver", 150, "Active");
-    private static final Upgrade GoldUpgrade = new Upgrade(10, 10, "Gold", 200, "Active");
-    private static final Upgrade DiamondUpgrade = new Upgrade(10, 10, "Diamond", 350, "Active");
-    private static final Upgrade EmeraldUpgrade = new Upgrade(10, 10, "Emerald", 500, "Active");
-    private static final Upgrade RubyUpgrade = new Upgrade(10, 10, "Ruby", 700, "Active");
     private Boolean modifiersInitialised = false;
     private String globalModifier1;
     private String globalModifier2;
@@ -110,6 +78,21 @@ public class GameManager {
         return globalModifier3;
     }
 
+    /**Constructor for GameManager.
+     * Creates a GameManager Instance and initialises the launchers of
+     * all screens and initialises all available towers and upgrades
+     *
+     * @author msh254, nsr36
+     *
+     * @param setupScreenLauncher used to launch the setup screen
+     * @param mainMenuLauncher used to launch the main menu screen
+     * @param shopLauncher used to launch the shop screen
+     * @param inventoryLauncher used to launch the inventory screen
+     * @param gameLauncher used to launch the gameplay screen
+     * @param failMenuLauncher used to launch the fail menu screen
+     * @param winMenuLauncher used to launch the win menu screen
+     * @param clearScreen used to clear the current screen
+     */
     public GameManager(Consumer<GameManager> setupScreenLauncher,
                        Consumer<GameManager> mainMenuLauncher,
                        Consumer<GameManager> shopLauncher,
@@ -126,20 +109,39 @@ public class GameManager {
         this.failMenuLauncher = failMenuLauncher;
         this.winMenuLauncher = winMenuLauncher;
         this.clearScreen = clearScreen;
-        defaultTowers.addAll(List.of(BronzeArcher, BronzeDwarf, BronzeVillager,
-                SilverKnight, SilverPriest, SilverAlchemist, GoldGiant, GoldGoblin,
-                GoldPirate, DiamondMage, DiamondNecromancer, DiamondMinotaur, EmeraldElf,
-                EmeraldPhoenix, EmeraldPegasus, RubyDragon, RubyOrcMage, RubyGolem));
-        defaultUpgrades.addAll(List.of(BronzeUpgrade, SilverUpgrade, GoldUpgrade,
-                DiamondUpgrade, EmeraldUpgrade, RubyUpgrade));
+        Tower bronzeArcher = new Tower("Bronze Archer", 100, 100, "Bronze", 100);
+        Tower bronzeDwarf = new Tower("Bronze Dwarf", 75, 125, "Bronze", 125);
+        Tower bronzeVillager = new Tower("Bronze Villager", 120, 150, "Bronze", 150);
+        Tower silverKnight = new Tower("Silver Knight", 80, 150, "Silver", 150);
+        Tower silverPriest = new Tower("Silver Priest", 100, 170, "Silver", 170);
+        Tower silverAlchemist = new Tower("Silver Alchemist", 150, 190, "Silver", 190);
+        Tower goldGiant = new Tower("Gold Giant", 70, 200, "Gold", 200);
+        Tower goldGoblin = new Tower("Gold Goblin", 100, 240, "Gold", 240);
+        Tower goldPirate = new Tower("Gold Pirate", 40, 275, "Gold", 275);
+        Tower diamondMage = new Tower("Diamond Mage", 20, 400, "Diamond", 400);
+        Tower diamondNecromancer = new Tower("Diamond Necromancer", 20, 425, "Diamond", 425);
+        Tower diamondMinotaur = new Tower("Diamond Minotaur", 45, 460, "Diamond", 460);
+        Tower emeraldElf = new Tower("Emerald Elf", 45, 575, "Emerald", 575);
+        Tower emeraldPhoenix = new Tower("Emerald Phoenix", 25, 625, "Emerald", 625);
+        Tower emeraldPegasus = new Tower("Emerald Pegasus", 50, 700, "Emerald", 700);
+        Tower rubyDragon = new Tower("Ruby Dragon", 25, 700, "Ruby", 700);
+        Tower rubyOrcMage = new Tower("Ruby OrcMage", 25, 850, "Ruby", 850);
+        Tower rubyGolem = new Tower("Ruby Golem", 10, 1000, "Ruby", 1000);
+        defaultTowers.addAll(List.of(bronzeArcher, bronzeDwarf, bronzeVillager, silverKnight, silverPriest,
+                silverAlchemist, goldGiant, goldGoblin, goldPirate, diamondMage, diamondNecromancer, diamondMinotaur,
+                emeraldElf, emeraldPhoenix, emeraldPegasus, rubyDragon, rubyOrcMage, rubyGolem));
+        Upgrade bronzeUpgrade = new Upgrade(10, 10, "Bronze", 100, "Active");
+        Upgrade silverUpgrade = new Upgrade(10, 10, "Silver", 150, "Active");
+        Upgrade goldUpgrade = new Upgrade(10, 10, "Gold", 200, "Active");
+        Upgrade diamondUpgrade = new Upgrade(10, 10, "Diamond", 350, "Active");
+        Upgrade emeraldUpgrade = new Upgrade(10, 10, "Emerald", 500, "Active");
+        Upgrade rubyUpgrade = new Upgrade(10, 10, "Ruby", 700, "Active");
+        defaultUpgrades.addAll(List.of(bronzeUpgrade, silverUpgrade, goldUpgrade,
+                diamondUpgrade, emeraldUpgrade, rubyUpgrade));
         launchSetupScreen();
     }
     public void placeTowerAt(Point position, Tower tower) {
         towerPositionMap.put(position, tower);
-    }
-
-    public void removeTowerAt(Point position) {
-        towerPositionMap.remove(position);
     }
 
     public Tower getTowerAt(Point position) {
@@ -220,7 +222,6 @@ public class GameManager {
     public void removeMainTower(Tower tower) {
         mainTowerList.remove(tower);
     }
-    public void setReserveTowerList(List<Tower> towerList) { this.reserveTowerList = towerList; }
     public List<Tower> getReserveTowerList() { return reserveTowerList; }
     public void addReserveTower(Tower tower) {
         reserveTowerList.add(tower);
@@ -297,15 +298,9 @@ public class GameManager {
     public void launchFailMenuScreen() {
         failMenuLauncher.accept(this);
     }
-    public void closeFailMenuScreen() {
-        System.exit(0);
-    }
 
     public void launchWinMenuScreen() {
         winMenuLauncher.accept(this);
-    }
-    public void closeWinMenuScreen() {
-        System.exit(0);
     }
     public int getMoneyAmount() { return moneyAmount;}
     public void changeMoneyAmount(int changeAmount) {
@@ -317,7 +312,7 @@ public class GameManager {
 
     public Tower getTowerClass(String towerName) {
         for (Tower tower : defaultTowers) {
-            if (towerName == tower.getName()) {
+            if (Objects.equals(towerName, tower.getName())) {
                 return tower;
             }
         }
@@ -326,7 +321,7 @@ public class GameManager {
     }
     public Upgrade getUpgradeClass(String upgradeName) {
         for (Upgrade upgrade : defaultUpgrades) {
-            if (upgradeName == upgrade.getResourceType()) {
+            if (Objects.equals(upgradeName, upgrade.getResourceType())) {
                 return upgrade;
             }
         }

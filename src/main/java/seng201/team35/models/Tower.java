@@ -19,6 +19,13 @@ public class Tower {
 
     /**
      * Tower Constructor
+     * @author msh254, nsr36
+     *
+     * @param towerName name of tower
+     * @param towerSpeed reload speed of tower
+     * @param resourceAmount maximum resource amount of tower
+     * @param towerType resource type of tower
+     * @param towerCost cost to buy tower in shop
      */
     public Tower(String towerName, int towerSpeed, int resourceAmount, String towerType, int towerCost) {
         name = towerName;
@@ -31,64 +38,62 @@ public class Tower {
 
     /**
      * Get the tower's name
+     * @author nsr36
      * @return name
      */
     public String getName() { return name; }
 
     /**
      * Get current tower resource amount
+     * @author msh254
      * @return Current resource amount
      */
     public int getMaxAmount() {return maxAmount;}
 
     /**
      * Get current tower reload speed
+     * @author nsr36
      * @return Current reload speed
      */
     public int getReloadSpeed() { return reloadSpeed; }
 
     /**
      * Get tower resource type
+     * @author nsr36
      * @return resource type
      */
     public String getResourceType() { return resourceType; }
 
     /**
      * Get current tower level
+     * @author nsr36
      * @return Current level
      */
     public int getLevel() { return level; }
 
     /**
      * Get current tower cost
+     * @author nsr36
      * @return Current cost
      */
     public int getCost() { return cost; }
 
     /**
      * Increase the current tower max amount
+     * @author nsr36
      * @param increment Value to increase the max amount by
      */
     public void increaseMaxAmount(int increment) { maxAmount += increment; }
 
     /**
-     * Increase the current tower level by 1
+     * Increase the current tower level by
+     * @author nsr36
      */
     public void increaseLevel() { level += 1; }
 
     /**
-     * Decrease the current tower reload speed
-     * @param decrement Value to decrease the reload speed by
-     */
-    public void decreaseReloadSpeed(int decrement) {
-        if (decrement > reloadSpeed) {
-            //throw exception
-        }
-        else { reloadSpeed -= decrement; }
-    }
-
-    /**
      * Return the names of a tower collection as a string list
+     * @author nsr36
      * @param towers stream using a map function converted to a list
      */
     public static List<String> getTowerNames(Collection<Tower> towers) {

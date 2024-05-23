@@ -487,13 +487,9 @@ public class GameController {
         }
     }
 
-    private int getInitialCartDirection(int[][] pathGraph) {
-        for (int i = 0; i < pathGraph.length; i++) {
-            for (int j = 0; j < pathGraph[i].length; j++) {
-                if (pathGraph[i][j] == 1) {
-                    return cartDirectionMap.getDirectionGraph()[i][j];
-                }
-            }
+    private int getInitialCartDirection(Point startPosition) {
+        if (startPosition != null) {
+            return cartDirectionMap.getDirectionGraph()[startPosition.y][startPosition.x];
         }
         return 0;
     }
@@ -508,7 +504,7 @@ public class GameController {
         int[][] pathGraph = cartPath.getIndexGraph(); // get the path for the Cart
         Point startPosition = getCartPosition(pathGraph, 1, -1, -1); // Initialize at position 1
         System.out.println(startPosition);
-        cart.setDirection(getInitialCartDirection(pathGraph));
+        cart.setDirection(getInitialCartDirection(startPosition));
         if (startPosition != null) { // if the startPosition exists;
             cart.setX(startPosition.x);
             cart.setY(startPosition.y);
@@ -846,9 +842,7 @@ public class GameController {
                 transition.setToY(targetY - cartToken.getLayoutY());
                 //direction 5 signifies where two paths merge on the map
 
-                if (cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x] != 5) {
-                    cart.setDirection(cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x]);
-                }
+                cart.setDirection(cartDirectionMap.getDirectionGraph()[nextPosition.y][nextPosition.x]);
                 updateCartSprite(cart, cartToken, cart.getDirection());
 
 

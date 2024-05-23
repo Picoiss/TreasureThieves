@@ -57,6 +57,9 @@ public class GameController {
     private Label roundLabel;
     @FXML
     private Label cartsLeftLabel;
+    @FXML
+    private Label moneyEarnedLabel;
+
     private int cartsLeft;
     private long startTime;
     private boolean gameRunning = false;
@@ -86,6 +89,9 @@ public class GameController {
     private int cartNumIncrease = 0;
     private int cartNumDecrease= 0;
     private double cartFillIncrease = 1;
+    private int moneyEarned = 0;
+    Map<String, Integer> cartRewards = new HashMap<>();
+
     private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
     //private Map<Point, Boolean> towerActive = new HashMap<>();
 
@@ -104,7 +110,12 @@ public class GameController {
         moneyLabel.setText("Money: " + gameManager.getMoneyAmount());
         roundLabel.setText("Round: " + gameManager.getCurrentRound());
         cartsLeftLabel.setText("Carts Left: " + cartsLeft);
-
+        cartRewards.put("Bronze", 300);
+        cartRewards.put("Silver", 400);
+        cartRewards.put("Gold", 550);
+        cartRewards.put("Diamond", 800);
+        cartRewards.put("Emerald", 950);
+        cartRewards.put("Ruby", 1200);
         grassImage = new Image(getClass().getResourceAsStream("/images/Grass.png"));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
         // load images of grass, and textured grass (loading grassImage may be redundant)
@@ -457,6 +468,9 @@ public class GameController {
         currentCartIndex = 0;
         carts.clear();
         gameManager.setModifiersInitialisedFalse();
+        gameManager.changeMoneyAmount(moneyEarned);
+        gameManager.incrementTotalMoney(moneyEarned);
+
         // Transition to main menu or change the round
         if (winOrLoseLabel.getTextFill() == Color.GREEN) {
             if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {
@@ -737,6 +751,7 @@ public class GameController {
                 gamePane.getChildren().remove(cartToken); // Remove the cart token from the game pane
                 cartTokens.remove(targetCart); // Remove the cart from active carts
                 cartsLeft -= 1; // Update remaining carts to fill
+                moneyEarned += cartRewards.get(targetCart.getResourceType());
                 gameManager.incrementTotalCartsDestroyed();
                 Rectangle healthBar = cartHealthBars.get(targetCart);
                 if (healthBar != null) {
@@ -868,6 +883,11 @@ public class GameController {
             winOrLoseLabel.setText("You cleared Round " + gameManager.getCurrentRound() + "!");
             winOrLoseLabel.setTextFill(Color.GREEN);  // Set text color to green
             mainMenuButton.setVisible(true);  // Show the main menu button
+            if (CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft != 0) {
+                moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft);
+            }
+            moneyEarnedLabel.setText("You earned $" + moneyEarned);
+
         }
 
         // Check lose condition
@@ -878,6 +898,11 @@ public class GameController {
             winOrLoseLabel.setText("You Lost");
             winOrLoseLabel.setTextFill(Color.RED);  // Set text color to red
             mainMenuButton.setVisible(true);  // Show the main menu button
+            if (CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft != 0) {
+                moneyEarned = moneyEarned/(CartRound.getCartsForRound(gameManager.getCurrentRound()).size() - cartsLeft);
+            }
+            moneyEarnedLabel.setText("You earned $" + moneyEarned);
+
         }
     }
 

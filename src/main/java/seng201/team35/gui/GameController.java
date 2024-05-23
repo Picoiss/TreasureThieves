@@ -40,8 +40,6 @@ public class GameController {
     @FXML
     private AnchorPane gamePane;
     @FXML
-    private Button startGameButton;
-    @FXML
     private ComboBox<String> towerSelectionComboBox;
     @FXML
     private Label warningLabel;
@@ -84,7 +82,6 @@ public class GameController {
     private Map<Cart, ImageView> cartTokens = new HashMap<>();
     private Map<Cart, Integer> cartSteps = new HashMap<>();
     private Map<Point, Boolean> isGridShooting = new HashMap<>();
-    private boolean isMoving = false;
     private boolean gameStartState = false;
     private String currentModifier;
     private double difficultyScaling;
@@ -94,10 +91,6 @@ public class GameController {
     private double cartFillIncrease = 1;
     private int moneyEarned = 0;
     Map<String, Integer> cartRewards = new HashMap<>();
-
-
-    private Map<ImageView, ProjectileController> activeProjectiles = new HashMap<>();
-    //private Map<Point, Boolean> towerActive = new HashMap<>();
 
     public GameController(GameManager x) {
         gameManager = x;
@@ -470,7 +463,6 @@ public class GameController {
         cartTokens.clear();
         towerPositions.clear();
         cartHealthBars.clear();
-        activeProjectiles.clear();
         // Reset game state variables
         gameRunning = false;
         gameStartState = false;
@@ -628,16 +620,6 @@ public class GameController {
                 //System.out.println(distance);
                 if (distance <= 2 * Math.min(cellWidth, cellHeight)) {
                     cartsInRange.put(cart, distance);
-                    //System.out.println(towerSprite.toString());
-                    //if (cart.getResourceType() == gameManager.getTowerByName(towerSprite.getId()).getResourceType());
-                    //System.out.println("Within Range " + distance);
-                    /**
-                    rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
-                    System.out.println(cart);
-                    // rotates the tower towards the cart
-                    shootProjectile(towerGridPos, cart);
-                    // shoots a projectile at the cart.
-                     */
                 }
             }
             if (cartsInRange.size() != 0) {
@@ -828,11 +810,6 @@ public class GameController {
     }
 
     private void moveCarts() {
-        if (isMoving = false) {
-            return;
-        }
-        isMoving = true;
-
         Iterator<Map.Entry<Cart, ImageView>> iterator = cartTokens.entrySet().iterator();
         while (iterator.hasNext()) {
             // while there are entries in iterator -> cartTokens.entrySet()
@@ -878,7 +855,6 @@ public class GameController {
 
                 transition.setOnFinished(event -> {
                     cartSteps.put(cart, currentStep + 1);
-                    isMoving = false;
                 });
                 transition.play();
                 if (healthBar != null) {
@@ -896,7 +872,6 @@ public class GameController {
                 gamePane.getChildren().remove(cartToken);
                 iterator.remove();
                 cartSteps.remove(cart);
-                isMoving = false;
                 gameManager.changeLives(1);
             }
         }
@@ -957,15 +932,5 @@ public class GameController {
 
     private void updateComboBox() {
         towerSelectionComboBox.setValue("");
-    }
-
-    public class ProjectileController {
-        private Cart targetCart;
-        private ImageView projectile;
-
-        public ProjectileController(Cart targetCart, ImageView projectile) {
-            this.targetCart = targetCart;
-            this.projectile = projectile;
-        }
     }
 }

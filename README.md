@@ -7,11 +7,12 @@ However, we expect that this README becomes your own
 Remember you are required to commit your code to the **main** branch of your repository before the deadline.
 
 Contents
-1.1 : (game name) Overview
-1.2 Introduction
-1.3 Tutorial
-1.6 Credits 
-1.7 An Aside on AI + Disclaimer
+
+- 1.1 : (game name) Overview
+- 1.2 Introduction
+- 1.3 Tutorial
+- 1.6 Credits 
+- 1.7 An Aside on AI + Disclaimer
 
 ## Authors
 - msh254
@@ -108,7 +109,7 @@ This code was developed with AI (ChatGPT).
 AI was used in understanding the intricacy of this function.
 Specifically, ChatGPT was used to seperate the png file of (any) Tower into specific 'animation frames'
 
-##An Aside on AI + Disclaimer
+## An Aside on AI + Disclaimer
 
 Throughout this project, ChatGPT was used to understand the intricacies of specific functions, such as AnimationTimer, and TranslateTransitions. Additionally, ChatGPT was used to troubleshoot and understand complex bugs in the programs' system.
 All (if any) AI generated code has been fully understood and as a rule, no code has been directly copied from ChatGPT, only used as a guideline for how to better structure our own code.

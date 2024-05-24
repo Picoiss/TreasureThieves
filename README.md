@@ -11,6 +11,8 @@ Contents
 - 1.1 : (game name) Overview
 - 1.2 Introduction
 - 1.3 Tutorial
+- 1.4 Importing Project
+- 1.5 Run Project, Jar Project, Test Project
 - 1.6 Credits 
 - 1.7 An Aside on AI + Disclaimer
 

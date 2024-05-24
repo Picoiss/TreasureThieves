@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import seng201.team35.GameManager;
 import seng201.team35.models.Cart;
+import seng201.team35.models.Upgrade;
 import seng201.team35.services.*;
 import seng201.team35.models.Tower;
 import seng201.team35.services.CartRound.CartSpawn;
@@ -23,14 +24,6 @@ import seng201.team35.models.Projectile;
 
 import java.awt.Point;
 import java.util.*;
-
-//questions for tutorial
-//Can we include comments in Final Code
-//How do we cite sources such as youtube Videos, Github (other games' source code), et c.
-//Are we allowed this much user interactivity in the game?
-//Does our game context still fit the requirements of the game in terms of the guidelines shown in the project specs?
-//We lack services, will this impact our Codes design score?
-
 
 import static seng201.team35.services.ProjectileSwitch.getProjectileSprite;
 
@@ -95,6 +88,13 @@ public class GameController {
     private int cartNumDecrease= 0;
     private double cartFillIncrease = 1;
     private int moneyEarned = 0;
+    private double damageIncreaseBonus = 1;
+    private double damageIncreaseBronze = 1;
+    private double damageIncreaseSilver = 1;
+    private double damageIncreaseGold = 1;
+    private double damageIncreaseDiamond = 1;
+    private double damageIncreaseEmerald = 1;
+    private double damageIncreaseRuby = 1;
     Map<String, Integer> cartRewards = new HashMap<>();
 
     /**  ?
@@ -127,6 +127,7 @@ public class GameController {
         checkModifiers();
         loadBuildingAssets();
         getDifficultyScaling();
+        checkUpgrades();
         towerSelectionComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
         gameGrid.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleGridClick);
         initialCarts = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease);
@@ -180,8 +181,31 @@ public class GameController {
         }
     }
     private void checkUpgrades() {
-        // THIS needs to be implemented
-        gameManager.getUpgradesList();
+        for (Upgrade upgrade: gameManager.getUpgradesList()) {
+            if (upgrade.getStatus() == "Active") {
+                switch (upgrade.getResourceType()) {
+                    case "Bronze":
+                        damageIncreaseBronze += 0.1;
+                        break;
+                    case "Silver":
+                        damageIncreaseSilver += 0.1;
+                        break;
+                    case "Gold":
+                        damageIncreaseGold  += 0.1;
+                        break;
+                    case "Diamond":
+                        damageIncreaseDiamond += 0.1;
+                        break;
+                    case "Emerald":
+                        damageIncreaseEmerald += 0.1;
+                        break;
+                    case "Ruby":
+                        damageIncreaseRuby += 0.1;
+                        break;
+                }
+            }
+        }
+
     }
 
     /**Loads the trees, rocks and buildings for the game. Puts certain images at certain locations, specified
@@ -793,13 +817,40 @@ public class GameController {
         Bounds cartBounds = cartToken.getBoundsInParent();
 
         if (projectileBounds.intersects(cartBounds)) {
+            switch (shootingTower.getResourceType()) {
+                case "Bronze":
+                    damageIncreaseBonus = damageIncreaseBronze;
+                    System.out.println("Bonus Damage Bronze " + damageIncreaseBonus);
+                    break;
+                case "Silver":
+                    damageIncreaseBonus = damageIncreaseSilver;
+                    System.out.println("Bonus Damage Silver "+ damageIncreaseBonus);
+                    break;
+                case "Gold":
+                    damageIncreaseBonus = damageIncreaseGold;
+                    System.out.println("Bonus Damage Gold "+ damageIncreaseBonus);
+                    break;
+                case "Diamond":
+                    damageIncreaseBonus = damageIncreaseDiamond;
+                    System.out.println("Bonus Damage Diamond " + damageIncreaseBonus);
+                    break;
+                case "Emerald":
+                    damageIncreaseBonus = damageIncreaseEmerald;
+                    System.out.println("Bonus Damage Emerald");
+                    break;
+                case "Ruby":
+                    damageIncreaseBonus = damageIncreaseRuby;
+                    System.out.println("Bonus Damage Ruby");
+                    break;
+                }
+            }
             boolean isResourceMatch = targetCart.getResourceType().equals(shootingTower.getResourceType());
             int damage;
             if (isResourceMatch) {
-                damage = (int) (difficultyScaling * cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
+                damage = (int) (difficultyScaling * damageIncreaseBonus * cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
                 System.out.println("Damage Full");
             } else {
-                damage = (int) (difficultyScaling * cartFillIncrease * shootingTower.getMaxAmount() / 25); // Reduced damage (40% of full damage)
+                damage = (int) (difficultyScaling * cartFillIncrease * damageIncreaseBonus * shootingTower.getMaxAmount() / 25); // Reduced damage (40% of full damage)
                 System.out.println("Damage 40%");
             }
             targetCart.fillCart(damage);
@@ -819,7 +870,7 @@ public class GameController {
                 updateHealthBar(targetCart); // Update health bar based on current health
             }
         }
-    }
+
 
     /**A function which iterates through pathGraph given the previous step.
      * iterates through the whole of pathGraph until it finds the index after the prev step.

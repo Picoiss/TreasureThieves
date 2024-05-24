@@ -61,7 +61,6 @@ public class GameController {
     private long lastUpdate1 = 0;
     private int time = 0;
     private final long updateInterval = 500_000_000;
-    private final long updateShooting = 100_000_000;
     private GameManager gameManager;
     private Image grassImage;
     private Image texturedGrassImage;
@@ -97,6 +96,7 @@ public class GameController {
     private double damageIncreaseDiamond = 1;
     private double damageIncreaseEmerald = 1;
     private double damageIncreaseRuby = 1;
+    private double randomEventMultiplier = 1;
     Map<String, Integer> cartRewards = new HashMap<>();
 
     /**  ?
@@ -146,6 +146,22 @@ public class GameController {
         cartRewards.put("Ruby", 1200);
         updateComboBox();
     }
+
+    private void setRandomEvent() {
+        Random rng = new Random();
+        int randomIndex = rng.nextInt(0,10);
+        switch(randomIndex) {
+            case 1:
+                randomEventMultiplier = 1.2;
+                setWarning("Random Event!, 20% Damage Boost");
+                break;
+            case 5:
+                randomEventMultiplier = 0.8;
+                setWarning("Random Event!, 20% Damage Decrease");
+                break;
+        }
+    }
+
 
     /**Gets the difficulty scaling which is applied to certain logics such as projectile collision calculations, damage
      * calculations and money calculations.
@@ -856,10 +872,10 @@ public class GameController {
             boolean isResourceMatch = targetCart.getResourceType().equals(shootingTower.getResourceType());
             int damage;
             if (isResourceMatch) {
-                damage = (int) (difficultyScaling * damageIncreaseBonus * cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
+                damage = (int) (difficultyScaling * randomEventMultiplier*damageIncreaseBonus * cartFillIncrease * shootingTower.getMaxAmount() / 10); // Full damage calculation
                 System.out.println("Damage Full");
             } else {
-                damage = (int) (difficultyScaling * cartFillIncrease * damageIncreaseBonus * shootingTower.getMaxAmount() / 25); // Reduced damage (40% of full damage)
+                damage = (int) (difficultyScaling * cartFillIncrease * randomEventMultiplier * damageIncreaseBonus * shootingTower.getMaxAmount() / 25); // Reduced damage (40% of full damage)
                 System.out.println("Damage 40%");
             }
             targetCart.fillCart(damage);

@@ -43,6 +43,8 @@ The 'game' is a culmination of a set of rules, which are;
 - 'Carts' are spawned depending on the round ranging from 5-12 Carts. Each cart will have a 'resource type' and a 'fill amount' (health)- The goal of the 'Carts' is to make it through the entire map without being sunk
 - Destroying a cart with your towers before it reaches the end of the map will result in the player recieving money and 'score'.
 - It is up to the player to choose the towers and the position of the towers to best finish a round.
+- If the player fails to sink a Cart before it reaches the end of the map, a life will be lost for every Cart which is not sunk, and 
+the player must also retry the round until they beat all of the carts.
 
 However, there is more nuance to be game than this. Specifically;
 
@@ -59,6 +61,9 @@ Upgrades:
 Carts (Boats):
 - Carts are spawned with parameters of 'Fill Amount' (Health), 'Resource Type', and 'Speed'. The Resource Type of the Cart influences the image of the cart, and also infleunces which Towers will deal max damage to the Cart. The speed of the Cart is usually set to 1 (time to travel 1 grid is 1 second), but carts which have more 'Fill Amount' (Health), may have slower speed.
 - Interestingly, Carts of the same Resource Type may actually have different Healths. For example, two 'Bronze Carts' spawned in a round may have 'Fill Amounts' of 100 and 200, respectively. This adds another layer of intricacy into the game, where the player will likely have to use context clues (speed of cart / what round they are on) to determine the Health of a Cart. (Although they could also see the Health Bar decreasing slower).
+
+Random Events:
+- Throughout the game several random events may occur each round. Specifically, after each round, their is a change that either one of the Players' towers will break, and their is also a chance that the next round they play, their towers may be buffed or nerfed.
 
 ## Importing Project (Using IntelliJ)
 IntelliJ has built-in support for Gradle. To import this project:

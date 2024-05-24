@@ -1,14 +1,8 @@
 # Treasure Thieves
-Welcome to the template project for SENG201 which you will transform into your own.
-This README file includes some useful information to help you get started.
-However, we expect that this README becomes your own
-
 ## Treasure Thieves Game Overview
-Remember you are required to commit your code to the **main** branch of your repository before the deadline.
-
 Contents
 
-- 1.1 : (game name) Overview
+- 1.1 Treasure Thieves Overview
 - 1.2 Introduction
 - 1.3 Tutorial
 - 1.4 Importing Project
@@ -73,6 +67,11 @@ IntelliJ has built-in support for Gradle. To import this project:
 - At this point in the bottom right notifications you may be prompted to 'load gradle scripts', If so, click load
 
 **Note:** *If you run into dependency issues when running the app or the Gradle pop up doesn't appear then open the Gradle sidebar and click the Refresh icon.*
+
+Alternatively
+- Launch IntelliJ and choose `Open` from the start-up window.
+- Select `Get from Version Control`, and paste in the GitLab repository link
+- Clone the repository
 
 ## Run Project 
 1. Open a command line interface inside the project directory and run `./gradlew run` to run the app.

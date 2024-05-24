@@ -258,8 +258,8 @@ public class MainMenuController {
         if (!gameManager.getTowersUsedInPreviousRound().isEmpty()) {
             Random rng = new Random();
             Tower randomTower;
-            int randomBreak = rng.nextInt(0, 21);
-            if (randomBreak == 18) {
+            int randomBreak = rng.nextInt(11);
+            if (randomBreak == 8) {
                 randomTower = gameManager.getReserveTowerList().get(rng.nextInt(gameManager.getReserveTowerList().size()));
                 for (Tower tower : gameManager.getReserveTowerList()) {
                     if (tower == randomTower) {
@@ -268,10 +268,10 @@ public class MainMenuController {
                     }
                 }
             }
-            else if (randomBreak == 19) {
+            else if (randomBreak == 9) {
                 randomTower = gameManager.getMainTowerList().get(rng.nextInt(gameManager.getMainTowerList().size()));
             }
-            else if (randomBreak == 20) {
+            else if (randomBreak == 10) {
                 randomTower = gameManager.getMainTowerList().get(rng.nextInt(gameManager.getTowersUsedInPreviousRound().size()));
             }
             else {
@@ -286,7 +286,7 @@ public class MainMenuController {
                 );
                 timeline.setOnFinished(event -> levelUpLabel.setText(""));
                 timeline.play();
-                if (randomBreak >= 19) {
+                if (randomBreak >= 9) {
                     for (Tower tower : gameManager.getMainTowerList()) {
                         if (tower == randomTower) {
                             gameManager.removeMainTower(tower);

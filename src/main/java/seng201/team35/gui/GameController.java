@@ -609,7 +609,6 @@ public class GameController {
         cartToken.setImage(cartSprite.getSpriteFrame(cart.getResourceType(), 1));
         int[][] pathGraph = cartPath.getIndexGraph();
         Point startPosition = getCartPosition(pathGraph, 1);
-        System.out.println(startPosition);
         cart.setDirection(getInitialCartDirection(startPosition));
         if (startPosition != null) {
             double cellWidth = gameGrid.getWidth() / gameGrid.getColumnCount();
@@ -728,7 +727,6 @@ public class GameController {
                     double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
                     double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
                     rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
-                    System.out.println(closestCart);
                     shootProjectile(towerGridPos, closestCart);
                 }
             }

@@ -86,7 +86,9 @@ public class MainMenuController {
             modifierText3.setStyle("-fx-text-fill: black;");
             gameManager.setModifiersInitialisedTrue();
             gameManager.setModifier("If you see this... uh");
-            checkBrokenTowers();
+            if (gameManager.getCurrentRound() >= 2) {
+                checkBrokenTowers();
+            }
         }
         else {
             System.out.println("Modifiers True");

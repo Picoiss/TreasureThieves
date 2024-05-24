@@ -58,8 +58,10 @@ public class GameController {
     private long startTime;
     private boolean gameRunning = false;
     private long lastUpdate = 0;
+    private long lastUpdate1 = 0;
     private int time = 0;
     private final long updateInterval = 500_000_000;
+    private final long updateShooting = 100_000_000;
     private GameManager gameManager;
     private Image grassImage;
     private Image texturedGrassImage;
@@ -481,6 +483,13 @@ public class GameController {
                         updateGame();
                         lastUpdate = now;
                     }
+
+                    if (now - lastUpdate1 >= 100_000_000) {
+                        checkTowersTargeting();
+                        time += 1;
+                        lastUpdate1 = now;
+                    }
+
                     if (currentCartIndex < carts.size() && now - startTime >= carts.get(currentCartIndex).spawnTime) {
                         if (now - startTime >= carts.get(currentCartIndex).spawnTime) {
                         }
@@ -979,10 +988,8 @@ public class GameController {
      * @author msh254, nsr36
      */
     private void updateGame() {
-        time += 1;
         updateLabels();
         moveCarts();
-        checkTowersTargeting();
         checkWinOrLose();
     }
 

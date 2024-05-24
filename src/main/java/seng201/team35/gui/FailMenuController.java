@@ -4,6 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import seng201.team35.GameManager;
 
+/**
+ * Controller for the failMenu.fxml window
+ * @author nsr36
+ */
+
 public class FailMenuController {
     @FXML
     private Label playerNameLabel;
@@ -16,7 +21,19 @@ public class FailMenuController {
     @FXML
     private Label totalCartsDestroyedLabel;
     private GameManager gameManager;
+
+    /**
+     * FailMenuController Constructor
+     * Pass in the gameManager
+     * @author nsr36
+     * @param x GameManager instance
+     */
     public FailMenuController(GameManager x) { gameManager = x; }
+
+    /**
+     * Initialize the window and all the labels to display
+     * @author nsr36
+     */
     public void initialize() {
         playerNameLabel.setText(gameManager.getPlayerName());
         numRoundsLabel.setText(String.valueOf(gameManager.getNumOfRounds()));

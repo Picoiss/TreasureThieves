@@ -4,7 +4,7 @@ import seng201.team35.gui.FXWindow;
 
 /**
  * Default entry point class
- * @author seng201 teaching team
+ * @author msh254, nsr36
  */
 public class App {
     /**

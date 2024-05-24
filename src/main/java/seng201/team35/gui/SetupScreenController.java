@@ -53,7 +53,7 @@ public class SetupScreenController {
     public SetupScreenController(GameManager x) { gameManager = x; }
 
     /**
-     * Initialize the window
+     * Initialize the window and the difficulty and starting towers combo boxes
      * @author msh254, nsr36
      */
     public void initialize() {

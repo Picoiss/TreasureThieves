@@ -44,9 +44,24 @@ public class MainMenuController {
     private final List<String> MODIFIERSLIST = Arrays.asList(MODIFIERS);
     private String modifierName;
     private GameManager gameManager;
+
+    /**
+     * MainMenuController Constructor
+     * Pass in the gameManager
+     * @author msh254
+     * @param x GameManager instance
+     */
     public MainMenuController(GameManager x) { gameManager = x; }
+
+    /**
+     * Initialize the window
+     * Make sure modifiers are reset after playing a round
+     * Otherwise make sure modifiers are unchanged
+     * Set all the labels to display and check if towers need to be leveled up
+     * @author msh254, nsr36
+     */
     public void initialize() {
-        if (gameManager.getModifiersInitialised() == false) {
+        if (!gameManager.getModifiersInitialised()) {
             System.out.println("Modifiers False");
             Random rng = new Random();
             int randomModifier1 = rng.nextInt(0,4);
@@ -90,14 +105,30 @@ public class MainMenuController {
         roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
         checkTowerLevelUps();
     }
+
+    /**
+     * Transition to shop screen if shop button is clicked
+     * @author msh254, nsr36
+     */
     @FXML
     public void shopClicked() {
         gameManager.mainMenuToShopScreen();
     }
+
+    /**
+     * Transition to inventory screen if inventory button is clicked
+     * @author msh254, nsr36
+     */
     @FXML
     public void inventoryClicked() {
         gameManager.mainMenuToInventoryScreen();
     }
+
+    /**
+     * If next round button is clicked, check if a modifier has been
+     * selected and player has at least 3 main towers, then transition to game screen
+     * @author msh254, nsr36
+     */
     @FXML
     public void nextRoundClicked() {
         System.out.println("NextRoundClicked");
@@ -116,9 +147,14 @@ public class MainMenuController {
             warningLabel.setText("Please select a Modifier");
         }
     }
+
+    /**
+     * Set the selected modifier to modifier1
+     * Set modifier1 text to green and others to black when its button is clicked
+     * @author msh254, nsr36
+     */
     @FXML
     public void modifier1Clicked() {
-
         gameManager.setModifierSelectedTrue();
         modifierName = modifierText1.getText();
         gameManager.setModifier(modifierName);
@@ -127,11 +163,15 @@ public class MainMenuController {
         modifierText2.setStyle("-fx-text-fill: black;");
         modifierText3.setStyle("-fx-text-fill: black;");
         System.out.println("Modifier 1 has been selected");
-
     }
+
+    /**
+     * Set the selected modifier to modifier2
+     * Set modifier2 text to green and others to black when its button is clicked
+     * @author msh254, nsr36
+     */
     @FXML
     public void modifier2Clicked() {
-
         gameManager.setModifierSelectedTrue();
         modifierName = modifierText2.getText();
         gameManager.setModifier(modifierName);
@@ -141,6 +181,12 @@ public class MainMenuController {
         modifierText3.setStyle("-fx-text-fill: black;");
         System.out.println("Modifier 2 has been selected");
     }
+
+    /**
+     * Set the selected modifier to modifier3
+     * Set modifier3 text to green and others to black when its button is clicked
+     * @author msh254, nsr36
+     */
     @FXML
     public void modifier3Clicked() {
         gameManager.setModifierSelectedTrue();
@@ -153,6 +199,12 @@ public class MainMenuController {
         System.out.println("Modifier 3 has been selected");
     }
 
+    /**
+     * Check if player owns three or more active upgrades of the same type
+     * If true, level up all owned towers of the same type and remove a maximum of three upgrades of that type
+     * Display a message using the levelUpLabel
+     * @author nsr36
+     */
     public void checkTowerLevelUps() {
         Map<String, Integer> numOfUpgrades = new HashMap<>();
         String[] keys = {"Bronze", "Silver", "Gold", "Diamond", "Emerald", "Ruby"};
@@ -160,7 +212,7 @@ public class MainMenuController {
             numOfUpgrades.put(key, 0);
         }
         for (int i = 0; i < gameManager.getUpgradesList().size(); i++) {
-            if (gameManager.getUpgradesList().get(i).getStatus() == "Active") {
+            if (Objects.equals(gameManager.getUpgradesList().get(i).getStatus(), "Active")) {
                 numOfUpgrades.replace(gameManager.getUpgradesList().get(i).getResourceType(), numOfUpgrades.get(gameManager.getUpgradesList().get(i).getResourceType()) + 1);
             }
         }
@@ -175,21 +227,23 @@ public class MainMenuController {
                 timeline.setOnFinished(event -> levelUpLabel.setText(""));
                 timeline.play();
                 for (int i = 0; i < gameManager.getMainTowerList().size(); i++) {
-                    if (type.getKey() == gameManager.getMainTowerList().get(i).getResourceType()) {
+                    if (Objects.equals(type.getKey(), gameManager.getMainTowerList().get(i).getResourceType())) {
                         gameManager.getMainTowerList().get(i).increaseLevel();
                         gameManager.getMainTowerList().get(i).increaseMaxAmount(gameManager.getMainTowerList().get(i).getMaxAmount()/10);
                     }
                 }
                 for (int i = 0; i < gameManager.getReserveTowerList().size(); i++) {
-                    if (type.getKey() == gameManager.getReserveTowerList().get(i).getResourceType()) {
+                    if (Objects.equals(type.getKey(), gameManager.getReserveTowerList().get(i).getResourceType())) {
                         gameManager.getReserveTowerList().get(i).increaseLevel();
-                        gameManager.getReserveTowerList().get(i).increaseMaxAmount(gameManager.getReserveTowerList().get(i).getMaxAmount()/10);
+                        gameManager.getReserveTowerList().get(i).increaseMaxAmount(gameManager.getReserveTowerList().get(i).getMaxAmount() / 10);
                     }
                 }
                 int i = 0;
-                while (i < gameManager.getUpgradesList().size()) {
-                    if (type.getKey() == gameManager.getUpgradesList().get(i).getResourceType()) {
+                int removed = 0;
+                while (i < gameManager.getUpgradesList().size() && removed <= 3) {
+                    if (Objects.equals(type.getKey(), gameManager.getUpgradesList().get(i).getResourceType())) {
                         gameManager.removeUpgrade(gameManager.getUpgradesList().get(i));
+                        removed++;
                     }
                     else {
                         i++;

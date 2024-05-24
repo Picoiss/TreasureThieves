@@ -1,6 +1,5 @@
 package seng201.team35.gui;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import seng201.team35.GameManager;
@@ -23,8 +22,6 @@ public class InventoryController {
     @FXML
     private Label level;
     @FXML
-    private Label cost;
-    @FXML
     private Label resourceAmount;
     @FXML
     private Label towerNamelabel;
@@ -45,15 +42,7 @@ public class InventoryController {
     @FXML
     private ComboBox upgradesComboBox;
     @FXML
-    private Button returnToMainMenuButton;
-    @FXML
     private Label resourceTypeLabel;
-    @FXML
-    private Button swapReserveButton;
-    @FXML
-    private Button swapMainButton;
-    @FXML
-    private Button toggleUpgradeButton;
     @FXML
     private Label errorLabel;
     @FXML
@@ -63,17 +52,25 @@ public class InventoryController {
     @FXML
     private Label roundsLeftLabel;
     private String currentCombobox;
+    private Tower currentTower;
+    private Upgrade currentUpgrade;
     private GameManager gameManager;
 
+    /**
+     * InventoryController Constructor
+     * Pass in the gameManager
+     * @author msh254
+     * @param x GameManager instance
+     */
     public InventoryController(GameManager x) {
         gameManager = x;
     }
 
-    private Tower currentTower;
-    private Upgrade currentUpgrade;
-    private Boolean isMainTower;
-    private Boolean isUpgrade;
-
+    /**
+     * Initialize the window
+     * Set labels to display and reset combo boxes
+     * @author msh254
+     */
     public void initialize() {
         moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
         livesLabel.setText(String.valueOf(gameManager.getLives()));
@@ -82,11 +79,20 @@ public class InventoryController {
         roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
         updateComboBox();
     }
+
+    /**
+     * Transition to main menu screen if main menu button is clicked
+     * @author msh254
+     */
     @FXML
     private void goToMainMenu() {
         gameManager.closeInventoryScreen();
     }
 
+    /**
+     * Reset all combo boxes and clear labels whenever a tower is swapped or upgrade is toggled
+     * @author msh254, nsr36
+     */
     public void updateComboBox() {
         mainTowersComboBox.setValue("");
         reserveTowersComboBox.setValue("");
@@ -103,11 +109,26 @@ public class InventoryController {
         currentCombobox = null;
     }
 
+    /**
+     * Clear all combo boxes expect the one which has been selected
+     * @author nsr36
+     */
     private void clearComboBoxes() {
         if (!Objects.equals(currentCombobox, "MainTower")) { mainTowersComboBox.setValue(""); }
         if (!Objects.equals(currentCombobox, "ReserveTower")) { reserveTowersComboBox.setValue(""); }
         if (!Objects.equals(currentCombobox, "MyUpgrade")) { upgradesComboBox.setValue(""); }
     }
+
+    /**
+     * Set all the detail labels
+     * @author nsr36
+     * @param towerNameLabelText name of tower or resource type of upgrade
+     * @param speedLabelText speed of tower or resource amount boost of upgrade
+     * @param levelLabelText level of tower or reload speed reduction of upgrade
+     * @param costLabelText cost of tower or upgrade
+     * @param resourceAmountLabelText resource amount of tower
+     * @param resourceTypeLabelText resource type of tower
+     */
     private void setDetailLabels(String towerNameLabelText, String speedLabelText, String levelLabelText,
                                  String costLabelText, String resourceAmountLabelText, String resourceTypeLabelText) {
         towerNamelabel.setText(towerNameLabelText);
@@ -117,6 +138,11 @@ public class InventoryController {
         resourceAmountLabel.setText(resourceAmountLabelText);
         resourceTypeLabel.setText(resourceTypeLabelText);
     }
+
+    /**
+     * Make sure all labels are associated to tower-specific details
+     * @author msh254, nsr36
+     */
     private void displaySelectedTower() {
         towerName.setText("Tower name");
         speed.setText("Speed");
@@ -131,6 +157,10 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Make sure all labels are associated to upgrade-specific details
+     * @author nsr36
+     */
     private void displaySelectedUpgrade() {
         towerName.setText("Upgrade type");
         speed.setText("Resource Boost");
@@ -145,6 +175,10 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Display the main tower's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedMainTower() {
         if (currentCombobox == null) {
@@ -154,6 +188,10 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Display the reserve tower's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedReserveTower() {
         if (currentCombobox == null) {
@@ -162,6 +200,11 @@ public class InventoryController {
             displaySelectedTower();
         }
     }
+
+    /**
+     * Display the owned upgrade's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedMyUpgrade() {
         if (currentCombobox == null) {
@@ -170,6 +213,11 @@ public class InventoryController {
             displaySelectedUpgrade();
         }
     }
+
+    /**
+     * Swap a tower from main to reserve if there is not already 5 towers in reserve
+     * @author msh254, nsr36
+     */
     @FXML
     private void swapReserve() {
         if(gameManager.getReserveTowerList().size() >= 5) {
@@ -184,6 +232,11 @@ public class InventoryController {
             }
         }
     }
+
+    /**
+     * Swap a tower from reserve to main if there is not already 5 towers in main
+     * @author msh254, nsr36
+     */
     @FXML
     private void swapMain() {
         if(gameManager.getMainTowerList().size() >= 5) {
@@ -198,6 +251,11 @@ public class InventoryController {
             }
         }
     }
+
+    /**
+     * Change the upgrades status to false if true or true if false
+     * @author msh254, nsr36
+     */
     @FXML
     private void toggleUpgrade() {
         if (upgradesComboBox.getValue() != "") {

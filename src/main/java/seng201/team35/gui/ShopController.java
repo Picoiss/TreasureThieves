@@ -25,8 +25,6 @@ public class ShopController {
     @FXML
     private Label level;
     @FXML
-    private Label cost;
-    @FXML
     private Label resourceAmount;
     @FXML
     private Label towerNamelabel;
@@ -51,12 +49,6 @@ public class ShopController {
     @FXML
     private ComboBox upgradesComboBox;
     @FXML
-    private Button buyButton;
-    @FXML
-    private Button sellButton;
-    @FXML
-    private Button returnToMainMenuButton;
-    @FXML
     private Label resourceTypeLabel;
     @FXML
     private Label errorLabel;
@@ -72,12 +64,20 @@ public class ShopController {
     private GameManager gameManager;
     private List<Tower> shopTowerList = new ArrayList<>();
 
+    /**
+     * ShopController Constructor
+     * Pass in the gameManager
+     * @author msh254
+     * @param x GameManager instance
+     */
     public ShopController(GameManager x) {
         gameManager = x;
     }
 
     /**
      * Initialize the window
+     * Set all combo boxes and labels to display
+     * @author msh254, nsr36
      */
     public void initialize() {
         shopTowerList.addAll(getShopTowerSet(gameManager.getCurrentRound()));
@@ -91,11 +91,19 @@ public class ShopController {
         updateComboBox();
     }
 
+    /**
+     * Transition to main menu screen if main menu button is clicked
+     * @author nsr36
+     */
     @FXML
     private void goToMainMenu() {
         gameManager.closeShopScreen();
     }
 
+    /**
+     * Reset all combo boxes and clear labels whenever a purchase or sale is made
+     * @author msh254, nsr36
+     */
     private void updateComboBox() {
         moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
         mainTowersComboBox.setValue("");
@@ -115,6 +123,10 @@ public class ShopController {
         currentCombobox = null;
     }
 
+    /**
+     * Clear all combo boxes expect the one which has been selected
+     * @author nsr36
+     */
     private void clearComboBoxes() {
         if (!Objects.equals(currentCombobox, "ShopTower")) { shopTowersComboBox.setValue(""); }
         if (!Objects.equals(currentCombobox, "ShopUpgrade")) { shopUpgradesComboBox.setValue(""); }
@@ -123,6 +135,16 @@ public class ShopController {
         if (!Objects.equals(currentCombobox, "MyUpgrade")) { upgradesComboBox.setValue(""); }
     }
 
+    /**
+     * Set all the detail labels
+     * @author nsr36
+     * @param towerNameLabelText name of tower or resource type of upgrade
+     * @param speedLabelText speed of tower or resource amount boost of upgrade
+     * @param levelLabelText level of tower or reload speed reduction of upgrade
+     * @param costLabelText cost of tower or upgrade
+     * @param resourceAmountLabelText resource amount of tower
+     * @param resourceTypeLabelText resource type of tower
+     */
     private void setDetailLabels(String towerNameLabelText, String speedLabelText, String levelLabelText,
                                  String costLabelText, String resourceAmountLabelText, String resourceTypeLabelText) {
         towerNamelabel.setText(towerNameLabelText);
@@ -133,6 +155,11 @@ public class ShopController {
         resourceTypeLabel.setText(resourceTypeLabelText);
     }
 
+    /**
+     * Make sure all labels are associated to tower-specific details
+     * Set selling price of tower to be 90% of its buying cost
+     * @author msh254, nsr36
+     */
     private void displaySelectedTower() {
         towerName.setText("Tower name");
         speed.setText("Speed");
@@ -141,7 +168,7 @@ public class ShopController {
         resourceType.setText("Resource Type");
         if (currentTower != null) {
             int cost;
-            if (currentCombobox == "ShopTower")
+            if (Objects.equals(currentCombobox, "ShopTower"))
                 cost = currentTower.getCost();
             else {
                 cost = (int) (0.9*currentTower.getCost());
@@ -153,6 +180,11 @@ public class ShopController {
         }
     }
 
+    /**
+     * Make sure all labels are associated to upgrade-specific details
+     * Set selling price of upgrade to be 90% of its buying cost
+     * @author msh254, nsr36
+     */
     private void displaySelectedUpgrade() {
         towerName.setText("Upgrade type");
         speed.setText("Resource Boost");
@@ -161,7 +193,7 @@ public class ShopController {
         resourceType.setText("");
         if (currentUpgrade != null) {
             int cost;
-            if (currentCombobox == "ShopUpgrade")
+            if (Objects.equals(currentCombobox, "ShopUpgrade"))
                 cost = currentUpgrade.getCost();
             else {
                 cost = (int) (0.9*currentUpgrade.getCost());
@@ -173,6 +205,10 @@ public class ShopController {
         }
     }
 
+    /**
+     * Display the shop tower's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedShopTower() {
         if (currentCombobox == null) {
@@ -182,6 +218,10 @@ public class ShopController {
         }
     }
 
+    /**
+     * Display the shop upgrade's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedShopUpgrade() {
         if (currentCombobox == null) {
@@ -191,6 +231,10 @@ public class ShopController {
         }
     }
 
+    /**
+     * Display the main tower's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedMainTower() {
         if (currentCombobox == null) {
@@ -200,6 +244,10 @@ public class ShopController {
         }
     }
 
+    /**
+     * Display the reserve tower's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedReserveTower() {
         if (currentCombobox == null) {
@@ -209,6 +257,10 @@ public class ShopController {
         }
     }
 
+    /**
+     * Display the owned upgrade's details when its combo box is selected
+     * @author nsr36
+     */
     @FXML
     private void selectedMyUpgrade() {
         if (currentCombobox == null) {
@@ -218,6 +270,14 @@ public class ShopController {
         }
     }
 
+    /**
+     * The towers that appear for sale in the shop depend
+     * on a switch based on the current round.
+     * The shop towers reflect what towers are most likely
+     * needed to win the upcoming round.
+     * @author msh254, nsr36
+     * @return set of towers shopTowerSet
+     */
     private Set<Tower> getShopTowerSet(int currentRound) {
         Set<Tower> shopTowerSet = new HashSet<>();
         //shopTowerSet.addAll(gameManager.getDefaultTowers()); // this line is for testing purposes (to delete later)
@@ -283,6 +343,13 @@ public class ShopController {
         return shopTowerSet;
     }
 
+    /**
+     * The upgrades that appear for sale in the shop depend
+     * on a switch based on the current round.
+     * The shop upgrades match the towers available in the shop.
+     * @author nsr36
+     * @return list of upgrades shopUpgradeList
+     */
     private List<Upgrade> getShopUpgradeList(int currentRound) {
         List<Upgrade> shopUpgradeList = new ArrayList<>();
         switch (currentRound) {
@@ -314,6 +381,10 @@ public class ShopController {
         return shopUpgradeList;
     }
 
+    /**
+     * Sell a tower or upgrade if the sell button is clicked
+     * @author msh254, nsr36
+     */
     @FXML
     private void sell() {
         errorLabel.setText("");
@@ -340,6 +411,12 @@ public class ShopController {
         }
     }
 
+    /**
+     * Buy a tower or upgrade if the buy button is clicked
+     * This is after checking the player has enough money
+     * And also checking they don't already own 10 towers in total
+     * @author nsr36
+     */
     @FXML
     private void buy() {
         errorLabel.setText("");

@@ -43,7 +43,7 @@ public class CartTest {
     }
 
     @Test
-    public void testSetDirection() {
+    public void setDirectionTest() {
         bronzeCart.setDirection(2);
         assertEquals(2, bronzeCart.getDirection());
     }

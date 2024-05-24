@@ -1,6 +1,7 @@
 package seng201.team35.models;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.HashMap;
 import java.util.Map;

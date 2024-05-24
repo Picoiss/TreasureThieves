@@ -61,11 +61,11 @@ public class GameController {
     private Label cartsLeftLabel;
     @FXML
     private Label moneyEarnedLabel;
-
     private int cartsLeft;
     private long startTime;
     private boolean gameRunning = false;
     private long lastUpdate = 0;
+    private int time = 0;
     private final long updateInterval = 500_000_000;
     private GameManager gameManager;
     private Image grassImage;
@@ -77,6 +77,7 @@ public class GameController {
     private CartSprite cartSprite;
     private List<CartSpawn> carts;
     private List<CartSpawn> initialCarts;
+    private List<Tower> towersUsed;
     private Map<Cart, Rectangle> cartHealthBars = new HashMap<>();
     private int currentCartIndex = 0;
     private CartPath cartPath;
@@ -116,6 +117,7 @@ public class GameController {
      */
     @FXML
     public void initialize() {
+        grassImage = new Image(getClass().getResourceAsStream(("/images/Grass.png")));
         texturedGrassImage = new Image(getClass().getResourceAsStream("/images/TexturedGrass.png"));
         setupGameLoop();
         mainMenuButton.setVisible(false);
@@ -384,6 +386,7 @@ public class GameController {
         }
         Tower tower = retrieveSelectedTower();
         gameManager.placeTowerAt(newTowerPosition, tower);
+        //towersUsed.add(tower);
         ImageView towerSprite = new ImageView();
         towerImageViewToTower.put(towerSprite, tower);
         towerSprite.setFitWidth(35);
@@ -400,14 +403,14 @@ public class GameController {
 
     /**retrieves the currently selected tower in the comboBox.
      * As the comboBox can only store Strings, this String is converted
-     * to a Tower using the gameManager.getTowerByName(towerName) function
+     * to a Tower using the gameManager.getTowerClass(towerName) function
      *
      * @author msh254
      * @return Tower
      */
     private Tower retrieveSelectedTower() {
         String towerName = towerSelectionComboBox.getValue();
-        return gameManager.getTowerByName(towerName);
+        return gameManager.getTowerClass(towerName);
     }
 
     /** Animates the towerSprite.
@@ -510,6 +513,7 @@ public class GameController {
         gameManager.setModifiersInitialisedFalse();
         gameManager.changeMoneyAmount(moneyEarned);
         gameManager.incrementTotalMoney(moneyEarned);
+        //gameManager.set
         if (winOrLoseLabel.getTextFill() == Color.GREEN) {
             if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {
                 gameManager.gameToWinMenuScreen();
@@ -635,46 +639,48 @@ public class GameController {
         for (Map.Entry<Point, ImageView> entry : towerPositions.entrySet()) {
             Point towerGridPos = entry.getKey();
             ImageView towerSprite = entry.getValue();
-            double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
-            double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
-            Map<Cart, Double> cartsInRange = new HashMap<>();
-            for (Map.Entry<Cart, ImageView> cartEntry : cartTokens.entrySet()) {
-                Cart cart = cartEntry.getKey();
-                ImageView cartToken = cartEntry.getValue();
-                Bounds cartBounds = cartToken.getBoundsInParent();
-                double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
-                double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
-                double distance = Math.sqrt(Math.pow(towerCenterX - cartCenterX, 2) + Math.pow(towerCenterY - cartCenterY, 2));
-                if (distance <= 2 * Math.min(cellWidth, cellHeight)) {
-                    cartsInRange.put(cart, distance);
-                }
-            }
-            if (cartsInRange.size() != 0) {
-                Cart closestCart = null;
-                Double closestDistance = 99999999.9;
-                for (Map.Entry<Cart, Double> cartInfo : cartsInRange.entrySet()) {
-                    Cart cart = cartInfo.getKey();
-                    if (towerImageViewToTower.get(towerSprite).getResourceType() == cart.getResourceType()) {
-                        closestCart = cart;
+            if (Math.floorMod(time, towerImageViewToTower.get(towerSprite).getReloadSpeed()) == 0) {
+                double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
+                double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
+                Map<Cart, Double> cartsInRange = new HashMap<>();
+                for (Map.Entry<Cart, ImageView> cartEntry : cartTokens.entrySet()) {
+                    Cart cart = cartEntry.getKey();
+                    ImageView cartToken = cartEntry.getValue();
+                    Bounds cartBounds = cartToken.getBoundsInParent();
+                    double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
+                    double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
+                    double distance = Math.sqrt(Math.pow(towerCenterX - cartCenterX, 2) + Math.pow(towerCenterY - cartCenterY, 2));
+                    if (distance <= 2 * Math.min(cellWidth, cellHeight)) {
+                        cartsInRange.put(cart, distance);
                     }
                 }
-                if (closestCart == null) {
+                if (cartsInRange.size() != 0) {
+                    Cart closestCart = null;
+                    Double closestDistance = 99999999.9;
                     for (Map.Entry<Cart, Double> cartInfo : cartsInRange.entrySet()) {
                         Cart cart = cartInfo.getKey();
-                        Double distance = cartInfo.getValue();
-                        if (distance < closestDistance) {
-                            closestDistance = distance;
+                        if (towerImageViewToTower.get(towerSprite).getResourceType() == cart.getResourceType()) {
                             closestCart = cart;
                         }
                     }
+                    if (closestCart == null) {
+                        for (Map.Entry<Cart, Double> cartInfo : cartsInRange.entrySet()) {
+                            Cart cart = cartInfo.getKey();
+                            Double distance = cartInfo.getValue();
+                            if (distance < closestDistance) {
+                                closestDistance = distance;
+                                closestCart = cart;
+                            }
+                        }
+                    }
+                    ImageView cartImage = cartTokens.get(closestCart);
+                    Bounds cartBounds = cartImage.getBoundsInParent();
+                    double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
+                    double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
+                    rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
+                    System.out.println(closestCart);
+                    shootProjectile(towerGridPos, closestCart);
                 }
-                ImageView cartImage = cartTokens.get(closestCart);
-                Bounds cartBounds = cartImage.getBoundsInParent();
-                double cartCenterX = cartBounds.getMinX() + cartBounds.getWidth() / 2;
-                double cartCenterY = cartBounds.getMinY() + cartBounds.getHeight() / 2;
-                rotateTowerTowardsTarget(towerSprite, new Point2D(cartCenterX, cartCenterY));
-                System.out.println(closestCart);
-                shootProjectile(towerGridPos, closestCart);
             }
         }
     }
@@ -922,6 +928,7 @@ public class GameController {
      * @author msh254, nsr36
      */
     private void updateGame() {
+        time += 1;
         updateLabels();
         moveCarts();
         checkTowersTargeting();

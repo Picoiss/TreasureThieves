@@ -61,6 +61,11 @@ public class MainMenuController {
      * @author msh254, nsr36
      */
     public void initialize() {
+        playerNameLabel.setText(gameManager.getPlayerName());
+        livesLabel.setText(String.valueOf(gameManager.getLives()));
+        moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
+        roundsLabel.setText(String.valueOf(gameManager.getCurrentRound()));
+        roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
         if (!gameManager.getModifiersInitialised()) {
             System.out.println("Modifiers False");
             Random rng = new Random();
@@ -81,6 +86,7 @@ public class MainMenuController {
             modifierText3.setStyle("-fx-text-fill: black;");
             gameManager.setModifiersInitialisedTrue();
             gameManager.setModifier("If you see this... uh");
+            //checkBrokenTowers();
         }
         else {
             System.out.println("Modifiers True");
@@ -97,13 +103,8 @@ public class MainMenuController {
             if (Objects.equals(modifierText3.getText(), gameManager.getModifier())) {
                 modifierText3.setStyle("-fx-text-fill: green;");
             }
+            checkTowerLevelUps();
         }
-        playerNameLabel.setText(gameManager.getPlayerName());
-        livesLabel.setText(String.valueOf(gameManager.getLives()));
-        moneyLabel.setText(String.valueOf(gameManager.getMoneyAmount()));
-        roundsLabel.setText(String.valueOf(gameManager.getCurrentRound()));
-        roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
-        checkTowerLevelUps();
     }
 
     /**
@@ -249,6 +250,34 @@ public class MainMenuController {
                         i++;
                     }
                 }
+            }
+        }
+    }
+
+    public void checkBrokenTowers() {
+        if (!gameManager.getTowersUsedInPreviousRound().isEmpty()) {
+            Random rng = new Random();
+            Tower randomTower;
+            int randomBreak = rng.nextInt(0, 16);
+            if (randomBreak == 14) {
+                randomTower = gameManager.getMainTowerList().get(rng.nextInt(0,gameManager.getTowersUsedInPreviousRound().size()));
+            }
+            else if (randomBreak == 15) {
+                randomTower = gameManager.getMainTowerList().get(rng.nextInt(0,gameManager.getTowersUsedInPreviousRound().size()));
+            }
+            else {
+                randomTower = null;
+            }
+            if (randomTower != null) {
+                levelUpLabel.setText("Your " + randomTower.getName() + " has broken down (removed from inventory)");
+                levelUpLabel.setOpacity(1);
+                Timeline timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(3), new KeyValue(levelUpLabel.opacityProperty(), 0.7)),
+                        new KeyFrame(Duration.seconds(4), new KeyValue(levelUpLabel.opacityProperty(), 0))
+                );
+                timeline.setOnFinished(event -> levelUpLabel.setText(""));
+                timeline.play();
+                gameManager.removeMainTower(randomTower);
             }
         }
     }

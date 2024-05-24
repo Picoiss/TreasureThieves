@@ -17,6 +17,7 @@ public class GameManager {
     private int lives;
     private int currentRound = 1;
     private int totalCartsDestroyed = 0;
+    private List<Tower> towersUsedInPreviousRound;
     private Map<Point, Tower> towerPositionMap = new HashMap<>();
     private List<Tower> mainTowerList = new ArrayList<>();
     private List<Tower> reserveTowerList= new ArrayList<>();
@@ -109,24 +110,24 @@ public class GameManager {
         this.failMenuLauncher = failMenuLauncher;
         this.winMenuLauncher = winMenuLauncher;
         this.clearScreen = clearScreen;
-        Tower bronzeArcher = new Tower("Bronze Archer", 100, 100, "Bronze", 100);
-        Tower bronzeDwarf = new Tower("Bronze Dwarf", 75, 125, "Bronze", 125);
-        Tower bronzeVillager = new Tower("Bronze Villager", 120, 150, "Bronze", 150);
-        Tower silverKnight = new Tower("Silver Knight", 80, 150, "Silver", 150);
-        Tower silverPriest = new Tower("Silver Priest", 100, 170, "Silver", 170);
-        Tower silverAlchemist = new Tower("Silver Alchemist", 150, 190, "Silver", 190);
-        Tower goldGiant = new Tower("Gold Giant", 70, 200, "Gold", 200);
-        Tower goldGoblin = new Tower("Gold Goblin", 100, 240, "Gold", 240);
-        Tower goldPirate = new Tower("Gold Pirate", 40, 275, "Gold", 275);
-        Tower diamondMage = new Tower("Diamond Mage", 20, 400, "Diamond", 400);
-        Tower diamondNecromancer = new Tower("Diamond Necromancer", 20, 425, "Diamond", 425);
-        Tower diamondMinotaur = new Tower("Diamond Minotaur", 45, 460, "Diamond", 460);
-        Tower emeraldElf = new Tower("Emerald Elf", 45, 575, "Emerald", 575);
-        Tower emeraldPhoenix = new Tower("Emerald Phoenix", 25, 625, "Emerald", 625);
-        Tower emeraldPegasus = new Tower("Emerald Pegasus", 50, 700, "Emerald", 700);
-        Tower rubyDragon = new Tower("Ruby Dragon", 25, 700, "Ruby", 700);
-        Tower rubyOrcMage = new Tower("Ruby OrcMage", 25, 850, "Ruby", 850);
-        Tower rubyGolem = new Tower("Ruby Golem", 10, 1000, "Ruby", 1000);
+        Tower bronzeArcher = new Tower("Bronze Archer", 3, 100, "Bronze", 100);
+        Tower bronzeDwarf = new Tower("Bronze Dwarf", 2, 125, "Bronze", 125);
+        Tower bronzeVillager = new Tower("Bronze Villager", 1, 150, "Bronze", 150);
+        Tower silverKnight = new Tower("Silver Knight", 3, 150, "Silver", 150);
+        Tower silverPriest = new Tower("Silver Priest", 3, 170, "Silver", 170);
+        Tower silverAlchemist = new Tower("Silver Alchemist", 2, 190, "Silver", 190);
+        Tower goldGiant = new Tower("Gold Giant", 3, 200, "Gold", 200);
+        Tower goldGoblin = new Tower("Gold Goblin", 2, 240, "Gold", 240);
+        Tower goldPirate = new Tower("Gold Pirate", 1, 275, "Gold", 275);
+        Tower diamondMage = new Tower("Diamond Mage", 3, 400, "Diamond", 400);
+        Tower diamondNecromancer = new Tower("Diamond Necromancer", 2, 425, "Diamond", 425);
+        Tower diamondMinotaur = new Tower("Diamond Minotaur", 1, 460, "Diamond", 460);
+        Tower emeraldElf = new Tower("Emerald Elf", 3, 575, "Emerald", 575);
+        Tower emeraldPhoenix = new Tower("Emerald Phoenix", 2, 625, "Emerald", 625);
+        Tower emeraldPegasus = new Tower("Emerald Pegasus", 1, 700, "Emerald", 700);
+        Tower rubyDragon = new Tower("Ruby Dragon", 2, 700, "Ruby", 700);
+        Tower rubyOrcMage = new Tower("Ruby OrcMage", 1, 850, "Ruby", 850);
+        Tower rubyGolem = new Tower("Ruby Golem", 1, 1000, "Ruby", 1000);
         defaultTowers.addAll(List.of(bronzeArcher, bronzeDwarf, bronzeVillager, silverKnight, silverPriest,
                 silverAlchemist, goldGiant, goldGoblin, goldPirate, diamondMage, diamondNecromancer, diamondMinotaur,
                 emeraldElf, emeraldPhoenix, emeraldPegasus, rubyDragon, rubyOrcMage, rubyGolem));
@@ -146,20 +147,6 @@ public class GameManager {
 
     public Tower getTowerAt(Point position) {
         return towerPositionMap.get(position);
-    }
-    public Tower getTowerByName(String towerName) {
-        for (Tower tower : mainTowerList) {
-            if (tower.getName().equals(towerName)) {
-                return tower;
-            }
-        }
-        for (Tower tower : defaultTowers) {
-            if (tower.getName().equals(towerName)) {
-                return tower;
-            }
-        }
-        System.out.println("Tower with name '" + towerName + "' not found.");
-        return null;
     }
     public void setPlayerName(String name) { this.playerName = name; }
     public String getPlayerName() { return playerName; }
@@ -307,18 +294,28 @@ public class GameManager {
         moneyAmount += changeAmount;
     }
 
+    public void setTowersUsedInPreviousRound(List<Tower> towers) {
+        towersUsedInPreviousRound = towers;
+    }
 
-
+    public List<Tower> getTowersUsedInPreviousRound() {
+        return towersUsedInPreviousRound;
+    }
 
     public Tower getTowerClass(String towerName) {
-        for (Tower tower : defaultTowers) {
-            if (Objects.equals(towerName, tower.getName())) {
-                return tower;
+            for (Tower tower : mainTowerList) {
+                if (tower.getName().equals(towerName)) {
+                    return tower;
+                }
             }
+            for (Tower tower : defaultTowers) {
+                if (tower.getName().equals(towerName)) {
+                    return tower;
+                }
+            }
+            System.out.println("Tower with name '" + towerName + "' not found.");
+            return null;
         }
-        System.out.println("potential error in getting tower class from name");
-        return null;
-    }
     public Upgrade getUpgradeClass(String upgradeName) {
         for (Upgrade upgrade : defaultUpgrades) {
             if (Objects.equals(upgradeName, upgrade.getResourceType())) {

@@ -258,12 +258,21 @@ public class MainMenuController {
         if (!gameManager.getTowersUsedInPreviousRound().isEmpty()) {
             Random rng = new Random();
             Tower randomTower;
-            int randomBreak = rng.nextInt(0, 16);
-            if (randomBreak == 14) {
-                randomTower = gameManager.getMainTowerList().get(rng.nextInt(0,gameManager.getTowersUsedInPreviousRound().size()));
+            int randomBreak = rng.nextInt(0, 21);
+            if (randomBreak == 18) {
+                randomTower = gameManager.getReserveTowerList().get(rng.nextInt(gameManager.getReserveTowerList().size()));
+                for (Tower tower : gameManager.getReserveTowerList()) {
+                    if (tower == randomTower) {
+                        gameManager.removeReserveTower(tower);
+                        break;
+                    }
+                }
             }
-            else if (randomBreak == 15) {
-                randomTower = gameManager.getMainTowerList().get(rng.nextInt(0,gameManager.getTowersUsedInPreviousRound().size()));
+            else if (randomBreak == 19) {
+                randomTower = gameManager.getMainTowerList().get(rng.nextInt(gameManager.getMainTowerList().size()));
+            }
+            else if (randomBreak == 20) {
+                randomTower = gameManager.getMainTowerList().get(rng.nextInt(gameManager.getTowersUsedInPreviousRound().size()));
             }
             else {
                 randomTower = null;
@@ -277,7 +286,14 @@ public class MainMenuController {
                 );
                 timeline.setOnFinished(event -> levelUpLabel.setText(""));
                 timeline.play();
-                gameManager.removeMainTower(randomTower);
+                if (randomBreak >= 19) {
+                    for (Tower tower : gameManager.getMainTowerList()) {
+                        if (tower == randomTower) {
+                            gameManager.removeMainTower(tower);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }

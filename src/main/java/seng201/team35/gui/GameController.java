@@ -77,7 +77,7 @@ public class GameController {
     private CartSprite cartSprite;
     private List<CartSpawn> carts;
     private List<CartSpawn> initialCarts;
-    private List<Tower> towersUsed;
+    private List<Tower> towersUsed = new ArrayList<>();
     private Map<Cart, Rectangle> cartHealthBars = new HashMap<>();
     private int currentCartIndex = 0;
     private CartPath cartPath;
@@ -386,7 +386,7 @@ public class GameController {
         }
         Tower tower = retrieveSelectedTower();
         gameManager.placeTowerAt(newTowerPosition, tower);
-        //towersUsed.add(tower);
+        towersUsed.add(tower);
         ImageView towerSprite = new ImageView();
         towerImageViewToTower.put(towerSprite, tower);
         towerSprite.setFitWidth(35);
@@ -513,7 +513,7 @@ public class GameController {
         gameManager.setModifiersInitialisedFalse();
         gameManager.changeMoneyAmount(moneyEarned);
         gameManager.incrementTotalMoney(moneyEarned);
-        //gameManager.set
+        gameManager.setTowersUsedInPreviousRound(towersUsed);
         if (winOrLoseLabel.getTextFill() == Color.GREEN) {
             if (gameManager.getCurrentRound() == gameManager.getNumOfRounds()) {
                 gameManager.gameToWinMenuScreen();
@@ -953,7 +953,7 @@ public class GameController {
      */
     private void checkWinOrLose() {
         boolean allCartsSpawned = currentCartIndex >= carts.size();
-        if (allCartsSpawned && cartTokens.isEmpty()) {
+        if (allCartsSpawned && cartsLeft == 0) {
             gameRunning = false;
             winOrLoseLabel.toFront();
             mainMenuButton.toFront();

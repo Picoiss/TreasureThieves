@@ -95,7 +95,6 @@ public class MainMenuController {
             modifierText1.setText(gameManager.getGlobalModifier1());
             modifierText2.setText(gameManager.getGlobalModifier2());
             modifierText3.setText(gameManager.getGlobalModifier3());
-            System.out.println(modifierText1.getText() + ", " + gameManager.getModifier());
             if (Objects.equals(modifierText1.getText(), gameManager.getModifier())) {
                 modifierText1.setStyle("-fx-text-fill: green;");
             }
@@ -161,7 +160,6 @@ public class MainMenuController {
         gameManager.setModifierSelectedTrue();
         modifierName = modifierText1.getText();
         gameManager.setModifier(modifierName);
-        System.out.println(modifierName);
         modifierText1.setStyle("-fx-text-fill: green;");
         modifierText2.setStyle("-fx-text-fill: black;");
         modifierText3.setStyle("-fx-text-fill: black;");
@@ -178,7 +176,6 @@ public class MainMenuController {
         gameManager.setModifierSelectedTrue();
         modifierName = modifierText2.getText();
         gameManager.setModifier(modifierName);
-        System.out.println(modifierName);
         modifierText2.setStyle("-fx-text-fill: green;");
         modifierText1.setStyle("-fx-text-fill: black;");
         modifierText3.setStyle("-fx-text-fill: black;");
@@ -198,7 +195,6 @@ public class MainMenuController {
         modifierText3.setStyle("-fx-text-fill: green;");
         modifierText1.setStyle("-fx-text-fill: black;");
         modifierText2.setStyle("-fx-text-fill: black;");
-        System.out.println(modifierName);
         System.out.println("Modifier 3 has been selected");
     }
 

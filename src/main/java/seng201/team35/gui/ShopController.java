@@ -89,6 +89,16 @@ public class ShopController {
         roundsLabel.setText(String.valueOf(gameManager.getCurrentRound()));
         roundsLeftLabel.setText(String.valueOf(gameManager.getNumOfRounds() - gameManager.getCurrentRound()));
         updateComboBox();
+        int minCost = 1000000000;
+        for (Tower tower : getShopTowerSet(gameManager.getCurrentRound())) {
+            if (tower.getCost() < minCost) {
+                minCost = tower.getCost();
+            }
+        }
+        if (gameManager.getMainTowerList().size() + gameManager.getReserveTowerList().size() < 3 && minCost > gameManager.getMoneyAmount()) {
+            gameManager.closeShopScreen();
+            gameManager.launchFailMenuScreen();
+        }
     }
 
     /**
@@ -391,19 +401,19 @@ public class ShopController {
         if (mainTowersComboBox.getValue() != "") {
             System.out.println("Main Tower has been Sold");
             gameManager.removeMainTower(currentTower);
-            gameManager.changeMoneyAmount(currentTower.getCost());
+            gameManager.changeMoneyAmount((int)(0.9*currentTower.getCost()));
             updateComboBox();
         }
         else if (reserveTowersComboBox.getValue() != "") {
             System.out.println("Reserve Tower has been Sold");
             gameManager.removeReserveTower(currentTower);
-            gameManager.changeMoneyAmount(currentTower.getCost());
+            gameManager.changeMoneyAmount((int)(0.9*currentTower.getCost()));
             updateComboBox();
         }
         else if (upgradesComboBox.getValue() != "") {
             System.out.println("Upgrade has been Sold");
             gameManager.removeUpgrade(currentUpgrade);
-            gameManager.changeMoneyAmount(currentUpgrade.getCost());
+            gameManager.changeMoneyAmount((int)(0.9*currentUpgrade.getCost()));
             updateComboBox();
         }
         else {

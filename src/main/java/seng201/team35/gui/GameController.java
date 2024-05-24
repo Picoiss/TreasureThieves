@@ -130,6 +130,7 @@ public class GameController {
         loadBuildingAssets();
         getDifficultyScaling();
         checkUpgrades();
+        setRandomEvent();
         towerSelectionComboBox.getItems().addAll(Tower.getTowerNames(gameManager.getMainTowerList()));
         gameGrid.addEventHandler(MouseEvent.MOUSE_CLICKED, this::handleGridClick);
         initialCarts = CartRound.getCartsForRound(gameManager.getCurrentRound(), cartNumDecrease, cartNumIncrease);

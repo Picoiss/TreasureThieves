@@ -135,17 +135,17 @@ public class CartRound {
                 lastCartDelay = 14;
                 break;
             case 9:
-                carts.add(new CartSpawn(new Cart(250, "Diamond", 0.75), Duration.ofSeconds(1).toNanos()));
-                carts.add(new CartSpawn(new Cart(200, "Diamond", 0.75), Duration.ofSeconds(2).toNanos()));
-                carts.add(new CartSpawn(new Cart(175, "Diamond", 0.75), Duration.ofSeconds(3).toNanos()));
-                carts.add(new CartSpawn(new Cart(225, "Diamond", 0.75), Duration.ofSeconds(4).toNanos()));
-                carts.add(new CartSpawn(new Cart(225 , "Diamond", 0.75), Duration.ofSeconds(5).toNanos()));
-                carts.add(new CartSpawn(new Cart(225, "Diamond", 0.75), Duration.ofSeconds(8).toNanos()));
-                carts.add(new CartSpawn(new Cart(300, "Diamond", 0.75), Duration.ofSeconds(10).toNanos()));
-                carts.add(new CartSpawn(new Cart(215, "Diamond", 0.75), Duration.ofSeconds(10).toNanos()));
-                carts.add(new CartSpawn(new Cart(215, "Diamond", 0.75), Duration.ofSeconds(12).toNanos()));
-                carts.add(new CartSpawn(new Cart(215, "Diamond", 0.75), Duration.ofSeconds(13).toNanos()));
-                carts.add(new CartSpawn(new Cart(215, "Emerald", 0.75), Duration.ofSeconds(14).toNanos()));
+                carts.add(new CartSpawn(new Cart(250, "Diamond", 0.85), Duration.ofSeconds(1).toNanos()));
+                carts.add(new CartSpawn(new Cart(200, "Diamond", 0.85), Duration.ofSeconds(2).toNanos()));
+                carts.add(new CartSpawn(new Cart(175, "Diamond", 0.85), Duration.ofSeconds(3).toNanos()));
+                carts.add(new CartSpawn(new Cart(225, "Diamond", 0.85), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(225 , "Diamond", 0.85), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(225, "Diamond", 0.85), Duration.ofSeconds(8).toNanos()));
+                carts.add(new CartSpawn(new Cart(300, "Diamond", 0.85), Duration.ofSeconds(10).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Diamond", 0.85), Duration.ofSeconds(10).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Diamond", 0.85), Duration.ofSeconds(12).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Diamond", 0.85), Duration.ofSeconds(13).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Emerald", 0.85), Duration.ofSeconds(14).toNanos()));
                 lastCartDelay = 14;
                 break;
             case 10:
@@ -168,6 +168,46 @@ public class CartRound {
                 carts.add(new CartSpawn(new Cart(215, "Gold", 1), Duration.ofSeconds(9).toNanos()));
                 carts.add(new CartSpawn(new Cart(215, "Gold", 1), Duration.ofSeconds(11).toNanos()));
                 lastCartDelay = 11;
+                break;
+            case 12:
+                carts.add(new CartSpawn(new Cart(215, "Ruby", 1), Duration.ofSeconds(1).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Emerald", 1), Duration.ofSeconds(2).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Diamond", 1), Duration.ofSeconds(3).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Gold", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(215, "Silver", 1), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(600, "Gold", 1), Duration.ofSeconds(8).toNanos()));
+                carts.add(new CartSpawn(new Cart(600, "Gold", 1), Duration.ofSeconds(9).toNanos()));
+                carts.add(new CartSpawn(new Cart(600, "Gold", 1), Duration.ofSeconds(11).toNanos()));
+                break;
+            case 13:
+                carts.add(new CartSpawn(new Cart(215, "Diamond", 1), Duration.ofSeconds(1).toNanos()));
+                carts.add(new CartSpawn(new Cart(333, "Diamond", 1), Duration.ofSeconds(2).toNanos()));
+                carts.add(new CartSpawn(new Cart(333, "Diamond", 1), Duration.ofSeconds(3).toNanos()));
+                carts.add(new CartSpawn(new Cart(333, "Emerald", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(444, "Ruby", 1), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(700, "Gold", 1), Duration.ofSeconds(8).toNanos()));
+                carts.add(new CartSpawn(new Cart(700, "Gold", 1), Duration.ofSeconds(9).toNanos()));
+                carts.add(new CartSpawn(new Cart(700, "Gold", 1), Duration.ofSeconds(11).toNanos()));
+                break;
+            case 14:
+                carts.add(new CartSpawn(new Cart(800, "Diamond", 1), Duration.ofSeconds(1).toNanos()));
+                carts.add(new CartSpawn(new Cart(333, "Ruby", 1), Duration.ofSeconds(2).toNanos()));
+                carts.add(new CartSpawn(new Cart(900, "Ruby", 1), Duration.ofSeconds(3).toNanos()));
+                carts.add(new CartSpawn(new Cart(900, "Emerald", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(900, "Ruby", 1), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(900, "Gold", 1), Duration.ofSeconds(8).toNanos()));
+                carts.add(new CartSpawn(new Cart(600, "Gold", 1), Duration.ofSeconds(9).toNanos()));
+                carts.add(new CartSpawn(new Cart(500, "Gold", 1), Duration.ofSeconds(11).toNanos()));
+                break;
+            case 15:
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(1).toNanos()));
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(2).toNanos()));
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(3).toNanos()));
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(4).toNanos()));
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(5).toNanos()));
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(8).toNanos()));
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(9).toNanos()));
+                carts.add(new CartSpawn(new Cart(1500, "Bronze", 1), Duration.ofSeconds(11).toNanos()));
                 break;
         }
         Random rand = new Random();

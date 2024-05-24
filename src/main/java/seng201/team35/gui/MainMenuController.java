@@ -239,7 +239,7 @@ public class MainMenuController {
                 }
                 int i = 0;
                 int removed = 0;
-                while (i < gameManager.getUpgradesList().size() && removed <= 3) {
+                while (i < gameManager.getUpgradesList().size() && removed < 3) {
                     if (Objects.equals(type.getKey(), gameManager.getUpgradesList().get(i).getResourceType())) {
                         gameManager.removeUpgrade(gameManager.getUpgradesList().get(i));
                         removed++;

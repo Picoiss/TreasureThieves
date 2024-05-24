@@ -256,12 +256,34 @@ public class MainMenuController {
         }
     }
 
+    /**
+     * Randomly generates broken towers or reload speed boosts
+     * If tower broken, it is removed from the player's inventory (towers used in previous round have higher chance of breaking)
+     * If a tower is selected for a boost, its reload speed is increased by 1 or if it is already maxed at 6, its resource amount is increased by 10
+     * Display a message using the levelUpLabel
+     * @author nsr36
+     */
     public void checkBrokenTowers() {
         if (!gameManager.getTowersUsedInPreviousRound().isEmpty()) {
             Random rng = new Random();
-            Tower randomTower;
+            Tower randomTower = null;
             int randomBreak = rng.nextInt(11);
-            if (randomBreak == 8) {
+            if (randomBreak == 7) {
+                int randIndex = rng.nextInt(gameManager.getMainTowerList().size());
+                for (int i = 0; i < gameManager.getMainTowerList().size(); i++) {
+                    if (randIndex == i) {
+                        if (gameManager.getMainTowerList().get(i).getReloadSpeed() < 6) {
+                            gameManager.getMainTowerList().get(i).increaseReloadSpeed();
+                        }
+                        else {
+                            gameManager.getMainTowerList().get(i).increaseMaxAmount(10);
+                        }
+                        break;
+                    }
+                }
+                randomTower = gameManager.getMainTowerList().get(randIndex);
+            }
+            else if (randomBreak == 8) {
                 randomTower = gameManager.getReserveTowerList().get(rng.nextInt(gameManager.getReserveTowerList().size()));
                 for (Tower tower : gameManager.getReserveTowerList()) {
                     if (tower == randomTower) {
@@ -280,7 +302,12 @@ public class MainMenuController {
                 randomTower = null;
             }
             if (randomTower != null) {
-                levelUpLabel.setText("Your " + randomTower.getName() + " has broken down (removed from inventory)");
+                if (randomBreak == 7) {
+                    levelUpLabel.setText("Your " + randomTower.getName() + "'s reload speed was boosted!");
+                }
+                else {
+                    levelUpLabel.setText("Your " + randomTower.getName() + " has broken down (removed from inventory)");
+                }
                 levelUpLabel.setOpacity(1);
                 Timeline timeline = new Timeline(
                         new KeyFrame(Duration.seconds(3), new KeyValue(levelUpLabel.opacityProperty(), 0.7)),

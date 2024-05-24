@@ -57,6 +57,12 @@ public class Tower {
     public int getReloadSpeed() { return reloadSpeed; }
 
     /**
+     * Increase current tower reload speed by 1
+     * @author nsr36
+     */
+    public void increaseReloadSpeed() { reloadSpeed += 1; }
+
+    /**
      * Get tower resource type
      * @author nsr36
      * @return resource type

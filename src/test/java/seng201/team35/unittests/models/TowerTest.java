@@ -17,15 +17,15 @@ public class TowerTest {
 
     @BeforeEach
     public void setUp() {
-        bronzeArcher = new Tower("Bronze Archer", 100,100, "Bronze", 100);
-        silverKnight = new Tower("Silver Knight",80,150, "Silver", 150);
-        goldGiant = new Tower("Gold Giant", 70,200, "Gold", 200);
+        bronzeArcher = new Tower("Bronze Archer", 5,100, "Bronze", 100);
+        silverKnight = new Tower("Silver Knight",7,150, "Silver", 150);
+        goldGiant = new Tower("Gold Giant", 6,200, "Gold", 200);
     }
 
     @Test
     public void constructorsGettersTest() {
         assertEquals("Bronze Archer", bronzeArcher.getName());
-        assertEquals(100, bronzeArcher.getReloadSpeed());
+        assertEquals(5, bronzeArcher.getReloadSpeed());
         assertEquals(100, bronzeArcher.getMaxAmount());
         assertEquals("Bronze", bronzeArcher.getResourceType());
         assertEquals(100, bronzeArcher.getCost());
@@ -43,6 +43,12 @@ public class TowerTest {
     public void increaseMaxAmountTest() {
         bronzeArcher.increaseMaxAmount(10);
         assertEquals(110, bronzeArcher.getMaxAmount());
+    }
+
+    @Test
+    public void increaseReloadSpeedTest() {
+        bronzeArcher.increaseReloadSpeed();
+        assertEquals(6, bronzeArcher.getReloadSpeed());
     }
 
     @Test

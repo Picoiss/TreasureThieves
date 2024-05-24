@@ -5,12 +5,12 @@ package seng201.team35.services;
  * @author msh254, nsr36
  */
 public class BuildingAndNatureMap {
-    private int[][] BuildingAndNatureGraph;
+    private int[][] buildingAndNatureGraph;
     public BuildingAndNatureMap(int[][] BuildingAndNatureGraph) {
-        this.BuildingAndNatureGraph = BuildingAndNatureGraph;
+        this.buildingAndNatureGraph = BuildingAndNatureGraph;
     }
     public int[][] getBuildingAndNatureGraph() {
-        return BuildingAndNatureGraph;
+        return buildingAndNatureGraph;
     }
 
     /**A function which returns an indexGraph oh what tiles have trees, rocks or buildings,

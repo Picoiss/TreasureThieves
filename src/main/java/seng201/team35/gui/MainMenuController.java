@@ -284,12 +284,16 @@ public class MainMenuController {
                 randomTower = gameManager.getMainTowerList().get(randIndex);
             }
             else if (randomBreak == 8) {
-                randomTower = gameManager.getReserveTowerList().get(rng.nextInt(gameManager.getReserveTowerList().size()));
-                for (Tower tower : gameManager.getReserveTowerList()) {
-                    if (tower == randomTower) {
-                        gameManager.removeReserveTower(tower);
-                        break;
+                try {
+                    randomTower = gameManager.getReserveTowerList().get(rng.nextInt(gameManager.getReserveTowerList().size()));
+                    for (Tower tower : gameManager.getReserveTowerList()) {
+                        if (tower == randomTower) {
+                            gameManager.removeReserveTower(tower);
+                            break;
+                        }
                     }
+                } catch (Exception e) {
+                    System.out.println("No reserve Towers! Exception caught");
                 }
             }
             else if (randomBreak == 9) {

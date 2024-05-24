@@ -37,7 +37,7 @@ public class FailMenuController {
     public void initialize() {
         playerNameLabel.setText(gameManager.getPlayerName());
         numRoundsLabel.setText(String.valueOf(gameManager.getNumOfRounds()));
-        currentRoundLabel.setText(String.valueOf(gameManager.getNumOfRounds()));
+        currentRoundLabel.setText(String.valueOf(gameManager.getCurrentRound()));
         totalMoneyLabel.setText(String.valueOf(gameManager.getTotalMoney()));
         totalCartsDestroyedLabel.setText(String.valueOf(gameManager.getTotalCartsDestroyed()));
     }

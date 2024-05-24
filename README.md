@@ -1,9 +1,9 @@
-# game name (to decide soon)
+# Treasure Thieves
 Welcome to the template project for SENG201 which you will transform into your own.
 This README file includes some useful information to help you get started.
 However, we expect that this README becomes your own
 
-## (game name) Game Overview
+## Treasure Thieves Game Overview
 Remember you are required to commit your code to the **main** branch of your repository before the deadline.
 
 Contents
@@ -11,6 +11,8 @@ Contents
 - 1.1 : (game name) Overview
 - 1.2 Introduction
 - 1.3 Tutorial
+- 1.4 Importing Project
+- 1.5 Run Project, Jar Project, Test Project
 - 1.6 Credits 
 - 1.7 An Aside on AI + Disclaimer
 
@@ -57,6 +59,32 @@ Upgrades:
 Carts (Boats):
 - Carts are spawned with parameters of 'Fill Amount' (Health), 'Resource Type', and 'Speed'. The Resource Type of the Cart influences the image of the cart, and also infleunces which Towers will deal max damage to the Cart. The speed of the Cart is usually set to 1 (time to travel 1 grid is 1 second), but carts which have more 'Fill Amount' (Health), may have slower speed.
 - Interestingly, Carts of the same Resource Type may actually have different Healths. For example, two 'Bronze Carts' spawned in a round may have 'Fill Amounts' of 100 and 200, respectively. This adds another layer of intricacy into the game, where the player will likely have to use context clues (speed of cart / what round they are on) to determine the Health of a Cart. (Although they could also see the Health Bar decreasing slower).
+
+## Importing Project (Using IntelliJ)
+IntelliJ has built-in support for Gradle. To import this project:
+
+- Launch IntelliJ and choose `Open` from the start-up window.
+- Select the project and click open
+- At this point in the bottom right notifications you may be prompted to 'load gradle scripts', If so, click load
+
+**Note:** *If you run into dependency issues when running the app or the Gradle pop up doesn't appear then open the Gradle sidebar and click the Refresh icon.*
+
+## Run Project 
+1. Open a command line interface inside the project directory and run `./gradlew run` to run the app.
+2. The game should then be run, and a seperate window will be opened.
+
+## Build and Run Jar
+1. Open a command line interface inside the project directory and run `./gradlew jar` to create a packaged Jar. The Jar file is located at build/libs/seng201_team35-1.0-SNAPSHOT.jar
+2. Navigate to the build/libs/ directory (you can do this with `cd build/libs`)
+3. Run the command `java -jar seng201_team35-1.0-SNAPSHOT.jar` to open the application.
+
+Alternatively, the jar for the game can be run by running the command
+`java -jar msh254_nsr36_TreasureThieves.jar` to open the game
+
+## Run Tests
+1. Open a command line interface inside the project directory and run `./gradlew test` to run the tests.
+2. Test results should be printed to the command line
+
 
 ## Credits
 

@@ -1,11 +1,5 @@
 # Treasure Thieves
-Welcome to the template project for SENG201 which you will transform into your own.
-This README file includes some useful information to help you get started.
-However, we expect that this README becomes your own
-
 ## Treasure Thieves Game Overview
-Remember you are required to commit your code to the **main** branch of your repository before the deadline.
-
 Contents
 
 - 1.1 : (game name) Overview

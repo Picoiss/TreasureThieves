@@ -1,7 +1,6 @@
 package seng201.team35.gui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
@@ -9,9 +8,9 @@ import javafx.scene.control.Slider;
 import seng201.team35.GameManager;
 import seng201.team35.models.Tower;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,37 +36,67 @@ public class SetupScreenController {
     private String playerName;
     private int numRounds; // maximum rounds
     private String gameDifficulty;
-    private static final int EASY_STARTING_LIVES = 10;
-    private static final int MEDIUM_STARTING_LIVES = 5;
-    private static final int HARD_STARTING_LIVES = 3;
-    private static final int EASY_STARTING_MONEY = 200;
-    private static final int MEDIUM_STARTING_MONEY = 100;
-    private static final int HARD_STARTING_MONEY = 0;
+    private final int EASYSTARTINGLIVES = 10;
+    private final int MEDIUMSTARTINGLIVES = 5;
+    private final int HARDSTARTINGLIVES = 3;
+    private final int EASYSTARTINGMONEY = 200;
+    private final int MEDIUMSTARTINGMONEY = 100;
+    private final int HARDSTARTINGMONEY = 0;
     private GameManager gameManager;
 
+    /**
+     * SetupScreenController Constructor
+     * Pass in the gameManager
+     * @author nsr36
+     * @param x GameManager instance
+     */
     public SetupScreenController(GameManager x) { gameManager = x; }
+
     /**
      * Initialize the window
+     * @author msh254, nsr36
      */
-
     public void initialize() {
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
         startingTower1Combo.getItems().addAll("Bronze Archer", "Bronze Dwarf", "Bronze Villager");
         startingTower2Combo.getItems().addAll("Bronze Archer", "Bronze Dwarf", "Bronze Villager");
         startingTower3Combo.getItems().addAll("Bronze Archer", "Bronze Dwarf", "Bronze Villager");
     }
+
+    /**
+     * Store the player's name they entered in the corresponding text field
+     * @author msh254
+     */
     @FXML
     public void getName() {
         playerName = playerNameTextField.getText();
     }
+
+    /**
+     * Store the number of rounds selected using the corresponding slider
+     * @author msh254
+     */
     public void getRounds() {
         numRounds = (int) numRoundsSlider.getValue();
-
     }
+
+    /**
+     * Store the difficulty selected using the corresponding combobox
+     * @author msh254
+     */
     @FXML
     public void getDifficulty() {
         gameDifficulty = (String) difficultyComboBox.getValue();
     }
+
+    /**
+     * When the continue button is pressed, check all the inputs
+     * are valid before storing all the information in the
+     * gameManager variables and progressing to the main menu screen.
+     * Regex was implemented using
+     * <a href="https://www.geeksforgeeks.org/java-program-to-check-whether-the-string-consists-of-special-characters/">this website</a>
+     * @author msh254, nsr36
+     */
     @FXML
     public void gameSetupComplete() {
         getName();
@@ -105,19 +134,19 @@ public class SetupScreenController {
             startingTowers.add(gameManager.getTowerClass((String) startingTower2Combo.getValue()));
             startingTowers.add(gameManager.getTowerClass((String) startingTower3Combo.getValue()));
             gameManager.setMainTowerList(startingTowers);
-            if (gameDifficulty == "Easy") {
-                gameManager.setLives(EASY_STARTING_LIVES);
-                gameManager.changeMoneyAmount(EASY_STARTING_MONEY);
+            if (Objects.equals(gameDifficulty, "Easy")) {
+                gameManager.setLives(EASYSTARTINGLIVES);
+                gameManager.changeMoneyAmount(EASYSTARTINGMONEY);
                 System.out.println("Money set to easy");
             }
-            if (gameDifficulty == "Medium") {
-                gameManager.setLives(MEDIUM_STARTING_LIVES);
-                gameManager.changeMoneyAmount(MEDIUM_STARTING_MONEY);
+            if (Objects.equals(gameDifficulty, "Medium")) {
+                gameManager.setLives(MEDIUMSTARTINGLIVES);
+                gameManager.changeMoneyAmount(MEDIUMSTARTINGMONEY);
                 System.out.println("Money set to medium");
             }
-            if (gameDifficulty == "Hard") {
-                gameManager.setLives(HARD_STARTING_LIVES);
-                gameManager.changeMoneyAmount(HARD_STARTING_MONEY);
+            if (Objects.equals(gameDifficulty, "Hard")) {
+                gameManager.setLives(HARDSTARTINGLIVES);
+                gameManager.changeMoneyAmount(HARDSTARTINGMONEY);
                 System.out.println("Money set to hard");
             }
             gameManager.closeSetupScreen();

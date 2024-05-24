@@ -1,7 +1,8 @@
 package seng201.team35.models;
 
-/** A Class which handles Carts. Has multiple get and set methods.
- *
+/**
+ * A Class which handles Carts. Has multiple get and set methods.
+ * @author msh254, nsr36
  */
 public class Cart {
     private int size;
@@ -11,12 +12,11 @@ public class Cart {
     private int currentAmount;
     private boolean isFilled = false;
 
-    /**Constructor for a Cart Instance.
+    /**
+     * Constructor for a Cart Instance.
      * Creates a Cart Instance with variable size, resourceType and speeds
      * Default direction = 0, default fillAmount = 0 (currentAmount)
-     *
      * @author msh254, nsr36
-     *
      * @param size amount the cart needs for it to be filled
      * @param resourceType resource type of cart
      * @param speed how fast the cart moves on the track
@@ -29,8 +29,9 @@ public class Cart {
         this.direction = 0;
     }
 
-    /** A function which fills the Cart via altering the currentAmount
-     * *can take negative amounts
+    /**
+     * A function which fills the Cart via altering the currentAmount
+     * can take negative amounts
      * @author msh254
      * @param fillAmount amount to fill cart
      */
@@ -38,7 +39,8 @@ public class Cart {
         currentAmount += fillAmount;
     }
 
-    /**A function which checks if the cart is filled or not.
+    /**
+     * A function which checks if the cart is filled or not.
      * @author msh254
      * @return boolean isFilled
      */
@@ -47,7 +49,8 @@ public class Cart {
         return isFilled;
     }
 
-    /**gets the current amount the cart is at (how full the cart is)
+    /**
+     * Gets the current amount the cart is at (how full the cart is)
      * @author msh254
      * @return int currentAmount
      */
@@ -55,7 +58,8 @@ public class Cart {
         return currentAmount;
     }
 
-    /**Gets the resource type of the Cart
+    /**
+     * Gets the resource type of the Cart
      * @author msh254
      * @return String resourceType
      */
@@ -63,7 +67,8 @@ public class Cart {
         return resourceType;
     }
 
-    /**returns the speed of the Cart
+    /**
+     * Returns the speed of the Cart
      * @author msh254
      * @return double speed
      */
@@ -71,7 +76,8 @@ public class Cart {
         return speed;
     }
 
-    /**gets the direction of the Cart
+    /**
+     * Gets the direction of the Cart
      * (direction is set to 0 as a default)
      * @author nsr36
      * @return int direction
@@ -80,7 +86,8 @@ public class Cart {
         return direction;
     }
 
-    /**sets the direction of the Cart
+    /**
+     * Sets the direction of the Cart
      * @author nsr36
      * @param direction (int)
      */
@@ -88,7 +95,8 @@ public class Cart {
         this.direction = direction;
     }
 
-    /** returns the size of the Cart
+    /**
+     * Returns the size of the Cart
      * (the Max amount the Cart can have)
      * @author msh254
      * @return int size

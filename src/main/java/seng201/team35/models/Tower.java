@@ -20,7 +20,6 @@ public class Tower {
     /**
      * Tower Constructor
      * @author msh254, nsr36
-     *
      * @param towerName name of tower
      * @param towerSpeed reload speed of tower
      * @param resourceAmount maximum resource amount of tower

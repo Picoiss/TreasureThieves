@@ -672,7 +672,7 @@ public class GameController {
         for (Map.Entry<Point, ImageView> entry : towerPositions.entrySet()) {
             Point towerGridPos = entry.getKey();
             ImageView towerSprite = entry.getValue();
-            if (Math.floorMod(time, towerImageViewToTower.get(towerSprite).getReloadSpeed()) == 0) {
+            if (Math.floorMod(time, 11-towerImageViewToTower.get(towerSprite).getReloadSpeed()) == 0) {
                 double towerCenterX = (towerGridPos.x + 0.5) * cellWidth;
                 double towerCenterY = (towerGridPos.y + 0.5) * cellHeight;
                 Map<Cart, Double> cartsInRange = new HashMap<>();

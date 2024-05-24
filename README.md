@@ -68,6 +68,11 @@ IntelliJ has built-in support for Gradle. To import this project:
 
 **Note:** *If you run into dependency issues when running the app or the Gradle pop up doesn't appear then open the Gradle sidebar and click the Refresh icon.*
 
+Alternatively
+- Launch IntelliJ and choose `Open` from the start-up window.
+- Select `Get from Version Control`, and paste in the GitLab repository link
+- Clone the repository
+
 ## Run Project 
 1. Open a command line interface inside the project directory and run `./gradlew run` to run the app.
 2. The game should then be run, and a seperate window will be opened.
